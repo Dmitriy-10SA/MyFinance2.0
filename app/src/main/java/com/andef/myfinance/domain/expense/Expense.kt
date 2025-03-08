@@ -7,5 +7,6 @@ data class Expense(
     val amount: Double,
     val category: ExpenseCategory,
     val comment: String,
+    //дата в формате timestamp
     val date: Date
 )

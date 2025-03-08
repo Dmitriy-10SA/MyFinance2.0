@@ -7,5 +7,6 @@ data class Income(
     val amount: Double,
     val category: IncomeCategory,
     val comment: String,
+    //дата в формате timestamp
     val date: Date
 )
