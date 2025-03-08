@@ -1,6 +1,6 @@
 package com.andef.myfinance.data.database.expense.repository
 
-import com.andef.myfinance.data.database.expense.dao.ExpenseDao
+import com.andef.myfinance.data.database.expense.datasource.ExpenseDao
 import com.andef.myfinance.data.database.expense.mapper.ExpenseModelListToExpenseListMapper
 import com.andef.myfinance.data.database.expense.mapper.ExpenseToExpenseModelMapper
 import com.andef.myfinance.domain.database.expense.entities.Expense

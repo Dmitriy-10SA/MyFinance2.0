@@ -1,4 +1,4 @@
-package com.andef.myfinance.data.database.expense.dao
+package com.andef.myfinance.data.database.expense.datasource
 
 import androidx.room.Dao
 import androidx.room.Insert

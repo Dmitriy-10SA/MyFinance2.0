@@ -1,6 +1,6 @@
 package com.andef.myfinance.data.database.income.repository
 
-import com.andef.myfinance.data.database.income.dao.IncomeDao
+import com.andef.myfinance.data.database.income.datasource.IncomeDao
 import com.andef.myfinance.data.database.income.mapper.IncomeModelListToIncomeListMapper
 import com.andef.myfinance.data.database.income.mapper.IncomeToIncomeModelMapper
 import com.andef.myfinance.domain.database.income.entities.Income

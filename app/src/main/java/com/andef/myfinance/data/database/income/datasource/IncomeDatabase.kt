@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.andef.myfinance.data.database.income.dao.IncomeDao
 import com.andef.myfinance.data.database.income.model.IncomeModel
 
 @Database(entities = [IncomeModel::class], version = 1, exportSchema = false)
