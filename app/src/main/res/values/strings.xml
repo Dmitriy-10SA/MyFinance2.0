@@ -13,4 +13,14 @@
     <string name="transport">Транспорт</string>
     <string name="sport">Спорт</string>
     <string name="clothes">Одежда</string>
+    <string name="usd">Доллар США</string>
+    <string name="eur">Евро</string>
+    <string name="cny">Китайский юань</string>
+    <string name="jpy">Японская йена</string>
+    <string name="chf">Швейцарский франк</string>
+    <string name="cad">Канадский доллар</string>
+    <string name="gbp">Британский фунт</string>
+    <string name="aud">Австралийский доллар</string>
+    <string name="btc">Биткоин</string>
+    <string name="eth">Эфириум</string>
 </resources>
