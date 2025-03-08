@@ -10,7 +10,7 @@ class ExpenseToExpenseModelMapper {
             amount = expense.amount,
             category = expense.category,
             comment = expense.comment,
-            date = expense.date
+            date = expense.date.time
         )
     }
 }

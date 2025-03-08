@@ -6,7 +6,6 @@ import androidx.room.Query
 import com.andef.myfinance.data.database.expense.model.ExpenseModel
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
 
 @Dao
 interface ExpenseDao {
@@ -24,7 +23,7 @@ interface ExpenseDao {
         newAmount: Double,
         newCategory: ExpenseCategory,
         newComment: String,
-        newDate: Date
+        newDate: Long
     )
 
     @Query("DELETE FROM expense WHERE id = :id")

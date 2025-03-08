@@ -2,6 +2,7 @@ package com.andef.myfinance.data.database.expense.mapper
 
 import com.andef.myfinance.data.database.expense.model.ExpenseModel
 import com.andef.myfinance.domain.database.expense.entities.Expense
+import java.util.Date
 
 class ExpenseModelListToExpenseListMapper {
     private fun map(expenseModel: ExpenseModel): Expense {
@@ -10,7 +11,7 @@ class ExpenseModelListToExpenseListMapper {
             amount = expenseModel.amount,
             category = expenseModel.category,
             comment = expenseModel.comment,
-            date = expenseModel.date
+            date = Date(expenseModel.date)
         )
     }
 

@@ -8,11 +8,11 @@ import java.util.Date
 interface IncomeRepository {
     suspend fun addIncome(income: Income)
     suspend fun changeIncome(
-        id: Int,
+        income: Income,
         newAmount: Double? = null,
         newCategory: IncomeCategory? = null,
         newComment: String? = null,
-        newDate: String? = null
+        newDate: Date? = null
     )
 
     suspend fun removeIncome(id: Int)

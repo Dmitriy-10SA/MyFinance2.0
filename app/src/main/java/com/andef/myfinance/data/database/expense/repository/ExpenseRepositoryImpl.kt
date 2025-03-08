@@ -32,7 +32,7 @@ class ExpenseRepositoryImpl @Inject constructor(
             newAmount = newAmount ?: expense.amount,
             newCategory = newCategory ?: expense.category,
             newComment = newComment ?: expense.comment,
-            newDate = newDate ?: expense.date
+            newDate = newDate?.time ?: expense.date.time
         )
     }
 
