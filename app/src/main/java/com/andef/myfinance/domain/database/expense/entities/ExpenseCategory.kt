@@ -1,4 +1,4 @@
-package com.andef.myfinance.domain.expense
+package com.andef.myfinance.domain.database.expense.entities
 
 import com.andef.myfinance.R
 

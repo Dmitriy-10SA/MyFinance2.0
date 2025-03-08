@@ -1,4 +1,4 @@
-package com.andef.myfinance.domain.income
+package com.andef.myfinance.domain.database.income.entities
 
 import com.andef.myfinance.R
 
