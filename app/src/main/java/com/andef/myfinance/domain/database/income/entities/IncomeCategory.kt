@@ -10,23 +10,23 @@ enum class IncomeCategory(
     val nameResId: Int
 ) {
     SALARY(
-        iconResId = R.string.salary,
-        nameResId = R.drawable.salary
+        nameResId = R.string.salary,
+        iconResId = R.drawable.salary
     ),
     BANK(
-        iconResId = R.string.bank,
-        nameResId = R.drawable.bank
+        nameResId = R.string.bank,
+        iconResId = R.drawable.bank
     ),
     LUCK(
-        iconResId = R.string.luck,
-        nameResId = R.drawable.luck
+        nameResId = R.string.luck,
+        iconResId = R.drawable.luck
     ),
     GIFTS(
-        iconResId = R.string.gifts,
-        nameResId = R.drawable.gifts
+        nameResId = R.string.gifts,
+        iconResId = R.drawable.gifts
     ),
     OTHER(
-        iconResId = R.string.other,
-        nameResId = R.drawable.other
+        nameResId = R.string.other,
+        iconResId = R.drawable.other
     )
 }

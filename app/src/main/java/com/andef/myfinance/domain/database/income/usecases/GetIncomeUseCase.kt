@@ -10,10 +10,10 @@ class GetIncomeUseCase @Inject constructor(
     private val repository: IncomeRepository
 ) {
     fun execute(date: Date): Flow<List<Income>> {
-        return repository.getIncome(date)
+        return repository.getIncomes(date)
     }
 
     fun execute(startDate: Date, endDate: Date): Flow<List<Income>> {
-        return repository.getIncome(startDate, endDate)
+        return repository.getIncomes(startDate, endDate)
     }
 }

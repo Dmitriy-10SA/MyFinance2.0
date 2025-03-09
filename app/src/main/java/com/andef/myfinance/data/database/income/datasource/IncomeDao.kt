@@ -30,8 +30,14 @@ interface IncomeDao {
     suspend fun removeIncome(id: Int)
 
     @Query("SELECT * FROM income WHERE date = :date")
-    fun getIncome(date: Long): Flow<List<IncomeModel>>
+    fun getIncomes(date: Long): Flow<List<IncomeModel>>
 
     @Query("SELECT * FROM income WHERE date BETWEEN :startDate AND :endDate")
-    fun getIncome(startDate: Long, endDate: Long): Flow<List<IncomeModel>>
+    fun getIncomes(startDate: Long, endDate: Long): Flow<List<IncomeModel>>
+
+    @Query("SELECT SUM(amount) FROM income WHERE date = :date")
+    fun getFullAmount(date: Long): Flow<Double>
+
+    @Query("SELECT SUM(amount) FROM income WHERE date BETWEEN :startDate AND :endDate")
+    fun getFullAmount(startDate: Long, endDate: Long): Flow<Double>
 }

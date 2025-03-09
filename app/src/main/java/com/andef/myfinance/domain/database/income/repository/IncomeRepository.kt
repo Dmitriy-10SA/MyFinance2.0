@@ -16,6 +16,8 @@ interface IncomeRepository {
     )
 
     suspend fun removeIncome(id: Int)
-    fun getIncome(date: Date): Flow<List<Income>>
-    fun getIncome(startDate: Date, endDate: Date): Flow<List<Income>>
+    fun getIncomes(date: Date): Flow<List<Income>>
+    fun getIncomes(startDate: Date, endDate: Date): Flow<List<Income>>
+    fun getFullAmount(date: Date): Flow<Double>
+    fun getFullAmount(startDate: Date, endDate: Date): Flow<Double>
 }

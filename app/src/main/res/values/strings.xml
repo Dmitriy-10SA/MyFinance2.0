@@ -23,4 +23,9 @@
     <string name="aud">Австралийский доллар</string>
     <string name="btc">Биткоин</string>
     <string name="eth">Эфириум</string>
+    <string name="rub_sing">₽</string>
+    <string name="today">Сегодня</string>
+    <string name="Total">Итого:</string>
+    <string name="add_income">Добавить доход</string>
+    <string name="add_expense">Добавить расход</string>
 </resources>

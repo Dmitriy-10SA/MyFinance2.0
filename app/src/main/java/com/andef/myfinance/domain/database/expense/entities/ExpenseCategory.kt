@@ -10,43 +10,43 @@ enum class ExpenseCategory(
     val nameResId: Int
 ) {
     PRODUCTS(
-        iconResId = R.string.products,
-        nameResId = R.drawable.products
+        nameResId = R.string.products,
+        iconResId = R.drawable.products
     ),
     CAFE(
-        iconResId = R.string.cafe,
-        nameResId = R.drawable.cafe
+        nameResId = R.string.cafe,
+        iconResId = R.drawable.cafe
     ),
     HOME(
-        iconResId = R.string.home,
-        nameResId = R.drawable.home
+        nameResId = R.string.home,
+        iconResId = R.drawable.home
     ),
     GIFTS(
-        iconResId = R.string.gifts,
-        nameResId = R.drawable.gifts
+        nameResId = R.string.gifts,
+        iconResId = R.drawable.gifts
     ),
     STUDY(
-        iconResId = R.string.study,
-        nameResId = R.drawable.study
+        nameResId = R.string.study,
+        iconResId = R.drawable.study
     ),
     HEALTH(
-        iconResId = R.string.health,
-        nameResId = R.drawable.health
+        nameResId = R.string.health,
+        iconResId = R.drawable.health
     ),
     TRANSPORT(
-        iconResId = R.string.transport,
-        nameResId = R.drawable.transport
+        nameResId = R.string.transport,
+        iconResId = R.drawable.transport
     ),
     SPORT(
-        iconResId = R.string.sport,
-        nameResId = R.drawable.sport
+        nameResId = R.string.sport,
+        iconResId = R.drawable.sport
     ),
     CLOTHES(
-        iconResId = R.string.clothes,
-        nameResId = R.drawable.clothes
+        nameResId = R.string.clothes,
+        iconResId = R.drawable.clothes
     ),
     OTHER(
-        iconResId = R.string.other,
-        nameResId = R.drawable.other
+        nameResId = R.string.other,
+        iconResId = R.drawable.other
     )
 }
