@@ -1,6 +1,5 @@
 package com.andef.myfinance.presentation.screens.income
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,7 +17,6 @@ import com.andef.myfinance.presentation.rows.TopRowWithDateAndTotal
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun IncomesCheckScreen(
     incomes: List<Income>,

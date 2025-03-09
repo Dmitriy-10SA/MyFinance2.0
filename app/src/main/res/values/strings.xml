@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyFinance</string>
+    <string name="app_name">Мои финансы</string>
     <string name="salary">Зарплата</string>
     <string name="bank">Банк</string>
     <string name="luck">Удача</string>
@@ -31,4 +31,10 @@
     <string name="incomes">Доходы</string>
     <string name="expenses">Траты</string>
     <string name="totals">Итоги</string>
+    <string name="additional_opportunities">Дополнительные возможности</string>
+    <string name="day">День</string>
+    <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
+    <string name="year">Год</string>
+    <string name="period">Период</string>
 </resources>
