@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.cards
+package com.andef.myfinance.presentation.cards.expense
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -19,14 +19,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andef.myfinance.domain.database.income.entities.Income
-import com.andef.myfinance.domain.database.income.entities.IncomeCategory
+import com.andef.myfinance.domain.database.expense.entities.Expense
+import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.presentation.formatter.AmountFormatter
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 
 @Composable
-fun IncomeCard(income: Income, onIncomeCardClickListener: (Income) -> Unit) {
+fun ExpenseCard(expense: Expense, onExpenseCardClickListener: (Expense) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,7 +39,7 @@ fun IncomeCard(income: Income, onIncomeCardClickListener: (Income) -> Unit) {
         elevation = CardDefaults.cardElevation(8.dp),
         border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onBackground),
         onClick = {
-            onIncomeCardClickListener(income)
+            onExpenseCardClickListener(expense)
         }
     ) {
         Row(
@@ -48,14 +48,14 @@ fun IncomeCard(income: Income, onIncomeCardClickListener: (Income) -> Unit) {
             horizontalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(income.category.iconResId),
-                contentDescription = stringResource(income.category.nameResId)
+                painter = painterResource(expense.category.iconResId),
+                contentDescription = stringResource(expense.category.nameResId)
             )
             Spacer(modifier = Modifier.padding(6.dp))
-            Text(text = stringResource(income.category.nameResId))
+            Text(text = stringResource(expense.category.nameResId))
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = AmountFormatter.format(income.amount),
+                text = AmountFormatter.format(expense.amount),
                 modifier = Modifier.padding(start = 6.dp)
             )
         }
@@ -64,13 +64,13 @@ fun IncomeCard(income: Income, onIncomeCardClickListener: (Income) -> Unit) {
 
 @Preview
 @Composable
-private fun DarkIncomeCardTest() {
+private fun DarkExpenseCardTest() {
     MyFinanceTheme(darkTheme = true) {
-        IncomeCard(
-            Income(
+        ExpenseCard(
+            Expense(
                 id = 1,
                 amount = 10000.0,
-                category = IncomeCategory.SALARY,
+                category = ExpenseCategory.PRODUCTS,
                 comment = "",
                 date = Date()
             ),
@@ -81,13 +81,13 @@ private fun DarkIncomeCardTest() {
 
 @Preview
 @Composable
-private fun LightIncomeCardTest() {
+private fun LightExpenseCardTest() {
     MyFinanceTheme(darkTheme = false) {
-        IncomeCard(
-            Income(
+        ExpenseCard(
+            Expense(
                 id = 1,
                 amount = 10000.0,
-                category = IncomeCategory.SALARY,
+                category = ExpenseCategory.PRODUCTS,
                 comment = "",
                 date = Date()
             ),

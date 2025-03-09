@@ -28,4 +28,7 @@
     <string name="Total">Итого:</string>
     <string name="add_income">Добавить доход</string>
     <string name="add_expense">Добавить расход</string>
+    <string name="incomes">Доходы</string>
+    <string name="expenses">Траты</string>
+    <string name="totals">Итоги</string>
 </resources>
