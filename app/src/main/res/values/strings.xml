@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">MyFinance</string>
+    <string name="salary">Зарплата</string>
+    <string name="bank">Банк</string>
+    <string name="luck">Удача</string>
+    <string name="gifts">Подарки</string>
+    <string name="other">Другое</string>
+    <string name="products">Продукты</string>
+    <string name="cafe">Кафе</string>
+    <string name="home">Дом</string>
+    <string name="study">Учеба</string>
+    <string name="health">Здоровье</string>
+    <string name="transport">Транспорт</string>
+    <string name="sport">Спорт</string>
+    <string name="clothes">Одежда</string>
+    <string name="usd">Доллар США</string>
+    <string name="eur">Евро</string>
+    <string name="cny">Китайский юань</string>
+    <string name="jpy">Японская йена</string>
+    <string name="chf">Швейцарский франк</string>
+    <string name="cad">Канадский доллар</string>
+    <string name="gbp">Британский фунт</string>
+    <string name="aud">Австралийский доллар</string>
+    <string name="btc">Биткоин</string>
+    <string name="eth">Эфириум</string>
+    <string name="rub_sing">₽</string>
+    <string name="today">Сегодня</string>
+    <string name="Total">Итого:</string>
+    <string name="add_income">Добавить доход</string>
+    <string name="add_expense">Добавить расход</string>
+    <string name="incomes">Доходы</string>
+    <string name="expenses">Траты</string>
+    <string name="totals">Итоги</string>
 </resources>
