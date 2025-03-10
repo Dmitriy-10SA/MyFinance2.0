@@ -16,6 +16,6 @@ interface ExpenseRepository {
     )
 
     suspend fun removeExpense(id: Int)
-    fun getExpense(date: Date): Flow<List<Expense>>
-    fun getExpense(startDate: Date, endDate: Date): Flow<List<Expense>>
+    fun getExpenses(startDate: Date, endDate: Date): Flow<List<Expense>>
+    fun getFullAmount(startDate: Date, endDate: Date): Flow<Double>
 }

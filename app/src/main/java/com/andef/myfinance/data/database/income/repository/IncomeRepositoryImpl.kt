@@ -40,20 +40,10 @@ class IncomeRepositoryImpl @Inject constructor(
         dao.removeIncome(id)
     }
 
-    override fun getIncomes(date: Date): Flow<List<Income>> {
-        return dao.getIncomes(date.time).map {
-            incomeModelListToIncomeListMapper.map(it)
-        }
-    }
-
     override fun getIncomes(startDate: Date, endDate: Date): Flow<List<Income>> {
         return dao.getIncomes(startDate.time, endDate.time).map {
             incomeModelListToIncomeListMapper.map(it)
         }
-    }
-
-    override fun getFullAmount(date: Date): Flow<Double> {
-        return dao.getFullAmount(date.time)
     }
 
     override fun getFullAmount(startDate: Date, endDate: Date): Flow<Double> {

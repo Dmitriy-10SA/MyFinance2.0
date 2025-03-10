@@ -40,15 +40,13 @@ class ExpenseRepositoryImpl @Inject constructor(
         dao.removeExpense(id)
     }
 
-    override fun getExpense(date: Date): Flow<List<Expense>> {
-        return dao.getExpense(date.time).map {
+    override fun getExpenses(startDate: Date, endDate: Date): Flow<List<Expense>> {
+        return dao.getExpense(startDate.time, endDate.time).map {
             expenseModelListToExpenseListMapper.map(it)
         }
     }
 
-    override fun getExpense(startDate: Date, endDate: Date): Flow<List<Expense>> {
-        return dao.getExpense(startDate.time, endDate.time).map {
-            expenseModelListToExpenseListMapper.map(it)
-        }
+    override fun getFullAmount(startDate: Date, endDate: Date): Flow<Double> {
+        return dao.getFullAmount(startDate.time, endDate.time)
     }
 }
