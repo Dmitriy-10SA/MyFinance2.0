@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.screens.main.top
+package com.andef.myfinance.presentation.ui.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

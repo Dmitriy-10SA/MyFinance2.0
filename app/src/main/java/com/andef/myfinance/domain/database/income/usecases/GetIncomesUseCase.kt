@@ -6,13 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 import javax.inject.Inject
 
-class GetIncomeUseCase @Inject constructor(
+class GetIncomesUseCase @Inject constructor(
     private val repository: IncomeRepository
 ) {
-    fun execute(date: Date): Flow<List<Income>> {
-        return repository.getIncomes(date)
-    }
-
     fun execute(startDate: Date, endDate: Date): Flow<List<Income>> {
         return repository.getIncomes(startDate, endDate)
     }

@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.screens.expense
+package com.andef.myfinance.presentation.ui.expense
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -11,9 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
-import com.andef.myfinance.presentation.cards.expense.ExpenseCard
-import com.andef.myfinance.presentation.fabs.FABForCheckScreen
-import com.andef.myfinance.presentation.rows.TopRowWithDateAndTotal
+import com.andef.myfinance.presentation.ui.fabs.FABForCheckScreen
+import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 

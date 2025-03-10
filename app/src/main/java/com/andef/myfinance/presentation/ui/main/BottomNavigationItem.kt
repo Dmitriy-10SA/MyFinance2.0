@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.screens.main.bottom
+package com.andef.myfinance.presentation.ui.main
 
 import com.andef.myfinance.R
 import com.andef.myfinance.navigation.main.MainScreenRoutes

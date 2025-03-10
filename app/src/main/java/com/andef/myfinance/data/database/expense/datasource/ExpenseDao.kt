@@ -34,4 +34,7 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM expense WHERE date BETWEEN :startDate AND :endDate")
     fun getExpense(startDate: Long, endDate: Long): Flow<List<ExpenseModel>>
+
+    @Query("SELECT SUM(amount) FROM expense WHERE date BETWEEN :startDate AND :endDate")
+    fun getFullAmount(startDate: Long, endDate: Long): Flow<Double>
 }

@@ -3,8 +3,9 @@ package com.andef.myfinance.data.database.income.mapper
 import com.andef.myfinance.data.database.income.model.IncomeModel
 import com.andef.myfinance.domain.database.income.entities.Income
 import java.util.Date
+import javax.inject.Inject
 
-class IncomeModelListToIncomeListMapper {
+class IncomeModelListToIncomeListMapper @Inject constructor() {
     private fun map(incomeModel: IncomeModel): Income {
         return Income(
             id = incomeModel.id,

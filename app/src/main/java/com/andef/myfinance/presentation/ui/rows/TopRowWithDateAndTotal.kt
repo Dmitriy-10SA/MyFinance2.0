@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.rows
+package com.andef.myfinance.presentation.ui.rows
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement

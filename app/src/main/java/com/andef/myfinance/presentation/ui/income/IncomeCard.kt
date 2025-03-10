@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.cards.income
+package com.andef.myfinance.presentation.ui.income
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

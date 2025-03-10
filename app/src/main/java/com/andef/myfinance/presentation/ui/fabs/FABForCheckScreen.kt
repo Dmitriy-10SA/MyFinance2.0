@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.fabs
+package com.andef.myfinance.presentation.ui.fabs
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.CircleShape

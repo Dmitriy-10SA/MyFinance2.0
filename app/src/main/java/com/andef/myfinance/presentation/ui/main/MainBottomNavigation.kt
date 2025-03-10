@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.screens.main.bottom
+package com.andef.myfinance.presentation.ui.main
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme

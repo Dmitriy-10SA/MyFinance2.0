@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.rows
+package com.andef.myfinance.presentation.ui.rows
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

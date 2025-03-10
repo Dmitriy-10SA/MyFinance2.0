@@ -3,8 +3,9 @@ package com.andef.myfinance.data.database.expense.mapper
 import com.andef.myfinance.data.database.expense.model.ExpenseModel
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import java.util.Date
+import javax.inject.Inject
 
-class ExpenseModelListToExpenseListMapper {
+class ExpenseModelListToExpenseListMapper @Inject constructor() {
     private fun map(expenseModel: ExpenseModel): Expense {
         return Expense(
             id = expenseModel.id,
