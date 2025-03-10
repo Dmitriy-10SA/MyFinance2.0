@@ -15,7 +15,8 @@ import dagger.Component
         ExpenseRepositoryModule::class,
         IncomeRepositoryModule::class,
         ExpenseDaoModule::class,
-        IncomeDaoModule::class
+        IncomeDaoModule::class,
+        ViewModelModule::class
     ]
 )
 interface MyFinanceComponent {

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.domain.database.income.usecases.GetFullAmountUseCase
 import com.andef.myfinance.domain.database.income.usecases.GetIncomesUseCase
 import com.andef.myfinance.presentation.ui.income.IncomesState
