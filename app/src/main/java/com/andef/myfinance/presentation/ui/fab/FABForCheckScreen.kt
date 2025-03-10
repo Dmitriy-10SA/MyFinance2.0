@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.ui.fabs
+package com.andef.myfinance.presentation.ui.fab
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.CircleShape
@@ -9,6 +9,7 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.andef.myfinance.R
@@ -17,9 +18,9 @@ import com.andef.myfinance.R
 fun FABForCheckScreen(onFABClickListener: () -> Unit) {
     FloatingActionButton(
         containerColor = if (isSystemInDarkTheme()) {
-            Color(0xFF1565C0)
+            colorResource(R.color.my_blue)
         } else {
-            Color(0xFFE65100)
+            colorResource(R.color.my_orange)
         },
         shape = CircleShape,
         elevation = FloatingActionButtonDefaults.elevation(8.dp),

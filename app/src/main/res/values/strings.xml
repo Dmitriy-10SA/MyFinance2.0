@@ -37,4 +37,5 @@
     <string name="month">Месяц</string>
     <string name="year">Год</string>
     <string name="period">Период</string>
+    <string name="save">Сохранить</string>
 </resources>

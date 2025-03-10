@@ -1,95 +1,77 @@
 package com.andef.myfinance.presentation.ui.expense
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.domain.database.expense.entities.Expense
-import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
-import com.andef.myfinance.presentation.ui.fabs.FABForCheckScreen
+import com.andef.myfinance.presentation.ui.fab.FABForCheckScreen
+import com.andef.myfinance.presentation.ui.load.LoadScreen
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
-import com.andef.myfinance.ui.theme.MyFinanceTheme
+import com.andef.myfinance.presentation.viewmodel.expense.ExpensesCheckViewModel
+import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import java.util.Date
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ExpensesCheckScreen(
-    expenses: List<Expense>,
+    viewModelFactory: ViewModelFactory,
     startDate: Date,
     endDate: Date,
-    fullAmount: Double,
     paddingValues: PaddingValues,
     onExpenseClickListener: (Expense) -> Unit,
     onFABClickListener: () -> Unit
 ) {
+    val viewModel: ExpensesCheckViewModel = viewModel(factory = viewModelFactory)
+    LaunchedEffect(startDate, endDate) {
+        viewModel.setDates(startDate, endDate)
+    }
+    val expensesState = viewModel.state.observeAsState(ExpensesState.Initial)
+    val amount = remember { mutableDoubleStateOf(0.0) }
+
     Scaffold(
+        modifier = Modifier.padding(paddingValues),
         floatingActionButton = {
             FABForCheckScreen {
                 onFABClickListener()
             }
         }
     ) {
-        LazyColumn(
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            item {
-                TopRowWithDateAndTotal(startDate, endDate, fullAmount)
+        when (val currentState = expensesState.value) {
+            is ExpensesState.Amount -> {
+                amount.doubleValue = currentState.amount
             }
-            items(items = expenses, key = { it.id }) { expense ->
-                ExpenseCard(expense) {
-                    onExpenseClickListener(expense)
+
+            ExpensesState.Error -> {
+
+            }
+
+            is ExpensesState.Expenses -> {
+                LazyColumn {
+                    items(items = currentState.expenses, key = { it.id }) { expense ->
+                        ExpenseCard(expense, onExpenseClickListener)
+                    }
                 }
             }
+
+            ExpensesState.Initial -> {
+                LoadScreen()
+            }
+
+            ExpensesState.Loading -> {
+                LoadScreen()
+            }
         }
+
+        TopRowWithDateAndTotal(startDate, endDate, amount.doubleValue)
     }
 }
-
-@Preview
-@Composable
-private fun DarkExpensesCheckScreenTest() {
-    MyFinanceTheme(darkTheme = true) {
-        ExpensesCheckScreen(
-            TEST_LIST,
-            Date(1710000000000),
-            Date(),
-            100.0,
-            PaddingValues(8.dp),
-            {},
-            {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun LightExpensesCheckScreenTest() {
-    MyFinanceTheme(darkTheme = false) {
-        ExpensesCheckScreen(
-            TEST_LIST,
-            Date(),
-            Date(),
-            1000.0,
-            PaddingValues(8.dp),
-            {},
-            {}
-        )
-    }
-}
-
-private val TEST_LIST = listOf(
-    Expense(1, 10000.0, ExpenseCategory.PRODUCTS, "", Date()),
-    Expense(2, 10000.0, ExpenseCategory.CAFE, "", Date()),
-    Expense(3, 10000.0, ExpenseCategory.GIFTS, "", Date()),
-    Expense(4, 10000.0, ExpenseCategory.OTHER, "", Date()),
-    Expense(5, 10000.0, ExpenseCategory.HEALTH, "", Date()),
-    Expense(6, 10000.0, ExpenseCategory.SPORT, "", Date()),
-    Expense(7, 10000.0, ExpenseCategory.STUDY, "", Date()),
-    Expense(8, 10000.0, ExpenseCategory.CLOTHES, "", Date()),
-    Expense(9, 10000.0, ExpenseCategory.TRANSPORT, "", Date()),
-    Expense(10, 10000.0, ExpenseCategory.PRODUCTS, "", Date()),
-    Expense(11, 10000.0, ExpenseCategory.CAFE, "", Date())
-)

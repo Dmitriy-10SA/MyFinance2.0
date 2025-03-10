@@ -30,11 +30,11 @@ import com.andef.myfinance.R
 fun MainTopBar(
     state: MutableState<TopNavigationItem>,
     onMenuClickListener: () -> Unit,
-    onTapItemClickListener: (TopNavigationItem) -> Unit
+    onPeriodItemClickListener: () -> Unit
 ) {
     Column {
         TopOfMainTopBar(onMenuClickListener)
-        LowOfMainTopBar(state, onTapItemClickListener)
+        LowOfMainTopBar(state, onPeriodItemClickListener)
     }
 }
 
@@ -72,7 +72,7 @@ private fun TopOfMainTopBar(onMenuClickListener: () -> Unit) {
 @Composable
 private fun LowOfMainTopBar(
     state: MutableState<TopNavigationItem>,
-    onTapItemClickListener: (TopNavigationItem) -> Unit
+    onPeriodItemClickListener: () -> Unit
 ) {
     val items = listOf(
         TopNavigationItem.Today,
@@ -107,7 +107,9 @@ private fun LowOfMainTopBar(
                 selected = state.value == item,
                 onClick = {
                     state.value = item
-                    onTapItemClickListener(item)
+                    if (item == TopNavigationItem.Period) {
+                        onPeriodItemClickListener()
+                    }
                 },
                 text = {
                     Text(

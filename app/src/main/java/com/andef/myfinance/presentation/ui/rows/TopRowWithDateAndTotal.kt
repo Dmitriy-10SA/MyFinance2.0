@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andef.myfinance.R
 import com.andef.myfinance.presentation.formatter.AmountFormatter
@@ -50,4 +51,10 @@ fun TopRowWithDateAndTotal(startDate: Date, endDate: Date, fullAmount: Double) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun Test() {
+    TopRowWithDateAndTotal(Date(), Date(), 100.00)
 }
