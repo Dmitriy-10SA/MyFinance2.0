@@ -45,6 +45,8 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
+    implementation(libs.charts)
+
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.runtime.livedata)

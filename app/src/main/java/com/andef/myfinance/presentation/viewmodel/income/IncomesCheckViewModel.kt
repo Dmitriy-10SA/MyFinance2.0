@@ -2,9 +2,10 @@ package com.andef.myfinance.presentation.viewmodel.income
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andef.myfinance.domain.database.income.usecases.GetFullAmountUseCase
+import com.andef.myfinance.domain.database.income.usecases.GetFullAmountIncomeUseCase
 import com.andef.myfinance.domain.database.income.usecases.GetIncomesUseCase
 import com.andef.myfinance.domain.database.income.usecases.RemoveIncomeUseCase
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -12,9 +13,11 @@ import javax.inject.Inject
 
 class IncomesCheckViewModel @Inject constructor(
     private val getIncomesUseCase: GetIncomesUseCase,
-    private val getFullAmountUseCase: GetFullAmountUseCase,
+    private val getFullAmountUseCase: GetFullAmountIncomeUseCase,
     private val removeIncomeUseCase: RemoveIncomeUseCase
 ) : ViewModel() {
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
+
     fun getIncomes(
         startDate: Date,
         endDate: Date
@@ -26,7 +29,7 @@ class IncomesCheckViewModel @Inject constructor(
     ) = getFullAmountUseCase.execute(startDate, endDate)
 
     fun removeIncome(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             removeIncomeUseCase.execute(id)
         }
     }

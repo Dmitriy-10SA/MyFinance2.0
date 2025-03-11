@@ -4,9 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
@@ -30,18 +28,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -63,12 +65,41 @@ import com.andef.myfinance.R
 import com.andef.myfinance.domain.database.income.entities.Income
 import com.andef.myfinance.domain.database.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
-import com.andef.myfinance.presentation.ui.main.MainScreenState
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.presentation.viewmodel.income.IncomeViewModel
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBar(onBackHandlerClickListener: () -> Unit) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = stringResource(R.string.app_name),
+                fontSize = 24.sp
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    onBackHandlerClickListener()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+            titleContentColor = MaterialTheme.colorScheme.onBackground
+        )
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,12 +118,12 @@ fun IncomeScreen(
     if (isAddMode) {
         amount = remember { mutableStateOf("") }
         comment = remember { mutableStateOf("") }
-        category = remember { mutableStateOf(IncomeCategory.SALARY as IncomeCategory) }
+        category = remember { mutableStateOf(IncomeCategory.SALARY) }
         dateState = remember { mutableStateOf(Date()) }
     } else {
         amount = remember { mutableStateOf(income!!.amount.toString()) }
         comment = remember { mutableStateOf(income!!.comment) }
-        category = remember { mutableStateOf(income!!.category as IncomeCategory) }
+        category = remember { mutableStateOf(income!!.category) }
         dateState = remember { mutableStateOf(income!!.date) }
     }
 
@@ -112,10 +143,15 @@ fun IncomeScreen(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) { isDatePickerScreen ->
         if (!isDatePickerScreen) {
-            Scaffold(contentWindowInsets = WindowInsets.ime) {
-                LazyColumn(modifier = Modifier.padding(it).padding(top = 16.dp)) {
+            Scaffold(
+                contentWindowInsets = WindowInsets.ime,
+                topBar = {
+                    TopBar(onBackHandlerClickListener)
+                }
+            ) {
+                LazyColumn(modifier = Modifier.padding(it)) {
                     item {
-                        Spacer(modifier = Modifier.padding(16.dp))
+                        Spacer(modifier = Modifier.padding(5.dp))
                         DoubleInputTextForAmount(amount, { number ->
                             number.toDoubleOrNull()?.let {
                                 amount.value = number
@@ -392,7 +428,9 @@ private fun DoubleInputTextForAmount(
         verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             value = amount.value,
             onValueChange = {
                 onValueChanged(it)

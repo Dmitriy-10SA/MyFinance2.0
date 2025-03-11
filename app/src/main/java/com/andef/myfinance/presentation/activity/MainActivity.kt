@@ -1,9 +1,11 @@
 package com.andef.myfinance.presentation.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.andef.myfinance.R
 import com.andef.myfinance.presentation.app.MyFinanceApplication
 import com.andef.myfinance.presentation.ui.main.MainScreen
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
@@ -24,7 +26,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyFinanceTheme(dynamicColor = false) {
-                MainScreen(viewModelFactory)
+                MainScreen(
+                    viewModelFactory = viewModelFactory,
+                    onNetworkError = {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.check_ethernet),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                )
             }
         }
     }

@@ -1,11 +1,12 @@
 package com.andef.myfinance.di
 
-import android.view.View
 import androidx.lifecycle.ViewModel
+import com.andef.myfinance.presentation.viewmodel.currency.CurrencyViewModel
 import com.andef.myfinance.presentation.viewmodel.expense.ExpenseViewModel
 import com.andef.myfinance.presentation.viewmodel.expense.ExpensesCheckViewModel
 import com.andef.myfinance.presentation.viewmodel.income.IncomeViewModel
 import com.andef.myfinance.presentation.viewmodel.income.IncomesCheckViewModel
+import com.andef.myfinance.presentation.viewmodel.total.TotalViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -31,4 +32,14 @@ interface ViewModelModule {
     @ViewModelKey(ExpenseViewModel::class)
     @Binds
     fun bindExpenseViewModel(impl: ExpenseViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(TotalViewModel::class)
+    @Binds
+    fun bindTotalViewModel(impl: TotalViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(CurrencyViewModel::class)
+    @Binds
+    fun bindCurrencyViewModel(impl: CurrencyViewModel): ViewModel
 }

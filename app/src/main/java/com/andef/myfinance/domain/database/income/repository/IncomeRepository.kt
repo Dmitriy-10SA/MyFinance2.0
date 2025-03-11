@@ -3,7 +3,6 @@ package com.andef.myfinance.domain.database.income.repository
 import androidx.lifecycle.LiveData
 import com.andef.myfinance.domain.database.income.entities.Income
 import com.andef.myfinance.domain.database.income.entities.IncomeCategory
-import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 interface IncomeRepository {

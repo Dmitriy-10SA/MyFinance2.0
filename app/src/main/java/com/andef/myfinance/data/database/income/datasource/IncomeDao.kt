@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.andef.myfinance.data.database.income.model.IncomeModel
 import com.andef.myfinance.domain.database.income.entities.IncomeCategory
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface IncomeDao {

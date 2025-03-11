@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.andef.myfinance.data.database.expense.model.ExpenseModel
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseDao {

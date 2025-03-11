@@ -46,4 +46,17 @@
     <string name="sign_remove">Знак удаления</string>
     <string name="date_choose">Выбор даты</string>
     <string name="date_choose_action">Выбрать дату</string>
+    <string name="pieChart">Диаграмма</string>
+    <string name="barChart">Гистограмма</string>
+    <string name="lineChart">График</string>
+    <string name="incomes_with_colon">Доходы:</string>
+    <string name="expense_with_colon">Расходы:</string>
+    <string name="unknown_exception">Неизвестная ошибка!</string>
+    <string name="ruble_icon">Иконка рубля</string>
+    <string name="currency_value">Курс валют</string>
+    <string name="currency">Валюта</string>
+    <string name="back">Назад</string>
+    <string name="theme_choose">Выбор темы</string>
+    <string name="change_theme">Сменить тему</string>
+    <string name="check_ethernet">Проверьте подключение к интернету!</string>
 </resources>
