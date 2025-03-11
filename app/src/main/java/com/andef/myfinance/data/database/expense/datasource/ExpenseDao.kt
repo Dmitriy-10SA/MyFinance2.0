@@ -1,5 +1,6 @@
 package com.andef.myfinance.data.database.expense.datasource
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -30,11 +31,11 @@ interface ExpenseDao {
     suspend fun removeExpense(id: Int)
 
     @Query("SELECT * FROM expense WHERE date = :date")
-    fun getExpense(date: Long): Flow<List<ExpenseModel>>
+    fun getExpense(date: Long): LiveData<List<ExpenseModel>>
 
     @Query("SELECT * FROM expense WHERE date BETWEEN :startDate AND :endDate")
-    fun getExpense(startDate: Long, endDate: Long): Flow<List<ExpenseModel>>
+    fun getExpense(startDate: Long, endDate: Long): LiveData<List<ExpenseModel>>
 
     @Query("SELECT SUM(amount) FROM expense WHERE date BETWEEN :startDate AND :endDate")
-    fun getFullAmount(startDate: Long, endDate: Long): Flow<Double>
+    fun getFullAmount(startDate: Long, endDate: Long): LiveData<Double>
 }

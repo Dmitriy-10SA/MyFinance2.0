@@ -10,7 +10,7 @@ import java.util.Date
 
 @Composable
 fun DateRow(startDate: Date, endDate: Date) {
-    if (startDate != endDate) {
+    if (!isSameDay(startDate, endDate)) {
         Text(
             text = DateFormatter.format(startDate, endDate),
             color = MaterialTheme.colorScheme.onBackground
@@ -28,7 +28,16 @@ fun DateRow(startDate: Date, endDate: Date) {
     }
 }
 
+private fun isSameDay(date1: Date, date2: Date): Boolean {
+    val zone = ZoneId.systemDefault()
+    val localDate1 = date1.toInstant().atZone(zone).toLocalDate()
+    val localDate2 = date2.toInstant().atZone(zone).toLocalDate()
+    return localDate1 == localDate2
+}
+
 private fun isToday(date: Date): Boolean {
-    val localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-    return localDate == LocalDate.now()
+    val systemZone = ZoneId.systemDefault()
+    val localDate = date.toInstant().atZone(systemZone).toLocalDate()
+    val today = LocalDate.now(systemZone)
+    return localDate == today
 }
