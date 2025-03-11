@@ -38,4 +38,7 @@
     <string name="year">Год</string>
     <string name="period">Период</string>
     <string name="save">Сохранить</string>
+    <string name="input_income">Введите доход (₽)</string>
+    <string name="category">Категория:</string>
+    <string name="comment">Комментарий:</string>
 </resources>

@@ -41,9 +41,9 @@ fun IncomesCheckScreen(
     Scaffold(
         modifier = Modifier.padding(paddingValues),
         floatingActionButton = {
-            FABForCheckScreen {
-                onFABClickListener()
-            }
+            FABForCheckScreen(
+                onFABClickListener = onFABClickListener
+            )
         }
     ) {
         when (val currentState = incomesState.value) {

@@ -10,6 +10,7 @@ import com.andef.myfinance.navigation.main.MainAppNavGraph
 import com.andef.myfinance.navigation.main.rememberNavigationState
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
 import com.andef.myfinance.presentation.ui.expense.ExpensesCheckScreen
+import com.andef.myfinance.presentation.ui.income.IncomeScreen
 import com.andef.myfinance.presentation.ui.income.IncomesCheckScreen
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import java.time.LocalDate
@@ -28,7 +29,8 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
     val startDateState = remember { mutableStateOf(Date()) }
     val endDateState = remember { mutableStateOf(Date()) }
 
-    val datePickerVisible = remember { mutableStateOf(false) }
+    val state =
+        remember { mutableStateOf(MainScreenState.AnyScreenWithTopAndBottomNav as MainScreenState) }
 
     LaunchedEffect(topBarState.value) {
         when (topBarState.value) {
@@ -38,8 +40,8 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
             }
 
             TopNavigationItem.Period -> {
-                if (!datePickerVisible.value) {
-                    datePickerVisible.value = true
+                if (state.value != MainScreenState.DatePickerScreen) {
+                    state.value = MainScreenState.DatePickerScreen
                 }
             }
 
@@ -60,53 +62,81 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
         }
     }
 
-    if (datePickerVisible.value) {
-        Scaffold {
-            MyFinanceDatePicker(
-                paddingValues = it,
-                onCloseClickListener = {
-                    datePickerVisible.value = false
+    when (state.value) {
+        MainScreenState.AnyScreenWithTopAndBottomNav -> {
+            Scaffold(
+                bottomBar = {
+                    MainBottomNavigation(navigationState = navigationState)
                 },
-                onSaveClickListener = { start, end ->
-                    endDateState.value = Date(end)
-                    startDateState.value = Date(start)
-                    datePickerVisible.value = false
+                topBar = {
+                    MainTopBar(
+                        state = topBarState,
+                        onMenuClickListener = {
+                            TODO()
+                        },
+                        onPeriodItemClickListener = {
+                            state.value = MainScreenState.DatePickerScreen
+                        }
+                    )
                 }
-            )
-        }
-    } else {
-        Scaffold(
-            bottomBar = {
-                MainBottomNavigation(navigationState)
-            },
-            topBar = {
-                MainTopBar(topBarState, {}, {
-                    datePickerVisible.value = true
-                })
-            }
-        ) { paddingValues ->
-            MainAppNavGraph(
-                navHostController = navigationState.navHostController,
-                incomesScreenContent = {
-                    IncomesCheckScreen(
-                        viewModelFactory = viewModelFactory,
-                        startDate = startDateState.value,
-                        endDate = endDateState.value,
-                        paddingValues = paddingValues,
-                        {}, {}
-                    )
-                },
-                expensesScreenContent = {
-                    ExpensesCheckScreen(
-                        viewModelFactory = viewModelFactory,
-                        startDate = startDateState.value,
-                        endDate = endDateState.value,
-                        paddingValues = paddingValues,
-                        {}, {}
-                    )
-                },
-                totalsScreenContent = {
+            ) { paddingValues ->
+                MainAppNavGraph(
+                    navHostController = navigationState.navHostController,
+                    incomesScreenContent = {
+                        IncomesCheckScreen(
+                            viewModelFactory = viewModelFactory,
+                            startDate = startDateState.value,
+                            endDate = endDateState.value,
+                            paddingValues = paddingValues,
+                            onIncomeClickListener = {
 
+                            },
+                            onFABClickListener = {
+                                state.value = MainScreenState.IncomeScreenForAdd
+                            }
+                        )
+                    },
+                    expensesScreenContent = {
+                        ExpensesCheckScreen(
+                            viewModelFactory = viewModelFactory,
+                            startDate = startDateState.value,
+                            endDate = endDateState.value,
+                            paddingValues = paddingValues,
+                            onExpenseClickListener = {
+                                TODO()
+                            },
+                            onFABClickListener = {
+                                TODO()
+                            }
+                        )
+                    },
+                    totalsScreenContent = {
+                        TODO()
+                    }
+                )
+            }
+        }
+
+        MainScreenState.DatePickerScreen -> {
+            Scaffold {
+                MyFinanceDatePicker(
+                    paddingValues = it,
+                    onCloseClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    },
+                    onSaveClickListener = { start, end ->
+                        endDateState.value = Date(end)
+                        startDateState.value = Date(start)
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
+        }
+
+        MainScreenState.IncomeScreenForAdd -> {
+            IncomeScreen(
+                onBackHandlerClickListener = {
+                    state.value = MainScreenState.AnyScreenWithTopAndBottomNav
                 }
             )
         }
