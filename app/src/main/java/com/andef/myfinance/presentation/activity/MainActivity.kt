@@ -1,12 +1,13 @@
 package com.andef.myfinance.presentation.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.andef.myfinance.R
 import com.andef.myfinance.presentation.app.MyFinanceApplication
 import com.andef.myfinance.presentation.ui.main.MainScreen
-import com.andef.myfinance.presentation.ui.total.TotalScreen
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import javax.inject.Inject
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyFinanceTheme(dynamicColor = false) {
-                MainScreen(viewModelFactory)
+                MainScreen(viewModelFactory = viewModelFactory)
             }
         }
     }
