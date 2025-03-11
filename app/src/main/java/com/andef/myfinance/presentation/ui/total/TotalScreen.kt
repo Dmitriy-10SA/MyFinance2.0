@@ -78,7 +78,7 @@ fun TotalScreen(
                     MyFinanceBarChart(
                         modifier = Modifier
                             .size(getScreenWidth().dp)
-                            .padding(16.dp),
+                            .padding((getScreenWidth() / 6).dp),
                         fullAmountIncome.value ?: 0.0,
                         fullAmountExpense.value ?: 0.0
                     )
