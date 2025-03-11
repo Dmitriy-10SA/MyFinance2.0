@@ -42,7 +42,7 @@
     <string name="category">Категория:</string>
     <string name="comment">Комментарий:</string>
     <string name="input_comment">Введите комментарий</string>
-    <string name="input_expense">Введите расход</string>
+    <string name="input_expense">Введите расход (₽)</string>
     <string name="sign_remove">Знак удаления</string>
     <string name="date_choose">Выбор даты</string>
     <string name="date_choose_action">Выбрать дату</string>
