@@ -17,7 +17,6 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
+import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.presentation.viewmodel.total.TotalViewModel
 import com.github.tehras.charts.bar.BarChart
@@ -58,11 +58,17 @@ fun TotalScreen(
     val selectedItem = remember { mutableStateOf(TotalItem.PieChart as TotalItem) }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(paddingValues),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
+            val expensesAmount = fullAmountExpense.value ?: 0.0
+            val incomesAmount = fullAmountIncome.value ?: 0.0
+            val del = incomesAmount - expensesAmount
+            TopRowWithDateAndTotal(startDate, endDate, del)
             SegmentedButtonsRow(selectedItem)
         }
         item {
@@ -89,7 +95,6 @@ fun TotalScreen(
                 }
             }
         }
-
     }
 }
 
@@ -97,7 +102,11 @@ fun TotalScreen(
 private fun SegmentedButtonsRow(selectedItem: MutableState<TotalItem>) {
     val items = listOf(TotalItem.PieChart, TotalItem.BarChart)
 
-    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+    SingleChoiceSegmentedButtonRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+    ) {
         for ((index, item) in items.withIndex()) {
             SegmentedButton(
                 shape = SegmentedButtonDefaults.itemShape(

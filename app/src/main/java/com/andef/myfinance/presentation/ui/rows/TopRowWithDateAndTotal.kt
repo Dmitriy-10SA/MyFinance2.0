@@ -24,7 +24,7 @@ import java.util.Date
 @Composable
 fun TopRowWithDateAndTotal(startDate: Date, endDate: Date, fullAmount: Double) {
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
         contentAlignment = Alignment.Center
     ) {
         Card(

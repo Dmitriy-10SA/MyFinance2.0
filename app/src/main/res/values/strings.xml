@@ -49,4 +49,6 @@
     <string name="pieChart">Диаграмма</string>
     <string name="barChart">Гистограмма</string>
     <string name="lineChart">График</string>
+    <string name="incomes_with_colon">Доходы:</string>
+    <string name="expense_with_colon">Расходы:</string>
 </resources>
