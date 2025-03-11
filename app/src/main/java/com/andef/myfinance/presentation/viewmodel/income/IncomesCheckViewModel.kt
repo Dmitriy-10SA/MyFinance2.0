@@ -2,7 +2,7 @@ package com.andef.myfinance.presentation.viewmodel.income
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andef.myfinance.domain.database.income.usecases.GetFullAmountUseCase
+import com.andef.myfinance.domain.database.income.usecases.GetFullAmountIncomeUseCase
 import com.andef.myfinance.domain.database.income.usecases.GetIncomesUseCase
 import com.andef.myfinance.domain.database.income.usecases.RemoveIncomeUseCase
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class IncomesCheckViewModel @Inject constructor(
     private val getIncomesUseCase: GetIncomesUseCase,
-    private val getFullAmountUseCase: GetFullAmountUseCase,
+    private val getFullAmountUseCase: GetFullAmountIncomeUseCase,
     private val removeIncomeUseCase: RemoveIncomeUseCase
 ) : ViewModel() {
     fun getIncomes(

@@ -23,6 +23,7 @@ import com.andef.myfinance.presentation.ui.expense.ExpenseScreen
 import com.andef.myfinance.presentation.ui.expense.ExpensesCheckScreen
 import com.andef.myfinance.presentation.ui.income.IncomeScreen
 import com.andef.myfinance.presentation.ui.income.IncomesCheckScreen
+import com.andef.myfinance.presentation.ui.total.TotalScreen
 import com.andef.myfinance.presentation.utils.toDate
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
@@ -142,7 +143,12 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
                             )
                         },
                         totalsScreenContent = {
-                            TODO()
+                            TotalScreen(
+                                viewModelFactory = viewModelFactory,
+                                paddingValues = paddingValues,
+                                startDate = startDateState.value,
+                                endDate = endDateState.value
+                            )
                         }
                     )
                 }

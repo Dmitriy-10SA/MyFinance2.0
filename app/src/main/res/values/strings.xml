@@ -46,4 +46,7 @@
     <string name="sign_remove">Знак удаления</string>
     <string name="date_choose">Выбор даты</string>
     <string name="date_choose_action">Выбрать дату</string>
+    <string name="pieChart">Диаграмма</string>
+    <string name="barChart">Гистограмма</string>
+    <string name="lineChart">График</string>
 </resources>

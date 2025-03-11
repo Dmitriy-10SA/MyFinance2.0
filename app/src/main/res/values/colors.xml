@@ -10,5 +10,9 @@
     <color name="my_blue">#FF1565C0</color>
     <color name="my_blue_with_low_alpha">#451565C0</color>
     <color name="my_orange">#FFE65100</color>
+    <color name="my_green_black">#309435</color>
+    <color name="my_green">#64DD17</color>
+    <color name="my_red_black">#AF0909</color>
+    <color name="my_red">#D50000</color>
     <color name="my_orange_with_low_alpha">#45E65100</color>
 </resources>
