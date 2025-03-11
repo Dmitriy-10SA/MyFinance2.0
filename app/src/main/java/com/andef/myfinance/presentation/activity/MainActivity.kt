@@ -26,7 +26,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyFinanceTheme(dynamicColor = false) {
-                MainScreen(viewModelFactory = viewModelFactory)
+                MainScreen(
+                    viewModelFactory = viewModelFactory,
+                    onNetworkError = {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.check_ethernet),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                )
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.andef.myfinance.data.database.expense.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.map
 import com.andef.myfinance.data.database.expense.datasource.ExpenseDao
 import com.andef.myfinance.data.database.expense.mapper.ExpenseModelListToExpenseListMapper
@@ -10,8 +9,6 @@ import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.database.expense.repository.ExpenseRepository
 import com.andef.myfinance.presentation.utils.toStartOfDay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import java.util.Date
 import javax.inject.Inject
 
@@ -51,6 +48,9 @@ class ExpenseRepositoryImpl @Inject constructor(
     }
 
     override fun getFullAmount(startDate: Date, endDate: Date): LiveData<Double> {
-        return dao.getFullAmount(startDate.toStartOfDay().toStartOfDay().time, endDate.toStartOfDay().toStartOfDay().time)
+        return dao.getFullAmount(
+            startDate.toStartOfDay().toStartOfDay().time,
+            endDate.toStartOfDay().toStartOfDay().time
+        )
     }
 }

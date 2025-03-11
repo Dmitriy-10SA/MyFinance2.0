@@ -14,7 +14,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -29,18 +28,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -70,6 +73,36 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+private fun TopBar(onBackHandlerClickListener: () -> Unit) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = stringResource(R.string.app_name),
+                fontSize = 24.sp
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    onBackHandlerClickListener()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+            titleContentColor = MaterialTheme.colorScheme.onBackground
+        )
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun ExpenseScreen(
     viewModelFactory: ViewModelFactory,
     onBackHandlerClickListener: () -> Unit,
@@ -85,12 +118,12 @@ fun ExpenseScreen(
     if (isAddMode) {
         amount = remember { mutableStateOf("") }
         comment = remember { mutableStateOf("") }
-        category = remember { mutableStateOf(ExpenseCategory.PRODUCTS as ExpenseCategory) }
+        category = remember { mutableStateOf(ExpenseCategory.PRODUCTS) }
         dateState = remember { mutableStateOf(Date()) }
     } else {
         amount = remember { mutableStateOf(expense!!.amount.toString()) }
         comment = remember { mutableStateOf(expense!!.comment) }
-        category = remember { mutableStateOf(expense!!.category as ExpenseCategory) }
+        category = remember { mutableStateOf(expense!!.category) }
         dateState = remember { mutableStateOf(expense!!.date) }
     }
 
@@ -110,12 +143,15 @@ fun ExpenseScreen(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) { isDatePickerScreen ->
         if (!isDatePickerScreen) {
-            Scaffold(contentWindowInsets = WindowInsets.ime) {
-                LazyColumn(modifier = Modifier
-                    .padding(it)
-                    .padding(top = 16.dp)) {
+            Scaffold(
+                contentWindowInsets = WindowInsets.ime,
+                topBar = {
+                    TopBar(onBackHandlerClickListener)
+                }
+            ) {
+                LazyColumn(modifier = Modifier.padding(it)) {
                     item {
-                        Spacer(modifier = Modifier.padding(16.dp))
+                        Spacer(Modifier.padding(5.dp))
                         DoubleInputTextForAmount(amount, { number ->
                             number.toDoubleOrNull()?.let {
                                 amount.value = number

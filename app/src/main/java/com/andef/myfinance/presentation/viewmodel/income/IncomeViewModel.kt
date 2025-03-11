@@ -1,7 +1,5 @@
 package com.andef.myfinance.presentation.viewmodel.income
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andef.myfinance.domain.database.income.entities.Income

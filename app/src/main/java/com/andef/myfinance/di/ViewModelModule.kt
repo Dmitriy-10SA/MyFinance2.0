@@ -1,7 +1,7 @@
 package com.andef.myfinance.di
 
-import android.view.View
 import androidx.lifecycle.ViewModel
+import com.andef.myfinance.presentation.viewmodel.currency.CurrencyViewModel
 import com.andef.myfinance.presentation.viewmodel.expense.ExpenseViewModel
 import com.andef.myfinance.presentation.viewmodel.expense.ExpensesCheckViewModel
 import com.andef.myfinance.presentation.viewmodel.income.IncomeViewModel
@@ -37,4 +37,9 @@ interface ViewModelModule {
     @ViewModelKey(TotalViewModel::class)
     @Binds
     fun bindTotalViewModel(impl: TotalViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(CurrencyViewModel::class)
+    @Binds
+    fun bindCurrencyViewModel(impl: CurrencyViewModel): ViewModel
 }

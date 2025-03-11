@@ -1,5 +1,6 @@
 package com.andef.myfinance.presentation.ui.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
@@ -8,21 +9,39 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.material3.DrawerState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.andef.myfinance.R
 import com.andef.myfinance.navigation.main.MainAppNavGraph
 import com.andef.myfinance.navigation.main.rememberNavigationState
+import com.andef.myfinance.presentation.ui.currency.CurrencyScreen
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.ui.expense.ExpenseScreen
 import com.andef.myfinance.presentation.ui.expense.ExpensesCheckScreen
@@ -32,13 +51,14 @@ import com.andef.myfinance.presentation.ui.total.TotalScreen
 import com.andef.myfinance.presentation.utils.toDate
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Date
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
-fun MainScreen(viewModelFactory: ViewModelFactory) {
+fun MainScreen(viewModelFactory: ViewModelFactory, onNetworkError: () -> Unit) {
     val navigationState = rememberNavigationState()
     val topBarState = remember {
         mutableStateOf(TopNavigationItem.Today as TopNavigationItem)
@@ -89,7 +109,7 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
                 targetState is MainScreenState.ExpenseScreenForChange ||
                 targetState is MainScreenState.IncomeScreenForChange ||
                 targetState is MainScreenState.DatePickerScreen
-                ) {
+            ) {
                 (slideInHorizontally { it } + fadeIn())
                     .togetherWith(slideOutHorizontally { -it } + fadeOut())
             } else {
@@ -101,64 +121,112 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
     ) { screenState ->
         when (screenState) {
             MainScreenState.AnyScreenWithTopAndBottomNav -> {
+                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val coroutineScope = rememberCoroutineScope()
 
-                Scaffold(
-                    bottomBar = {
-                        MainBottomNavigation(navigationState = navigationState)
+                ModalNavigationDrawer(
+                    drawerContent = {
+                        ModalDrawerSheet(
+                            drawerShape = RoundedCornerShape(10.dp),
+                            drawerContainerColor = MaterialTheme.colorScheme.background,
+                            drawerContentColor = MaterialTheme.colorScheme.onBackground,
+                            drawerTonalElevation = 8.dp
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Top,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Spacer(modifier = Modifier.padding(16.dp))
+                                Icon(
+                                    painter = painterResource(R.drawable.icon),
+                                    contentDescription = stringResource(R.string.ruble_icon),
+                                    tint = MaterialTheme.colorScheme.onBackground
+                                )
+                                Spacer(modifier = Modifier.padding(16.dp))
+                                TextButton(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(10.dp),
+                                    onClick = {
+                                        state.value = MainScreenState.CurrencyScreen
+                                    }
+                                ) {
+                                    Text(
+                                        modifier = Modifier.padding(8.dp),
+                                        textDecoration = TextDecoration.Underline,
+                                        text = stringResource(R.string.currency_value),
+                                        fontSize = 24.sp,
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    )
+                                }
+                            }
+                        }
+                        BackHandler {
+                            coroutineScope.launch { drawerState.close() }
+                        }
                     },
-                    topBar = {
-                        MainTopBar(
-                            state = topBarState,
-                            onMenuClickListener = {
-                                TODO()
+                    drawerState = drawerState
+                ) {
+                    Scaffold(
+                        bottomBar = {
+                            MainBottomNavigation(navigationState = navigationState)
+                        },
+                        topBar = {
+                            MainTopBar(
+                                state = topBarState,
+                                onMenuClickListener = {
+                                    coroutineScope.launch {
+                                        drawerState.open()
+                                    }
+                                },
+                                onPeriodItemClickListener = {
+                                    state.value = MainScreenState.DatePickerScreen
+                                }
+                            )
+                        }
+                    ) { paddingValues ->
+                        MainAppNavGraph(
+                            navHostController = navigationState.navHostController,
+                            incomesScreenContent = {
+                                IncomesCheckScreen(
+                                    viewModelFactory = viewModelFactory,
+                                    startDate = startDateState.value.toStartOfDay(),
+                                    endDate = endDateState.value.toStartOfDay(),
+                                    paddingValues = paddingValues,
+                                    onIncomeClickListener = { income ->
+                                        state.value = MainScreenState.IncomeScreenForChange(income)
+                                    },
+                                    onFABClickListener = {
+                                        state.value = MainScreenState.IncomeScreenForAdd
+                                    }
+                                )
                             },
-                            onPeriodItemClickListener = {
-                                state.value = MainScreenState.DatePickerScreen
+                            expensesScreenContent = {
+                                ExpensesCheckScreen(
+                                    viewModelFactory = viewModelFactory,
+                                    startDate = startDateState.value,
+                                    endDate = endDateState.value,
+                                    paddingValues = paddingValues,
+                                    onExpenseClickListener = { expense ->
+                                        state.value =
+                                            MainScreenState.ExpenseScreenForChange(expense)
+                                    },
+                                    onFABClickListener = {
+                                        state.value = MainScreenState.ExpenseScreenForAdd
+                                    }
+                                )
+                            },
+                            totalsScreenContent = {
+                                TotalScreen(
+                                    viewModelFactory = viewModelFactory,
+                                    paddingValues = paddingValues,
+                                    startDate = startDateState.value,
+                                    endDate = endDateState.value
+                                )
                             }
                         )
                     }
-                ) { paddingValues ->
-                    MainAppNavGraph(
-                        navHostController = navigationState.navHostController,
-                        incomesScreenContent = {
-                            IncomesCheckScreen(
-                                viewModelFactory = viewModelFactory,
-                                startDate = startDateState.value.toStartOfDay(),
-                                endDate = endDateState.value.toStartOfDay(),
-                                paddingValues = paddingValues,
-                                onIncomeClickListener = { income ->
-                                    state.value = MainScreenState.IncomeScreenForChange(income)
-                                },
-                                onFABClickListener = {
-                                    state.value = MainScreenState.IncomeScreenForAdd
-                                }
-                            )
-                        },
-                        expensesScreenContent = {
-                            ExpensesCheckScreen(
-                                viewModelFactory = viewModelFactory,
-                                startDate = startDateState.value,
-                                endDate = endDateState.value,
-                                paddingValues = paddingValues,
-                                onExpenseClickListener = { expense ->
-                                    state.value = MainScreenState.ExpenseScreenForChange(expense)
-                                },
-                                onFABClickListener = {
-                                    state.value = MainScreenState.ExpenseScreenForAdd
-                                }
-                            )
-                        },
-                        totalsScreenContent = {
-                            TotalScreen(
-                                viewModelFactory = viewModelFactory,
-                                paddingValues = paddingValues,
-                                startDate = startDateState.value,
-                                endDate = endDateState.value
-                            )
-                        }
-                    )
                 }
-
             }
 
             MainScreenState.DatePickerScreen -> {
@@ -213,6 +281,18 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
                     viewModelFactory = viewModelFactory,
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
+
+            MainScreenState.CurrencyScreen -> {
+                CurrencyScreen(
+                    viewModelFactory = viewModelFactory,
+                    onBackHandlerClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    },
+                    onNetworkError = {
+                        onNetworkError()
                     }
                 )
             }
