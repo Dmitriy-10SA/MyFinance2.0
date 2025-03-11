@@ -7,7 +7,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.andef.myfinance.navigation.main.MainAppNavGraph
 import com.andef.myfinance.navigation.main.rememberNavigationState
-import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
+import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.ui.expense.ExpenseScreen
 import com.andef.myfinance.presentation.ui.expense.ExpensesCheckScreen
 import com.andef.myfinance.presentation.ui.income.IncomeScreen
@@ -148,7 +147,7 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
 
             MainScreenState.DatePickerScreen -> {
                 Scaffold {
-                    MyFinanceDatePicker(
+                    MyFinanceRangeDatePicker(
                         paddingValues = it,
                         onCloseClickListener = {
                             state.value = MainScreenState.AnyScreenWithTopAndBottomNav

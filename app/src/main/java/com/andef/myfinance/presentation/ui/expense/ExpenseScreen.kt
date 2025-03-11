@@ -1,12 +1,19 @@
 package com.andef.myfinance.presentation.ui.expense
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,11 +25,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -48,12 +60,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
+import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.expense.ExpenseViewModel
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpenseScreen(
     viewModelFactory: ViewModelFactory,
@@ -66,128 +80,201 @@ fun ExpenseScreen(
     val amount: MutableState<String>
     val comment: MutableState<String>
     val category: MutableState<ExpenseCategory>
+    val dateState: MutableState<Date>
     if (isAddMode) {
         amount = remember { mutableStateOf("") }
         comment = remember { mutableStateOf("") }
         category = remember { mutableStateOf(ExpenseCategory.PRODUCTS as ExpenseCategory) }
+        dateState = remember { mutableStateOf(Date()) }
     } else {
         amount = remember { mutableStateOf(expense!!.amount.toString()) }
         comment = remember { mutableStateOf(expense!!.comment) }
         category = remember { mutableStateOf(expense!!.category as ExpenseCategory) }
+        dateState = remember { mutableStateOf(expense!!.date) }
     }
 
-    Scaffold(contentWindowInsets = WindowInsets.ime) {
-        LazyColumn(modifier = Modifier.padding(it)) {
-            item {
-                Spacer(modifier = Modifier.padding(10.dp))
-                DoubleInputTextForAmount(amount, { number ->
-                    number.toDoubleOrNull()?.let {
-                        amount.value = number
+    val isDatePickerState = remember { mutableStateOf(false) }
+
+    AnimatedContent(
+        targetState = isDatePickerState.value,
+        transitionSpec = {
+            if (isDatePickerState.value) {
+                (slideInVertically { it } + fadeIn())
+                    .togetherWith(slideOutVertically { -it } + fadeOut())
+            } else {
+                (slideInVertically { -it } + fadeIn())
+                    .togetherWith(slideOutVertically { it } + fadeOut())
+            }
+
+        }
+    ) { isDatePickerScreen ->
+        if (!isDatePickerScreen) {
+            Scaffold(contentWindowInsets = WindowInsets.ime) {
+                LazyColumn(modifier = Modifier
+                    .padding(it)
+                    .padding(top = 16.dp)) {
+                    item {
+                        Spacer(modifier = Modifier.padding(16.dp))
+                        DoubleInputTextForAmount(amount, { number ->
+                            number.toDoubleOrNull()?.let {
+                                amount.value = number
+                            }
+                            if (number.isEmpty()
+                                || number.startsWith("0")
+                                || number.startsWith(".")
+                            ) {
+                                amount.value = ""
+                            }
+                        })
                     }
-                    if (number.isEmpty()
-                        || number.startsWith("0")
-                        || number.startsWith(".")
-                    ) {
-                        amount.value = ""
+                    item {
+                        Spacer(modifier = Modifier.padding(16.dp))
+                        Text(
+                            modifier = Modifier.padding(start = 16.dp),
+                            text = stringResource(R.string.category),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.padding(8.dp))
                     }
-                })
-            }
-            item {
-                Spacer(modifier = Modifier.padding(14.dp))
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    text = stringResource(R.string.category),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.padding(8.dp))
-            }
-            item {
-                CategoryChoose(
-                    category = category,
-                    onCardClickListener = { incomeCategory ->
-                        category.value = incomeCategory
+                    item {
+                        CategoryChoose(
+                            category = category,
+                            onCardClickListener = { incomeCategory ->
+                                category.value = incomeCategory
+                            }
+                        )
                     }
-                )
-            }
-            item {
-                Spacer(modifier = Modifier.padding(14.dp))
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    text = stringResource(R.string.comment),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.padding(8.dp))
-            }
-            item {
-                TextInputTextForAmount(
-                    comment = comment,
-                    onValueChanged = { text ->
-                        comment.value = text
+                    item {
+                        Spacer(modifier = Modifier.padding(14.dp))
+                        Text(
+                            modifier = Modifier.padding(start = 16.dp),
+                            text = stringResource(R.string.comment),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.padding(8.dp))
                     }
-                )
-            }
-            item {
-                Spacer(modifier = Modifier.padding(10.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Button(
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .padding(8.dp),
-                        enabled = isFullInfoForAddOrChange(amount),
-                        onClick = {
-                            if (isAddMode) {
-                                viewModel.addExpense(
-                                    Expense(
-                                        amount = amount.value.toDouble(),
-                                        category = category.value,
-                                        comment = comment.value,
-                                        date = Date().toStartOfDay()
+                    item {
+                        TextInputTextForAmount(
+                            comment = comment,
+                            onValueChanged = { text ->
+                                comment.value = text
+                            }
+                        )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.padding(10.dp))
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Button(
+                                onClick = {
+                                    isDatePickerState.value = true
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.background,
+                                    contentColor = MaterialTheme.colorScheme.onBackground
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                elevation = ButtonDefaults.buttonElevation(8.dp),
+                                border = BorderStroke(2.dp, MaterialTheme.colorScheme.onBackground)
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(8.dp),
+                                    horizontalArrangement = Arrangement.Center,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.DateRange,
+                                        contentDescription = stringResource(R.string.date_choose),
+                                    )
+                                    Spacer(modifier = Modifier.padding(6.dp))
+                                    Text(
+                                        text = stringResource(R.string.date_choose_action),
+                                        fontSize = 20.sp
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.padding(10.dp))
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Button(
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .padding(8.dp),
+                                enabled = isFullInfoForAddOrChange(amount),
+                                onClick = {
+                                    if (isAddMode) {
+                                        viewModel.addExpense(
+                                            Expense(
+                                                amount = amount.value.toDouble(),
+                                                category = category.value,
+                                                comment = comment.value,
+                                                date = dateState.value.toStartOfDay()
+                                            )
+                                        )
+                                    } else {
+                                        viewModel.changeExpense(
+                                            expense = expense!!,
+                                            newAmount = amount.value.toDouble(),
+                                            newCategory = category.value,
+                                            newComment = comment.value,
+                                            newDate = dateState.value.toStartOfDay()
+                                        )
+                                    }
+                                    onBackHandlerClickListener()
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = if (isSystemInDarkTheme()) {
+                                        colorResource(R.color.my_blue)
+                                    } else {
+                                        colorResource(R.color.my_orange)
+                                    },
+                                    contentColor = Color.White,
+                                    disabledContainerColor = if (isSystemInDarkTheme()) {
+                                        colorResource(R.color.my_blue_with_low_alpha)
+                                    } else {
+                                        colorResource(R.color.my_orange_with_low_alpha)
+                                    },
+                                    disabledContentColor = MaterialTheme.colorScheme.onBackground
+                                )
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.save),
+                                    fontSize = 24.sp,
+                                    color = Color.White,
+                                    modifier = Modifier.padding(
+                                        top = 6.dp,
+                                        bottom = 6.dp,
+                                        start = 14.dp,
+                                        end = 14.dp
                                     )
                                 )
-                            } else {
-                                viewModel.changeExpense(
-                                    expense = expense!!,
-                                    newAmount = amount.value.toDouble(),
-                                    newCategory = category.value,
-                                    newComment = comment.value,
-                                    newDate = Date().toStartOfDay()
-                                )
                             }
-                            onBackHandlerClickListener()
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (isSystemInDarkTheme()) {
-                                colorResource(R.color.my_blue)
-                            } else {
-                                colorResource(R.color.my_orange)
-                            },
-                            contentColor = Color.White,
-                            disabledContainerColor = if (isSystemInDarkTheme()) {
-                                colorResource(R.color.my_blue_with_low_alpha)
-                            } else {
-                                colorResource(R.color.my_orange_with_low_alpha)
-                            },
-                            disabledContentColor = MaterialTheme.colorScheme.onBackground
-                        )
-                    ) {
-                        Text(
-                            text = stringResource(R.string.save),
-                            fontSize = 24.sp,
-                            color = Color.White,
-                            modifier = Modifier.padding(
-                                top = 6.dp,
-                                bottom = 6.dp,
-                                start = 14.dp,
-                                end = 14.dp
-                            )
-                        )
+                        }
                     }
                 }
+            }
+        } else {
+            Scaffold {
+                MyFinanceDatePicker(
+                    paddingValues = it,
+                    onCloseClickListener = {
+                        isDatePickerState.value = false
+                    },
+                    onSaveClickListener = { date ->
+                        dateState.value = Date(date)
+                        isDatePickerState.value = false
+                    }
+                )
             }
         }
     }
@@ -311,7 +398,9 @@ private fun DoubleInputTextForAmount(
         verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             value = amount.value,
             onValueChange = {
                 onValueChanged(it)

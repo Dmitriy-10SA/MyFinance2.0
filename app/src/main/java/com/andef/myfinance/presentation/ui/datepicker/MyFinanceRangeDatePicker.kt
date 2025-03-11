@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.DateRangePicker
@@ -24,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -39,13 +37,13 @@ import com.andef.myfinance.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyFinanceDatePicker(
+fun MyFinanceRangeDatePicker(
     paddingValues: PaddingValues,
     onCloseClickListener: () -> Unit,
-    onSaveClickListener: (Long) -> Unit,
+    onSaveClickListener: (Long, Long) -> Unit,
     dateFormatter: DatePickerFormatter = remember { DatePickerDefaults.dateFormatter() }
 ) {
-    val state = rememberDatePickerState()
+    val state = rememberDateRangePickerState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +71,10 @@ fun MyFinanceDatePicker(
             }
             TextButton(
                 onClick = {
-                    onSaveClickListener(state.selectedDateMillis!!)
+                    onSaveClickListener(
+                        state.selectedStartDateMillis!!,
+                        state.selectedEndDateMillis!!
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isSystemInDarkTheme()) {
@@ -89,7 +90,7 @@ fun MyFinanceDatePicker(
                     contentColor = Color.White,
                     disabledContentColor = Color.White
                 ),
-                enabled = state.selectedDateMillis != null
+                enabled = state.selectedEndDateMillis != null
             ) {
                 Text(
                     modifier = Modifier.padding(start = 5.dp, end = 5.dp),
@@ -98,7 +99,7 @@ fun MyFinanceDatePicker(
                 )
             }
         }
-        DatePicker(
+        DateRangePicker(
             state = state,
             modifier = Modifier.weight(1f),
             dateFormatter = dateFormatter,
