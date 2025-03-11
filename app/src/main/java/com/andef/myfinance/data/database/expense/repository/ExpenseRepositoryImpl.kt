@@ -1,11 +1,15 @@
 package com.andef.myfinance.data.database.expense.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.map
 import com.andef.myfinance.data.database.expense.datasource.ExpenseDao
 import com.andef.myfinance.data.database.expense.mapper.ExpenseModelListToExpenseListMapper
 import com.andef.myfinance.data.database.expense.mapper.ExpenseToExpenseModelMapper
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.database.expense.repository.ExpenseRepository
+import com.andef.myfinance.presentation.utils.toStartOfDay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Date
@@ -32,7 +36,7 @@ class ExpenseRepositoryImpl @Inject constructor(
             newAmount = newAmount ?: expense.amount,
             newCategory = newCategory ?: expense.category,
             newComment = newComment ?: expense.comment,
-            newDate = newDate?.time ?: expense.date.time
+            newDate = newDate?.toStartOfDay()?.time ?: expense.date.toStartOfDay().time
         )
     }
 
@@ -40,13 +44,13 @@ class ExpenseRepositoryImpl @Inject constructor(
         dao.removeExpense(id)
     }
 
-    override fun getExpenses(startDate: Date, endDate: Date): Flow<List<Expense>> {
-        return dao.getExpense(startDate.time, endDate.time).map {
+    override fun getExpenses(startDate: Date, endDate: Date): LiveData<List<Expense>> {
+        return dao.getExpense(startDate.toStartOfDay().time, endDate.toStartOfDay().time).map {
             expenseModelListToExpenseListMapper.map(it)
         }
     }
 
-    override fun getFullAmount(startDate: Date, endDate: Date): Flow<Double> {
-        return dao.getFullAmount(startDate.time, endDate.time)
+    override fun getFullAmount(startDate: Date, endDate: Date): LiveData<Double> {
+        return dao.getFullAmount(startDate.toStartOfDay().toStartOfDay().time, endDate.toStartOfDay().toStartOfDay().time)
     }
 }

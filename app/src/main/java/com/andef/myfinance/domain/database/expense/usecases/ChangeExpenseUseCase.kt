@@ -9,7 +9,7 @@ import javax.inject.Inject
 class ChangeExpenseUseCase @Inject constructor(
     private val repository: ExpenseRepository
 ) {
-    suspend fun changeExpense(
+    suspend fun execute(
         expense: Expense,
         newAmount: Double? = null,
         newCategory: ExpenseCategory? = null,

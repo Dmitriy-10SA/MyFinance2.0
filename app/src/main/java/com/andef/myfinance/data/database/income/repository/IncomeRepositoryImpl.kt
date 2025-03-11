@@ -1,11 +1,14 @@
 package com.andef.myfinance.data.database.income.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.andef.myfinance.data.database.income.datasource.IncomeDao
 import com.andef.myfinance.data.database.income.mapper.IncomeModelListToIncomeListMapper
 import com.andef.myfinance.data.database.income.mapper.IncomeToIncomeModelMapper
 import com.andef.myfinance.domain.database.income.entities.Income
 import com.andef.myfinance.domain.database.income.entities.IncomeCategory
 import com.andef.myfinance.domain.database.income.repository.IncomeRepository
+import com.andef.myfinance.presentation.utils.toStartOfDay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Date
@@ -32,7 +35,7 @@ class IncomeRepositoryImpl @Inject constructor(
             newAmount = newAmount ?: income.amount,
             newCategory = newCategory ?: income.category,
             newComment = newComment ?: income.comment,
-            newDate = newDate?.time ?: income.date.time
+            newDate = newDate?.toStartOfDay()?.time ?: income.date.toStartOfDay().time
         )
     }
 
@@ -40,13 +43,13 @@ class IncomeRepositoryImpl @Inject constructor(
         dao.removeIncome(id)
     }
 
-    override fun getIncomes(startDate: Date, endDate: Date): Flow<List<Income>> {
-        return dao.getIncomes(startDate.time, endDate.time).map {
+    override fun getIncomes(startDate: Date, endDate: Date): LiveData<List<Income>> {
+        return dao.getIncomes(startDate.toStartOfDay().time, endDate.toStartOfDay().time).map {
             incomeModelListToIncomeListMapper.map(it)
         }
     }
 
-    override fun getFullAmount(startDate: Date, endDate: Date): Flow<Double> {
-        return dao.getFullAmount(startDate.time, endDate.time)
+    override fun getFullAmount(startDate: Date, endDate: Date): LiveData<Double> {
+        return dao.getFullAmount(startDate.toStartOfDay().time, endDate.toStartOfDay().time)
     }
 }

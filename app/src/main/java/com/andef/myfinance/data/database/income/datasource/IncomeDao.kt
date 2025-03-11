@@ -1,5 +1,6 @@
 package com.andef.myfinance.data.database.income.datasource
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -30,14 +31,14 @@ interface IncomeDao {
     suspend fun removeIncome(id: Int)
 
     @Query("SELECT * FROM income WHERE date = :date")
-    fun getIncomes(date: Long): Flow<List<IncomeModel>>
+    fun getIncomes(date: Long): LiveData<List<IncomeModel>>
 
     @Query("SELECT * FROM income WHERE date BETWEEN :startDate AND :endDate")
-    fun getIncomes(startDate: Long, endDate: Long): Flow<List<IncomeModel>>
+    fun getIncomes(startDate: Long, endDate: Long): LiveData<List<IncomeModel>>
 
     @Query("SELECT SUM(amount) FROM income WHERE date = :date")
-    fun getFullAmount(date: Long): Flow<Double>
+    fun getFullAmount(date: Long): LiveData<Double>
 
     @Query("SELECT SUM(amount) FROM income WHERE date BETWEEN :startDate AND :endDate")
-    fun getFullAmount(startDate: Long, endDate: Long): Flow<Double>
+    fun getFullAmount(startDate: Long, endDate: Long): LiveData<Double>
 }

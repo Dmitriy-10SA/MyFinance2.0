@@ -1,5 +1,6 @@
 package com.andef.myfinance.domain.database.income.repository
 
+import androidx.lifecycle.LiveData
 import com.andef.myfinance.domain.database.income.entities.Income
 import com.andef.myfinance.domain.database.income.entities.IncomeCategory
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,6 @@ interface IncomeRepository {
     )
 
     suspend fun removeIncome(id: Int)
-    fun getIncomes(startDate: Date, endDate: Date): Flow<List<Income>>
-    fun getFullAmount(startDate: Date, endDate: Date): Flow<Double>
+    fun getIncomes(startDate: Date, endDate: Date): LiveData<List<Income>>
+    fun getFullAmount(startDate: Date, endDate: Date): LiveData<Double>
 }

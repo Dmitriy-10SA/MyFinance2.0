@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.ui.income
+package com.andef.myfinance.presentation.ui.expense
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
@@ -46,34 +46,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.database.income.entities.Income
-import com.andef.myfinance.domain.database.income.entities.IncomeCategory
+import com.andef.myfinance.domain.database.expense.entities.Expense
+import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.presentation.utils.toStartOfDay
+import com.andef.myfinance.presentation.viewmodel.expense.ExpenseViewModel
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
-import com.andef.myfinance.presentation.viewmodel.income.IncomeViewModel
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 
 @Composable
-fun IncomeScreen(
+fun ExpenseScreen(
     viewModelFactory: ViewModelFactory,
     onBackHandlerClickListener: () -> Unit,
     isAddMode: Boolean = true,
-    income: Income? = null
+    expense: Expense? = null
 ) {
-    val viewModel: IncomeViewModel = viewModel(factory = viewModelFactory)
+    val viewModel: ExpenseViewModel = viewModel(factory = viewModelFactory)
 
     val amount: MutableState<String>
     val comment: MutableState<String>
-    val category: MutableState<IncomeCategory>
+    val category: MutableState<ExpenseCategory>
     if (isAddMode) {
         amount = remember { mutableStateOf("") }
         comment = remember { mutableStateOf("") }
-        category = remember { mutableStateOf(IncomeCategory.SALARY as IncomeCategory) }
+        category = remember { mutableStateOf(ExpenseCategory.PRODUCTS as ExpenseCategory) }
     } else {
-        amount = remember { mutableStateOf(income!!.amount.toString()) }
-        comment = remember { mutableStateOf(income!!.comment) }
-        category = remember { mutableStateOf(income!!.category as IncomeCategory) }
+        amount = remember { mutableStateOf(expense!!.amount.toString()) }
+        comment = remember { mutableStateOf(expense!!.comment) }
+        category = remember { mutableStateOf(expense!!.category as ExpenseCategory) }
     }
 
     Scaffold(contentWindowInsets = WindowInsets.ime) {
@@ -141,8 +141,8 @@ fun IncomeScreen(
                         enabled = isFullInfoForAddOrChange(amount),
                         onClick = {
                             if (isAddMode) {
-                                viewModel.addIncome(
-                                    Income(
+                                viewModel.addExpense(
+                                    Expense(
                                         amount = amount.value.toDouble(),
                                         category = category.value,
                                         comment = comment.value,
@@ -150,8 +150,8 @@ fun IncomeScreen(
                                     )
                                 )
                             } else {
-                                viewModel.changeIncome(
-                                    income = income!!,
+                                viewModel.changeExpense(
+                                    expense = expense!!,
                                     newAmount = amount.value.toDouble(),
                                     newCategory = category.value,
                                     newComment = comment.value,
@@ -202,30 +202,39 @@ private fun isFullInfoForAddOrChange(amount: MutableState<String>): Boolean {
 
 @Composable
 private fun CategoryChoose(
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit
+    category: MutableState<ExpenseCategory>,
+    onCardClickListener: (ExpenseCategory) -> Unit
 ) {
     val items = listOf(
-        IncomeCategory.SALARY,
-        IncomeCategory.BANK,
-        IncomeCategory.LUCK,
-        IncomeCategory.GIFTS,
-        IncomeCategory.OTHER
+        ExpenseCategory.PRODUCTS,
+        ExpenseCategory.CAFE,
+        ExpenseCategory.HOME,
+        ExpenseCategory.GIFTS,
+        ExpenseCategory.STUDY,
+        ExpenseCategory.HEALTH,
+        ExpenseCategory.TRANSPORT,
+        ExpenseCategory.SPORT,
+        ExpenseCategory.CLOTHES,
+        ExpenseCategory.OTHER
     )
     Column {
-        IncomesCategoryCardsRow(items, 0, 3, category, onCardClickListener)
+        ExpenseCategoryCardsRow(items, 0, 3, category, onCardClickListener)
         Spacer(modifier = Modifier.padding(4.dp))
-        IncomesCategoryCardsRow(items, 3, 5, category, onCardClickListener)
+        ExpenseCategoryCardsRow(items, 3, 6, category, onCardClickListener)
+        Spacer(modifier = Modifier.padding(4.dp))
+        ExpenseCategoryCardsRow(items, 6, 9, category, onCardClickListener)
+        Spacer(modifier = Modifier.padding(4.dp))
+        ExpenseCategoryCardsRow(items, 9, 10, category, onCardClickListener)
     }
 }
 
 @Composable
-private fun IncomesCategoryCardsRow(
-    items: List<IncomeCategory>,
+private fun ExpenseCategoryCardsRow(
+    items: List<ExpenseCategory>,
     startI: Int,
     endI: Int,
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit
+    category: MutableState<ExpenseCategory>,
+    onCardClickListener: (ExpenseCategory) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -233,17 +242,17 @@ private fun IncomesCategoryCardsRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in startI until endI) {
-            IncomeCategoryCard(items, i, category, onCardClickListener)
+            ExpenseCategoryCard(items, i, category, onCardClickListener)
         }
     }
 }
 
 @Composable
-private fun IncomeCategoryCard(
-    items: List<IncomeCategory>,
+private fun ExpenseCategoryCard(
+    items: List<ExpenseCategory>,
     i: Int,
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit
+    category: MutableState<ExpenseCategory>,
+    onCardClickListener: (ExpenseCategory) -> Unit
 ) {
     Card(
         modifier = Modifier.padding(8.dp),
@@ -310,7 +319,7 @@ private fun DoubleInputTextForAmount(
             textStyle = androidx.compose.ui.text.TextStyle(fontSize = 20.sp),
             label = {
                 Text(
-                    text = stringResource(R.string.input_income),
+                    text = stringResource(R.string.input_expense),
                     fontSize = 20.sp
                 )
             },
@@ -404,7 +413,7 @@ private fun TextInputTextForAmount(
 @Composable
 private fun DarkTest() {
     MyFinanceTheme(darkTheme = true) {
-        IncomeScreen(ViewModelFactory(mapOf()), {})
+        ExpenseScreen(ViewModelFactory(mapOf()), {})
     }
 }
 
@@ -412,6 +421,6 @@ private fun DarkTest() {
 @Composable
 private fun LightTest() {
     MyFinanceTheme(darkTheme = false) {
-        IncomeScreen(ViewModelFactory(mapOf()), {})
+        ExpenseScreen(ViewModelFactory(mapOf()), {})
     }
 }
