@@ -9,6 +9,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -105,8 +106,8 @@ fun ExpenseScreen(
                 (slideInVertically { -it } + fadeIn())
                     .togetherWith(slideOutVertically { it } + fadeOut())
             }
-
-        }
+        },
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) { isDatePickerScreen ->
         if (!isDatePickerScreen) {
             Scaffold(contentWindowInsets = WindowInsets.ime) {
@@ -273,7 +274,8 @@ fun ExpenseScreen(
                     onSaveClickListener = { date ->
                         dateState.value = Date(date)
                         isDatePickerState.value = false
-                    }
+                    },
+                    date = dateState.value.toStartOfDay(1).time
                 )
             }
         }

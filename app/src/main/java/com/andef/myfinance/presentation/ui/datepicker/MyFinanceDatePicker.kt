@@ -43,9 +43,10 @@ fun MyFinanceDatePicker(
     paddingValues: PaddingValues,
     onCloseClickListener: () -> Unit,
     onSaveClickListener: (Long) -> Unit,
+    date: Long,
     dateFormatter: DatePickerFormatter = remember { DatePickerDefaults.dateFormatter() }
 ) {
-    val state = rememberDatePickerState()
+    val state = rememberDatePickerState(initialSelectedDateMillis = date)
     Column(
         modifier = Modifier
             .fillMaxSize()
