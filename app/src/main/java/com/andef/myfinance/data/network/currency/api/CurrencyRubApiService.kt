@@ -1,6 +1,5 @@
 package com.andef.myfinance.data.network.currency.api
 
-import com.andef.myfinance.data.network.currency.api.CurrencyRubApiService.Companion.HKD
 import com.andef.myfinance.data.network.currency.dto.aud.AudRubDto
 import com.andef.myfinance.data.network.currency.dto.btc.BtcRubDto
 import com.andef.myfinance.data.network.currency.dto.cad.CadRubDto
