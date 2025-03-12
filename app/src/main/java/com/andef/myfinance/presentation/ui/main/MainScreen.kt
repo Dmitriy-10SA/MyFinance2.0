@@ -271,14 +271,18 @@ private fun AnyScreenWithTopAndBottomNavContent(
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     }
-                    Row(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier.fillMaxSize().padding(16.dp),
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
                         Text(
                             text = stringResource(R.string.dark_theme),
                             fontSize = 24.sp,
                             color = MaterialTheme.colorScheme.onBackground,
-                            textDecoration = TextDecoration.Underline,
                             modifier = Modifier.padding(8.dp)
                         )
+                        Spacer(modifier = Modifier.padding(5.dp))
                         Switch(
                             checked = isDarkTheme,
                             colors = SwitchDefaults.colors(

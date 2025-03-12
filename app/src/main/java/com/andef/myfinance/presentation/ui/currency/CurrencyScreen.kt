@@ -47,10 +47,6 @@ fun CurrencyScreen(
         }
     ) {
         when (val currentState = state.value) {
-            is CurrencyState.Currency -> {
-                CurrencyListScreen(currentState.currency, it)
-            }
-
             CurrencyState.Initial -> {
                 LoadScreen(it)
             }
@@ -61,6 +57,22 @@ fun CurrencyScreen(
 
             CurrencyState.Error -> {
                 onNetworkError()
+            }
+
+            is CurrencyState.CurrencyFirstPart -> {
+                CurrencyListScreen(currentState.currency, it)
+            }
+
+            is CurrencyState.CurrencySecondPart -> {
+                CurrencyListScreen(currentState.currency, it)
+            }
+
+            is CurrencyState.CurrencyThirdPart -> {
+                CurrencyListScreen(currentState.currency, it)
+            }
+
+            is CurrencyState.CurrencyFourthPart -> {
+                CurrencyListScreen(currentState.currency, it, true)
             }
         }
     }
@@ -100,7 +112,11 @@ private fun TopBar(onBackHandlerClickListener: () -> Unit) {
 }
 
 @Composable
-private fun CurrencyListScreen(currency: List<CurrencyRub>, paddingValues: PaddingValues) {
+private fun CurrencyListScreen(
+    currency: List<CurrencyRub>,
+    paddingValues: PaddingValues,
+    isAll: Boolean = false
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -108,6 +124,11 @@ private fun CurrencyListScreen(currency: List<CurrencyRub>, paddingValues: Paddi
     ) {
         items(items = currency, key = { it.iconResId }) { currency ->
             CurrencyCard(currency)
+        }
+        if (!isAll) {
+            item {
+                LoadScreen(paddingValues)
+            }
         }
     }
 }
