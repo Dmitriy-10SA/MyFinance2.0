@@ -59,4 +59,6 @@
     <string name="theme_choose">Выбор темы</string>
     <string name="change_theme">Сменить тему</string>
     <string name="check_ethernet">Проверьте подключение к интернету!</string>
+    <string name="dark_theme">Темная тема</string>
+    <string name="theme_switch">Переключение темы</string>
 </resources>

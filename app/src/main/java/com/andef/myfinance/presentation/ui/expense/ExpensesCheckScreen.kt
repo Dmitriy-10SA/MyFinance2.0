@@ -43,6 +43,7 @@ fun ExpensesCheckScreen(
     viewModelFactory: ViewModelFactory,
     startDate: Date,
     endDate: Date,
+    isDarkTheme: Boolean,
     paddingValues: PaddingValues,
     onExpenseClickListener: (Expense) -> Unit,
     onFABClickListener: () -> Unit
@@ -55,7 +56,8 @@ fun ExpensesCheckScreen(
         modifier = Modifier.padding(paddingValues),
         floatingActionButton = {
             FABForCheckScreen(
-                onFABClickListener = onFABClickListener
+                onFABClickListener = onFABClickListener,
+                isDarkTheme = isDarkTheme
             )
         }
     ) {

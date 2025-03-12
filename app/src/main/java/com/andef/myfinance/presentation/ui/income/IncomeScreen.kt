@@ -10,7 +10,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,7 +56,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -68,7 +66,6 @@ import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.presentation.viewmodel.income.IncomeViewModel
-import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,6 +104,7 @@ fun IncomeScreen(
     viewModelFactory: ViewModelFactory,
     onBackHandlerClickListener: () -> Unit,
     isAddMode: Boolean = true,
+    isDarkTheme: Boolean,
     income: Income? = null
 ) {
     val viewModel: IncomeViewModel = viewModel(factory = viewModelFactory)
@@ -179,7 +177,8 @@ fun IncomeScreen(
                             category = category,
                             onCardClickListener = { incomeCategory ->
                                 category.value = incomeCategory
-                            }
+                            },
+                            isDarkTheme = isDarkTheme
                         )
                     }
                     item {
@@ -270,13 +269,13 @@ fun IncomeScreen(
                                     onBackHandlerClickListener()
                                 },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (isSystemInDarkTheme()) {
+                                    containerColor = if (isDarkTheme) {
                                         colorResource(R.color.my_blue)
                                     } else {
                                         colorResource(R.color.my_orange)
                                     },
                                     contentColor = Color.White,
-                                    disabledContainerColor = if (isSystemInDarkTheme()) {
+                                    disabledContainerColor = if (isDarkTheme) {
                                         colorResource(R.color.my_blue_with_low_alpha)
                                     } else {
                                         colorResource(R.color.my_orange_with_low_alpha)
@@ -312,7 +311,8 @@ fun IncomeScreen(
                         dateState.value = Date(date)
                         isDatePickerState.value = false
                     },
-                    date = dateState.value.toStartOfDay(1).time
+                    date = dateState.value.toStartOfDay(1).time,
+                    isDarkTheme = isDarkTheme
                 )
             }
         }
@@ -329,7 +329,8 @@ private fun isFullInfoForAddOrChange(amount: MutableState<String>): Boolean {
 @Composable
 private fun CategoryChoose(
     category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit
+    onCardClickListener: (IncomeCategory) -> Unit,
+    isDarkTheme: Boolean
 ) {
     val items = listOf(
         IncomeCategory.SALARY,
@@ -339,9 +340,9 @@ private fun CategoryChoose(
         IncomeCategory.OTHER
     )
     Column {
-        IncomesCategoryCardsRow(items, 0, 3, category, onCardClickListener)
+        IncomesCategoryCardsRow(items, 0, 3, isDarkTheme, category, onCardClickListener)
         Spacer(modifier = Modifier.padding(4.dp))
-        IncomesCategoryCardsRow(items, 3, 5, category, onCardClickListener)
+        IncomesCategoryCardsRow(items, 3, 5, isDarkTheme, category, onCardClickListener)
     }
 }
 
@@ -350,6 +351,7 @@ private fun IncomesCategoryCardsRow(
     items: List<IncomeCategory>,
     startI: Int,
     endI: Int,
+    isDarkTheme: Boolean,
     category: MutableState<IncomeCategory>,
     onCardClickListener: (IncomeCategory) -> Unit
 ) {
@@ -359,7 +361,7 @@ private fun IncomesCategoryCardsRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in startI until endI) {
-            IncomeCategoryCard(items, i, category, onCardClickListener)
+            IncomeCategoryCard(items, i, isDarkTheme, category, onCardClickListener)
         }
     }
 }
@@ -368,6 +370,7 @@ private fun IncomesCategoryCardsRow(
 private fun IncomeCategoryCard(
     items: List<IncomeCategory>,
     i: Int,
+    isDarkTheme: Boolean,
     category: MutableState<IncomeCategory>,
     onCardClickListener: (IncomeCategory) -> Unit
 ) {
@@ -378,7 +381,7 @@ private fun IncomeCategoryCard(
         },
         colors = CardDefaults.cardColors(
             containerColor = if (category.value == items[i]) {
-                if (isSystemInDarkTheme()) {
+                if (isDarkTheme) {
                     colorResource(R.color.my_blue)
                 } else {
                     colorResource(R.color.my_orange)
@@ -525,21 +528,5 @@ private fun TextInputTextForAmount(
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground
             )
         )
-    }
-}
-
-@Preview
-@Composable
-private fun DarkTest() {
-    MyFinanceTheme(darkTheme = true) {
-        IncomeScreen(ViewModelFactory(mapOf()), {})
-    }
-}
-
-@Preview
-@Composable
-private fun LightTest() {
-    MyFinanceTheme(darkTheme = false) {
-        IncomeScreen(ViewModelFactory(mapOf()), {})
     }
 }
