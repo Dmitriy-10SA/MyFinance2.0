@@ -215,7 +215,8 @@ fun MainScreen(
                     },
                     onNetworkError = {
                         onNetworkError()
-                    }
+                    },
+                    isDarkTheme = isDarkTheme
                 )
             }
         }
@@ -272,7 +273,9 @@ private fun AnyScreenWithTopAndBottomNavContent(
                         )
                     }
                     Row(
-                        modifier = Modifier.fillMaxSize().padding(16.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
                         verticalAlignment = Alignment.Bottom,
                         horizontalArrangement = Arrangement.Center
                     ) {

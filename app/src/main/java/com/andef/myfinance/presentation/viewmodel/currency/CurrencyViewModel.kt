@@ -23,6 +23,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Date
 import javax.inject.Inject
 
 class CurrencyViewModel @Inject constructor(
@@ -46,41 +47,89 @@ class CurrencyViewModel @Inject constructor(
         _state.value = CurrencyState.Error
     }
 
-    init {
+    private fun calcPercent(now: Double, before: Double) = ((now - before) / before) * 100
+
+    fun loadCurrency(date: Date) {
         viewModelScope.launch(exceptionHandler) {
             _state.value = CurrencyState.Loading
-            val allCurrency = mutableListOf<CurrencyRub>()
-            val bestCurrency: List<CurrencyRub> = withContext(Dispatchers.IO) {
-                val usdRub = async { getUsdRubUseCase.execute() }
-                val eurRub = async { getEurRubUseCase.execute() }
-                val cnyRub = async { getCnyRubUseCase.execute() }
-                listOf(usdRub, eurRub, cnyRub).awaitAll()
+            val allCurrency = mutableListOf<Pair<CurrencyRub, Double>>()
+            val bestCurrency = withContext(Dispatchers.IO) {
+                val usdRubNow = async { getUsdRubUseCase.execute() }
+                val usdRubBefore = async { getUsdRubUseCase.execute(date) }
+
+                val eurRubNow = async { getEurRubUseCase.execute() }
+                val eurRubBefore = async { getEurRubUseCase.execute(date) }
+
+                val cnyRubNow = async { getCnyRubUseCase.execute() }
+                val cnyRubBefore = async { getCnyRubUseCase.execute(date) }
+
+                val now = listOf(usdRubNow, eurRubNow, cnyRubNow).awaitAll()
+                val before = listOf(usdRubBefore, eurRubBefore, cnyRubBefore).awaitAll()
+                val outList = mutableListOf<Pair<CurrencyRub, Double>>()
+                for (i in 0..2) {
+                    outList.add(now[i] to calcPercent(now[i].amount, before[i].amount))
+                }
+                outList
             }
             allCurrency.addAll(bestCurrency)
-            _state.value = CurrencyState.CurrencyFirstPart(allCurrency)
-            val secondBestCurrency: List<CurrencyRub> = withContext(Dispatchers.IO) {
-                val jpyRub = async { getJpyRubUseCase.execute() }
-                val gbpRub = async { getGbpRubUseCase.execute() }
-                val btcRub = async { getBtcRubUseCase.execute() }
-                listOf(jpyRub, gbpRub, btcRub).awaitAll()
+            _state.value = CurrencyState.CurrencyFirstPartWithPercent(allCurrency)
+            val secondBestCurrency = withContext(Dispatchers.IO) {
+                val jpyRubNow = async { getJpyRubUseCase.execute() }
+                val jpyRubBefore = async { getJpyRubUseCase.execute(date) }
+
+                val gbpRubNow = async { getGbpRubUseCase.execute() }
+                val gbpRubBefore = async { getGbpRubUseCase.execute(date) }
+
+                val btcRubNow = async { getBtcRubUseCase.execute() }
+                val btcRubBefore = async { getBtcRubUseCase.execute(date) }
+
+                val now = listOf(jpyRubNow, gbpRubNow, btcRubNow).awaitAll()
+                val before = listOf(jpyRubBefore, gbpRubBefore, btcRubBefore).awaitAll()
+                val outList = mutableListOf<Pair<CurrencyRub, Double>>()
+                for (i in 0..2) {
+                    outList.add(now[i] to calcPercent(now[i].amount, before[i].amount))
+                }
+                outList
             }
             allCurrency.addAll(secondBestCurrency)
-            _state.value = CurrencyState.CurrencySecondPart(allCurrency)
-            val thirdBestCurrency: List<CurrencyRub> = withContext(Dispatchers.IO) {
-                val ethRub = async { getEthRubUseCase.execute() }
-                val chfRub = async { getChfRubUseCase.execute() }
-                val audRub = async { getAudRubUseCase.execute() }
-                listOf(ethRub, chfRub, audRub).awaitAll()
+            _state.value = CurrencyState.CurrencySecondPartWithPercent(allCurrency)
+            val thirdBestCurrency = withContext(Dispatchers.IO) {
+                val ethRubNow = async { getEthRubUseCase.execute() }
+                val ethRubBefore = async { getEthRubUseCase.execute(date) }
+
+                val chfRubNow = async { getChfRubUseCase.execute() }
+                val chfRubBefore = async { getChfRubUseCase.execute(date) }
+
+                val audRubNow = async { getAudRubUseCase.execute() }
+                val audRubBefore = async { getAudRubUseCase.execute(date) }
+
+                val now = listOf(ethRubNow, chfRubNow, audRubNow).awaitAll()
+                val before = listOf(ethRubBefore, chfRubBefore, audRubBefore).awaitAll()
+                val outList = mutableListOf<Pair<CurrencyRub, Double>>()
+                for (i in 0..2) {
+                    outList.add(now[i] to calcPercent(now[i].amount, before[i].amount))
+                }
+                outList
             }
             allCurrency.addAll(thirdBestCurrency)
-            _state.value = CurrencyState.CurrencyThirdPart(allCurrency)
-            val otherCurrency: List<CurrencyRub> = withContext(Dispatchers.IO) {
-                val cadRub = async { getCadRubUseCase.execute() }
-                val hkdRub = async { getHkdRubUseCase.execute() }
-                listOf(cadRub, hkdRub).awaitAll()
+            _state.value = CurrencyState.CurrencyThirdPartWithPercent(allCurrency)
+            val otherCurrency = withContext(Dispatchers.IO) {
+                val cadRubNow = async { getCadRubUseCase.execute() }
+                val cadRubBefore = async { getCadRubUseCase.execute(date) }
+
+                val hkdRubNow = async { getHkdRubUseCase.execute() }
+                val hkdRubBefore = async { getHkdRubUseCase.execute(date) }
+
+                val now = listOf(cadRubNow, hkdRubNow).awaitAll()
+                val before = listOf(cadRubBefore, hkdRubBefore).awaitAll()
+                val outList = mutableListOf<Pair<CurrencyRub, Double>>()
+                for (i in 0..1) {
+                    outList.add(now[i] to calcPercent(now[i].amount, before[i].amount))
+                }
+                outList
             }
             allCurrency.addAll(otherCurrency)
-            _state.value = CurrencyState.CurrencyFourthPart(allCurrency)
+            _state.value = CurrencyState.CurrencyFourthPartWithPercent(allCurrency)
         }
     }
 }
