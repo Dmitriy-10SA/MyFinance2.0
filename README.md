@@ -5,6 +5,11 @@
 
 ---
 
+### ***My finances is a convenient personal budget management application that will help you control finances and plan a budget, as well as monitor the exchange rate of popular currencies.***
+### ***Мои финансы — это удобное приложение для управления личным бюджетом, которое поможет проконтролировать финансы и спланировать бюджет, а также проследить за курсом популярных валют.***
+
+---
+
 ## **Stack (стек):**
 - Kotlin
 - Jetpack Compose
