@@ -25,7 +25,9 @@
     <string name="btc">Биткоин</string>
     <string name="eth">Эфириум</string>
     <string name="rub_sing">₽</string>
+    <string name="percent_sing">%</string>
     <string name="today">Сегодня</string>
+    <string name="on_today">За сегодня</string>
     <string name="Total">Итого:</string>
     <string name="add_income">Добавить доход</string>
     <string name="add_expense">Добавить расход</string>
@@ -35,8 +37,11 @@
     <string name="additional_opportunities">Дополнительные возможности</string>
     <string name="day">День</string>
     <string name="week">Неделя</string>
+    <string name="on_week">За неделю</string>
     <string name="month">Месяц</string>
+    <string name="on_month">За месяц</string>
     <string name="year">Год</string>
+    <string name="on_year">За год</string>
     <string name="period">Период</string>
     <string name="save">Сохранить</string>
     <string name="input_income">Введите доход (₽)</string>

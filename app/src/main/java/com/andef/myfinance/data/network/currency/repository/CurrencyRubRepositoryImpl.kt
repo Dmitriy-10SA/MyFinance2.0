@@ -24,6 +24,9 @@ import com.andef.myfinance.domain.network.currency.entities.hkd.HkdRub
 import com.andef.myfinance.domain.network.currency.entities.jpy.JpyRub
 import com.andef.myfinance.domain.network.currency.entities.usd.UsdRub
 import com.andef.myfinance.domain.network.currency.repository.CurrencyRubRepository
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class CurrencyRubRepositoryImpl @Inject constructor(
@@ -82,5 +85,54 @@ class CurrencyRubRepositoryImpl @Inject constructor(
 
     override suspend fun getHkdRub(): HkdRub {
         return hkdRubMapper.map(apiService.getHkdRub())
+    }
+
+    override suspend fun getAudRub(date: Date): AudRub {
+        return audRubMapper.map(apiService.getAudRub(formatDate(date)))
+    }
+
+    override suspend fun getBtcRub(date: Date): BtcRub {
+        return btcRubMapper.map(apiService.getBtcRub(formatDate(date)))
+    }
+
+    override suspend fun getCadRub(date: Date): CadRub {
+        return cadRubMapper.map(apiService.getCadRub(formatDate(date)))
+    }
+
+    override suspend fun getChfRub(date: Date): ChfRub {
+        return chfRubMapper.map(apiService.getChfRub(formatDate(date)))
+    }
+
+    override suspend fun getCnyRub(date: Date): CnyRub {
+        return cnyRubMapper.map(apiService.getCnyRub(formatDate(date)))
+    }
+
+    override suspend fun getEthRub(date: Date): EthRub {
+        return ethRubMapper.map(apiService.getEthRub(formatDate(date)))
+    }
+
+    override suspend fun getEurRub(date: Date): EurRub {
+        return eurRubMapper.map(apiService.getEurRub(formatDate(date)))
+    }
+
+    override suspend fun getGbpRub(date: Date): GbpRub {
+        return gbpRubMapper.map(apiService.getGbpRub(formatDate(date)))
+    }
+
+    override suspend fun getJpyRub(date: Date): JpyRub {
+        return jpyRubMapper.map(apiService.getJpyRub(formatDate(date)))
+    }
+
+    override suspend fun getUsdRub(date: Date): UsdRub {
+        return usdRubMapper.map(apiService.getUsdRub(formatDate(date)))
+    }
+
+    override suspend fun getHkdRub(date: Date): HkdRub {
+        return hkdRubMapper.map(apiService.getHkdRub(formatDate(date)))
+    }
+
+    private fun formatDate(date: Date): String {
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        return outputFormat.format(date)
     }
 }

@@ -5,6 +5,6 @@ import com.andef.myfinance.domain.network.currency.entities.CurrencyRub
 
 class HkdRub(
     amount: Double,
-    iconResId: Int = R.drawable.hkd ,
+    iconResId: Int = R.drawable.hkd,
     nameResId: Int = R.string.hkd
 ) : CurrencyRub(amount, iconResId, nameResId)
