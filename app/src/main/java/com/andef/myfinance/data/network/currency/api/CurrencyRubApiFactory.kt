@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class CurrencyRubApiFactory {
     companion object {
-        private const val BASE_URL = "https://latest.currency-api.pages.dev/v1/currencies/"
+        private const val BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/"
 
         private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

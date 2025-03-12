@@ -2,7 +2,6 @@ package com.andef.myfinance.presentation.ui.datepicker
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,6 +41,7 @@ fun MyFinanceDatePicker(
     onCloseClickListener: () -> Unit,
     onSaveClickListener: (Long) -> Unit,
     date: Long,
+    isDarkTheme: Boolean,
     dateFormatter: DatePickerFormatter = remember { DatePickerDefaults.dateFormatter() }
 ) {
     val state = rememberDatePickerState(initialSelectedDateMillis = date)
@@ -75,12 +75,12 @@ fun MyFinanceDatePicker(
                     onSaveClickListener(state.selectedDateMillis!!)
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSystemInDarkTheme()) {
+                    containerColor = if (isDarkTheme) {
                         colorResource(R.color.my_blue)
                     } else {
                         colorResource(R.color.my_orange)
                     },
-                    disabledContainerColor = if (isSystemInDarkTheme()) {
+                    disabledContainerColor = if (isDarkTheme) {
                         colorResource(R.color.my_blue_with_low_alpha)
                     } else {
                         colorResource(R.color.my_orange_with_low_alpha)
@@ -121,7 +121,7 @@ fun MyFinanceDatePicker(
                 disabledDayContentColor = MaterialTheme.colorScheme.onBackground,
                 selectedDayContentColor = Color.White,
                 disabledSelectedDayContentColor = MaterialTheme.colorScheme.background,
-                selectedDayContainerColor = if (isSystemInDarkTheme()) {
+                selectedDayContainerColor = if (isDarkTheme) {
                     colorResource(R.color.my_blue)
                 } else {
                     colorResource(R.color.my_orange)
@@ -130,7 +130,7 @@ fun MyFinanceDatePicker(
                 todayContentColor = MaterialTheme.colorScheme.onBackground,
                 todayDateBorderColor = MaterialTheme.colorScheme.onBackground,
                 dayInSelectionRangeContentColor = Color.White,
-                dayInSelectionRangeContainerColor = if (isSystemInDarkTheme()) {
+                dayInSelectionRangeContainerColor = if (isDarkTheme) {
                     colorResource(R.color.my_blue)
                 } else {
                     colorResource(R.color.my_orange)

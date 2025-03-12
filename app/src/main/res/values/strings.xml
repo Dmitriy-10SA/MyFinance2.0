@@ -20,6 +20,7 @@
     <string name="chf">Швейцарский франк</string>
     <string name="cad">Канадский доллар</string>
     <string name="gbp">Британский фунт</string>
+    <string name="hkd">Гонконгский доллар</string>
     <string name="aud">Австралийский доллар</string>
     <string name="btc">Биткоин</string>
     <string name="eth">Эфириум</string>
@@ -29,7 +30,7 @@
     <string name="add_income">Добавить доход</string>
     <string name="add_expense">Добавить расход</string>
     <string name="incomes">Доходы</string>
-    <string name="expenses">Траты</string>
+    <string name="expenses">Расходы</string>
     <string name="totals">Итоги</string>
     <string name="additional_opportunities">Дополнительные возможности</string>
     <string name="day">День</string>
@@ -42,7 +43,7 @@
     <string name="category">Категория:</string>
     <string name="comment">Комментарий:</string>
     <string name="input_comment">Введите комментарий</string>
-    <string name="input_expense">Введите расход</string>
+    <string name="input_expense">Введите расход (₽)</string>
     <string name="sign_remove">Знак удаления</string>
     <string name="date_choose">Выбор даты</string>
     <string name="date_choose_action">Выбрать дату</string>
@@ -59,4 +60,6 @@
     <string name="theme_choose">Выбор темы</string>
     <string name="change_theme">Сменить тему</string>
     <string name="check_ethernet">Проверьте подключение к интернету!</string>
+    <string name="dark_theme">Темная тема</string>
+    <string name="theme_switch">Переключение темы</string>
 </resources>

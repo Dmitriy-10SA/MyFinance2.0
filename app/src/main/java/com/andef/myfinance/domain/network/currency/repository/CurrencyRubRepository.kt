@@ -8,6 +8,7 @@ import com.andef.myfinance.domain.network.currency.entities.cny.CnyRub
 import com.andef.myfinance.domain.network.currency.entities.eth.EthRub
 import com.andef.myfinance.domain.network.currency.entities.eur.EurRub
 import com.andef.myfinance.domain.network.currency.entities.gbp.GbpRub
+import com.andef.myfinance.domain.network.currency.entities.hkd.HkdRub
 import com.andef.myfinance.domain.network.currency.entities.jpy.JpyRub
 import com.andef.myfinance.domain.network.currency.entities.usd.UsdRub
 
@@ -22,4 +23,5 @@ interface CurrencyRubRepository {
     suspend fun getGbpRub(): GbpRub
     suspend fun getJpyRub(): JpyRub
     suspend fun getUsdRub(): UsdRub
+    suspend fun getHkdRub(): HkdRub
 }

@@ -1,6 +1,5 @@
 package com.andef.myfinance.presentation.ui.total
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -48,6 +47,7 @@ fun TotalScreen(
     viewModelFactory: ViewModelFactory,
     startDate: Date,
     endDate: Date,
+    isDarkTheme: Boolean,
     paddingValues: PaddingValues
 ) {
     val viewModel: TotalViewModel = viewModel(factory = viewModelFactory)
@@ -78,7 +78,8 @@ fun TotalScreen(
                     MyFinanceBarChart(
                         modifier = Modifier
                             .size(getScreenWidth().dp)
-                            .padding(16.dp),
+                            .padding((getScreenWidth() / 6).dp),
+                        isDarkTheme,
                         fullAmountIncome.value ?: 0.0,
                         fullAmountExpense.value ?: 0.0
                     )
@@ -89,6 +90,7 @@ fun TotalScreen(
                         modifier = Modifier
                             .size(getScreenWidth().dp)
                             .padding(16.dp),
+                        isDarkTheme,
                         fullAmountIncome.value ?: 0.0,
                         fullAmountExpense.value ?: 0.0
                     )
@@ -142,6 +144,7 @@ private fun SegmentedButtonsRow(selectedItem: MutableState<TotalItem>) {
 @Composable
 private fun MyFinanceBarChart(
     modifier: Modifier,
+    isDarkTheme: Boolean,
     fullAmountIncome: Double,
     fullAmountExpense: Double
 ) {
@@ -151,7 +154,7 @@ private fun MyFinanceBarChart(
             bars = listOf(
                 BarChartData.Bar(
                     fullAmountExpense.toFloat(),
-                    if (isSystemInDarkTheme()) {
+                    if (isDarkTheme) {
                         colorResource(R.color.my_red_black)
                     } else {
                         colorResource(R.color.my_red)
@@ -160,7 +163,7 @@ private fun MyFinanceBarChart(
                 ),
                 BarChartData.Bar(
                     fullAmountIncome.toFloat(),
-                    if (isSystemInDarkTheme()) {
+                    if (isDarkTheme) {
                         colorResource(R.color.my_green_black)
                     } else {
                         colorResource(R.color.my_green)
@@ -183,6 +186,7 @@ private fun MyFinanceBarChart(
 @Composable
 private fun MyFinancePieChart(
     modifier: Modifier,
+    isDarkTheme: Boolean,
     fullAmountIncome: Double,
     fullAmountExpense: Double
 ) {
@@ -195,7 +199,7 @@ private fun MyFinancePieChart(
             slices = listOf(
                 PieChartData.Slice(
                     redAmount,
-                    if (isSystemInDarkTheme()) {
+                    if (isDarkTheme) {
                         colorResource(R.color.my_red_black)
                     } else {
                         colorResource(R.color.my_red)
@@ -203,7 +207,7 @@ private fun MyFinancePieChart(
                 ),
                 PieChartData.Slice(
                     greenAmount,
-                    if (isSystemInDarkTheme()) {
+                    if (isDarkTheme) {
                         colorResource(R.color.my_green_black)
                     } else {
                         colorResource(R.color.my_green)

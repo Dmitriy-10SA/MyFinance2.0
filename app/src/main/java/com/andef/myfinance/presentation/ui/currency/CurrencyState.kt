@@ -6,5 +6,8 @@ sealed class CurrencyState {
     data object Initial : CurrencyState()
     data object Loading : CurrencyState()
     data object Error : CurrencyState()
-    data class Currency(val currency: List<CurrencyRub>) : CurrencyState()
+    data class CurrencyFirstPart(val currency: List<CurrencyRub>) : CurrencyState()
+    data class CurrencySecondPart(val currency: List<CurrencyRub>) : CurrencyState()
+    data class CurrencyThirdPart(val currency: List<CurrencyRub>) : CurrencyState()
+    data class CurrencyFourthPart(val currency: List<CurrencyRub>) : CurrencyState()
 }

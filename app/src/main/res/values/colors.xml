@@ -15,4 +15,5 @@
     <color name="my_red_black">#AF0909</color>
     <color name="my_red">#D50000</color>
     <color name="my_orange_with_low_alpha">#45E65100</color>
+    <color name="gray">#4D4949</color>
 </resources>

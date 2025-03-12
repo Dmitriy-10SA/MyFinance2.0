@@ -13,6 +13,7 @@ import com.andef.myfinance.domain.network.currency.usecases.cny.GetCnyRubUseCase
 import com.andef.myfinance.domain.network.currency.usecases.eth.GetEthRubUseCase
 import com.andef.myfinance.domain.network.currency.usecases.eur.GetEurRubUseCase
 import com.andef.myfinance.domain.network.currency.usecases.gbp.GetGbpRubUseCase
+import com.andef.myfinance.domain.network.currency.usecases.hkd.GetHkdRubUseCase
 import com.andef.myfinance.domain.network.currency.usecases.jpy.GetJpyRubUseCase
 import com.andef.myfinance.domain.network.currency.usecases.usd.GetUsdRubUseCase
 import com.andef.myfinance.presentation.ui.currency.CurrencyState
@@ -34,7 +35,8 @@ class CurrencyViewModel @Inject constructor(
     private val getEurRubUseCase: GetEurRubUseCase,
     private val getGbpRubUseCase: GetGbpRubUseCase,
     private val getJpyRubUseCase: GetJpyRubUseCase,
-    private val getUsdRubUseCase: GetUsdRubUseCase
+    private val getUsdRubUseCase: GetUsdRubUseCase,
+    private val getHkdRubUseCase: GetHkdRubUseCase
 ) : ViewModel() {
     private val _state = MutableLiveData<CurrencyState>()
     val state: LiveData<CurrencyState>
@@ -55,22 +57,30 @@ class CurrencyViewModel @Inject constructor(
                 listOf(usdRub, eurRub, cnyRub).awaitAll()
             }
             allCurrency.addAll(bestCurrency)
+            _state.value = CurrencyState.CurrencyFirstPart(allCurrency)
             val secondBestCurrency: List<CurrencyRub> = withContext(Dispatchers.IO) {
                 val jpyRub = async { getJpyRubUseCase.execute() }
                 val gbpRub = async { getGbpRubUseCase.execute() }
-                val chfRub = async { getChfRubUseCase.execute() }
-                listOf(jpyRub, gbpRub, chfRub).awaitAll()
+                val btcRub = async { getBtcRubUseCase.execute() }
+                listOf(jpyRub, gbpRub, btcRub).awaitAll()
             }
             allCurrency.addAll(secondBestCurrency)
-            val otherCurrency: List<CurrencyRub> = withContext(Dispatchers.IO) {
-                val audRub = async { getAudRubUseCase.execute() }
-                val cadRub = async { getCadRubUseCase.execute() }
-                val btcRub = async { getBtcRubUseCase.execute() }
+            _state.value = CurrencyState.CurrencySecondPart(allCurrency)
+            val thirdBestCurrency: List<CurrencyRub> = withContext(Dispatchers.IO) {
                 val ethRub = async { getEthRubUseCase.execute() }
-                listOf(audRub, cadRub, btcRub, ethRub).awaitAll()
+                val chfRub = async { getChfRubUseCase.execute() }
+                val audRub = async { getAudRubUseCase.execute() }
+                listOf(ethRub, chfRub, audRub).awaitAll()
+            }
+            allCurrency.addAll(thirdBestCurrency)
+            _state.value = CurrencyState.CurrencyThirdPart(allCurrency)
+            val otherCurrency: List<CurrencyRub> = withContext(Dispatchers.IO) {
+                val cadRub = async { getCadRubUseCase.execute() }
+                val hkdRub = async { getHkdRubUseCase.execute() }
+                listOf(cadRub, hkdRub).awaitAll()
             }
             allCurrency.addAll(otherCurrency)
-            _state.value = CurrencyState.Currency(allCurrency)
+            _state.value = CurrencyState.CurrencyFourthPart(allCurrency)
         }
     }
 }

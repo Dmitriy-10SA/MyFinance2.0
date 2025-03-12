@@ -3,5 +3,6 @@
 
     <style name="Theme.MyFinance" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="android:windowSplashScreenBackground">@color/gray</item>
     </style>
 </resources>

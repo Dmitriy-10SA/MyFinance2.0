@@ -10,7 +10,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,7 +56,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -68,7 +66,6 @@ import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.expense.ExpenseViewModel
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
-import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,6 +104,7 @@ fun ExpenseScreen(
     viewModelFactory: ViewModelFactory,
     onBackHandlerClickListener: () -> Unit,
     isAddMode: Boolean = true,
+    isDarkTheme: Boolean,
     expense: Expense? = null
 ) {
     val viewModel: ExpenseViewModel = viewModel(factory = viewModelFactory)
@@ -179,7 +177,8 @@ fun ExpenseScreen(
                             category = category,
                             onCardClickListener = { incomeCategory ->
                                 category.value = incomeCategory
-                            }
+                            },
+                            isDarkTheme = isDarkTheme
                         )
                     }
                     item {
@@ -270,13 +269,13 @@ fun ExpenseScreen(
                                     onBackHandlerClickListener()
                                 },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (isSystemInDarkTheme()) {
+                                    containerColor = if (isDarkTheme) {
                                         colorResource(R.color.my_blue)
                                     } else {
                                         colorResource(R.color.my_orange)
                                     },
                                     contentColor = Color.White,
-                                    disabledContainerColor = if (isSystemInDarkTheme()) {
+                                    disabledContainerColor = if (isDarkTheme) {
                                         colorResource(R.color.my_blue_with_low_alpha)
                                     } else {
                                         colorResource(R.color.my_orange_with_low_alpha)
@@ -311,6 +310,7 @@ fun ExpenseScreen(
                         dateState.value = Date(date)
                         isDatePickerState.value = false
                     },
+                    isDarkTheme = isDarkTheme,
                     date = dateState.value.toStartOfDay(1).time
                 )
             }
@@ -328,7 +328,8 @@ private fun isFullInfoForAddOrChange(amount: MutableState<String>): Boolean {
 @Composable
 private fun CategoryChoose(
     category: MutableState<ExpenseCategory>,
-    onCardClickListener: (ExpenseCategory) -> Unit
+    onCardClickListener: (ExpenseCategory) -> Unit,
+    isDarkTheme: Boolean
 ) {
     val items = listOf(
         ExpenseCategory.PRODUCTS,
@@ -343,13 +344,13 @@ private fun CategoryChoose(
         ExpenseCategory.OTHER
     )
     Column {
-        ExpenseCategoryCardsRow(items, 0, 3, category, onCardClickListener)
+        ExpenseCategoryCardsRow(items, 0, 3, isDarkTheme, category, onCardClickListener)
         Spacer(modifier = Modifier.padding(4.dp))
-        ExpenseCategoryCardsRow(items, 3, 6, category, onCardClickListener)
+        ExpenseCategoryCardsRow(items, 3, 6, isDarkTheme, category, onCardClickListener)
         Spacer(modifier = Modifier.padding(4.dp))
-        ExpenseCategoryCardsRow(items, 6, 9, category, onCardClickListener)
+        ExpenseCategoryCardsRow(items, 6, 9, isDarkTheme, category, onCardClickListener)
         Spacer(modifier = Modifier.padding(4.dp))
-        ExpenseCategoryCardsRow(items, 9, 10, category, onCardClickListener)
+        ExpenseCategoryCardsRow(items, 9, 10, isDarkTheme, category, onCardClickListener)
     }
 }
 
@@ -358,6 +359,7 @@ private fun ExpenseCategoryCardsRow(
     items: List<ExpenseCategory>,
     startI: Int,
     endI: Int,
+    isDarkTheme: Boolean,
     category: MutableState<ExpenseCategory>,
     onCardClickListener: (ExpenseCategory) -> Unit
 ) {
@@ -367,7 +369,7 @@ private fun ExpenseCategoryCardsRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in startI until endI) {
-            ExpenseCategoryCard(items, i, category, onCardClickListener)
+            ExpenseCategoryCard(items, i, isDarkTheme, category, onCardClickListener)
         }
     }
 }
@@ -376,6 +378,7 @@ private fun ExpenseCategoryCardsRow(
 private fun ExpenseCategoryCard(
     items: List<ExpenseCategory>,
     i: Int,
+    isDarkTheme: Boolean,
     category: MutableState<ExpenseCategory>,
     onCardClickListener: (ExpenseCategory) -> Unit
 ) {
@@ -386,7 +389,7 @@ private fun ExpenseCategoryCard(
         },
         colors = CardDefaults.cardColors(
             containerColor = if (category.value == items[i]) {
-                if (isSystemInDarkTheme()) {
+                if (isDarkTheme) {
                     colorResource(R.color.my_blue)
                 } else {
                     colorResource(R.color.my_orange)
@@ -533,21 +536,5 @@ private fun TextInputTextForAmount(
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground
             )
         )
-    }
-}
-
-@Preview
-@Composable
-private fun DarkTest() {
-    MyFinanceTheme(darkTheme = true) {
-        ExpenseScreen(ViewModelFactory(mapOf()), {})
-    }
-}
-
-@Preview
-@Composable
-private fun LightTest() {
-    MyFinanceTheme(darkTheme = false) {
-        ExpenseScreen(ViewModelFactory(mapOf()), {})
     }
 }

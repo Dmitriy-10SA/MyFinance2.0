@@ -43,6 +43,7 @@ fun IncomesCheckScreen(
     viewModelFactory: ViewModelFactory,
     startDate: Date,
     endDate: Date,
+    isDarkTheme: Boolean,
     paddingValues: PaddingValues,
     onIncomeClickListener: (Income) -> Unit,
     onFABClickListener: () -> Unit
@@ -55,7 +56,8 @@ fun IncomesCheckScreen(
         modifier = Modifier.padding(paddingValues),
         floatingActionButton = {
             FABForCheckScreen(
-                onFABClickListener = onFABClickListener
+                onFABClickListener = onFABClickListener,
+                isDarkTheme = isDarkTheme
             )
         }
     ) {
