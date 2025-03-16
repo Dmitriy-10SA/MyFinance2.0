@@ -259,6 +259,15 @@ fun MainScreen(
                     }
                 )
             }
+
+            is MainScreenState.BankRuNewsScreen -> {
+                WebViewScreen(
+                    url = screenState.url,
+                    onBackClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
         }
     }
 }
@@ -335,6 +344,14 @@ private fun AnyScreenWithTopAndBottomNavContent(
                                 text = stringResource(R.string.mortgage),
                                 onTextButtonClickListener = {
                                     state.value = MainScreenState.BankRuMortgageScreen()
+                                }
+                            )
+                        }
+                        item {
+                            MyTextButton(
+                                text = stringResource(R.string.news),
+                                onTextButtonClickListener = {
+                                    state.value = MainScreenState.BankRuNewsScreen()
                                 }
                             )
                         }
