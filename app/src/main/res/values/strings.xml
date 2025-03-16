@@ -70,4 +70,9 @@
     <string name="dead_smile">Умирающий смайлик</string>
     <string name="search_network">Разыскивается интернет!</string>
     <string name="find_network">Интернет найден!</string>
+    <string name="bank_ru">Банки.ру</string>
+    <string name="deposits">Вклады</string>
+    <string name="credits">Кредиты</string>
+    <string name="microloans">Займы</string>
+    <string name="mortgage">Ипотека</string>
 </resources>

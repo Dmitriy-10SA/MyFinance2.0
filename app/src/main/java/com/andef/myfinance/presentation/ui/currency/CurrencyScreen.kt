@@ -1,13 +1,11 @@
 package com.andef.myfinance.presentation.ui.currency
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,15 +35,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.domain.network.currency.entities.CurrencyRub
+import com.andef.myfinance.presentation.error.NetworkErrorScreen
 import com.andef.myfinance.presentation.utils.toDate
 import com.andef.myfinance.presentation.viewmodel.currency.CurrencyViewModel
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
@@ -101,7 +97,7 @@ fun CurrencyScreen(
             }
 
             CurrencyState.Error -> {
-                ErrorScreen(it)
+                NetworkErrorScreen(it)
             }
 
             is CurrencyState.CurrencyFirstPartWithPercent -> {
@@ -123,30 +119,6 @@ fun CurrencyScreen(
     }
     BackHandler {
         onBackHandlerClickListener()
-    }
-}
-
-@Composable
-private fun ErrorScreen(paddingValues: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-            .padding(start = 12.dp, end = 12.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(R.drawable.network_error),
-            contentDescription = stringResource(R.string.dead_smile),
-        )
-        Spacer(modifier = Modifier.padding(12.dp))
-        Text(
-            text = stringResource(R.string.check_ethernet),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
     }
 }
 
