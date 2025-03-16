@@ -11,6 +11,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,8 +69,8 @@ import java.util.Date
 @Composable
 fun MainScreen(
     viewModelFactory: ViewModelFactory,
-    onNetworkError: () -> Unit,
     isDarkTheme: Boolean,
+    paddingValues: PaddingValues,
     onCheckedChangeClickListener: (Boolean) -> Unit
 ) {
     val navigationState = rememberNavigationState()
@@ -169,12 +170,14 @@ fun MainScreen(
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
                     },
-                    isDarkTheme = isDarkTheme
+                    isDarkTheme = isDarkTheme,
+                    paddingValues = paddingValues
                 )
             }
 
             MainScreenState.ExpenseScreenForAdd -> {
                 ExpenseScreen(
+                    paddingValues = paddingValues,
                     viewModelFactory = viewModelFactory,
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
@@ -185,6 +188,7 @@ fun MainScreen(
 
             is MainScreenState.ExpenseScreenForChange -> {
                 ExpenseScreen(
+                    paddingValues = paddingValues,
                     isAddMode = false,
                     expense = screenState.expense,
                     viewModelFactory = viewModelFactory,
@@ -203,7 +207,8 @@ fun MainScreen(
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
                     },
-                    isDarkTheme = isDarkTheme
+                    isDarkTheme = isDarkTheme,
+                    paddingValues = paddingValues
                 )
             }
 
@@ -212,9 +217,6 @@ fun MainScreen(
                     viewModelFactory = viewModelFactory,
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
-                    },
-                    onNetworkError = {
-                        onNetworkError()
                     },
                     isDarkTheme = isDarkTheme
                 )
