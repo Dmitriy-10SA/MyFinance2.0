@@ -5,6 +5,9 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,14 +32,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.andef.myfinance.R
 import com.andef.myfinance.presentation.app.MyFinanceApplication
 import com.andef.myfinance.presentation.ui.main.MainScreen
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
+import com.andef.myfinance.presentation.web.WebViewScreen
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+//https://www.banki.ru/
 
 class MainActivity : ComponentActivity() {
     @Inject

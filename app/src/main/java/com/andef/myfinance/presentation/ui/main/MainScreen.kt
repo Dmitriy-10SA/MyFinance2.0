@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -60,6 +61,7 @@ import com.andef.myfinance.presentation.ui.total.TotalScreen
 import com.andef.myfinance.presentation.utils.toDate
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
+import com.andef.myfinance.presentation.web.WebViewScreen
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Date
@@ -221,6 +223,42 @@ fun MainScreen(
                     isDarkTheme = isDarkTheme
                 )
             }
+
+            is MainScreenState.BankRuDepositsScreen -> {
+                WebViewScreen(
+                    url = screenState.url,
+                    onBackClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
+
+            is MainScreenState.BankRuCreditsScreen -> {
+                WebViewScreen(
+                    url = screenState.url,
+                    onBackClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
+
+            is MainScreenState.BankRuMicroloansScreen -> {
+                WebViewScreen(
+                    url = screenState.url,
+                    onBackClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
+
+            is MainScreenState.BankRuMortgageScreen -> {
+                WebViewScreen(
+                    url = screenState.url,
+                    onBackClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
         }
     }
 }
@@ -259,20 +297,47 @@ private fun AnyScreenWithTopAndBottomNavContent(
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                     Spacer(modifier = Modifier.padding(16.dp))
-                    TextButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(10.dp),
-                        onClick = {
-                            state.value = MainScreenState.CurrencyScreen
+                    LazyColumn {
+                        item {
+                            MyTextButton(
+                                text = stringResource(R.string.currency_value),
+                                onTextButtonClickListener = {
+                                    state.value = MainScreenState.CurrencyScreen
+                                }
+                            )
                         }
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(8.dp),
-                            textDecoration = TextDecoration.Underline,
-                            text = stringResource(R.string.currency_value),
-                            fontSize = 24.sp,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
+                        item {
+                            MyTextButton(
+                                text = stringResource(R.string.deposits),
+                                onTextButtonClickListener = {
+                                    state.value = MainScreenState.BankRuDepositsScreen()
+                                }
+                            )
+                        }
+                        item {
+                            MyTextButton(
+                                text = stringResource(R.string.credits),
+                                onTextButtonClickListener = {
+                                    state.value = MainScreenState.BankRuCreditsScreen()
+                                }
+                            )
+                        }
+                        item {
+                            MyTextButton(
+                                text = stringResource(R.string.microloans),
+                                onTextButtonClickListener = {
+                                    state.value = MainScreenState.BankRuMicroloansScreen()
+                                }
+                            )
+                        }
+                        item {
+                            MyTextButton(
+                                text = stringResource(R.string.mortgage),
+                                onTextButtonClickListener = {
+                                    state.value = MainScreenState.BankRuMortgageScreen()
+                                }
+                            )
+                        }
                     }
                     Row(
                         modifier = Modifier
@@ -390,5 +455,27 @@ private fun AnyScreenWithTopAndBottomNavContent(
                 }
             )
         }
+    }
+}
+
+@Composable
+private fun MyTextButton(
+    text: String,
+    onTextButtonClickListener: () -> Unit
+) {
+    TextButton(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
+        onClick = {
+            onTextButtonClickListener()
+        }
+    ) {
+        Text(
+            modifier = Modifier.padding(8.dp),
+            textDecoration = TextDecoration.Underline,
+            text = text,
+            fontSize = 24.sp,
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
