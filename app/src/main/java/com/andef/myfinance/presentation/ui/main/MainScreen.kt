@@ -9,8 +9,10 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +29,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -68,8 +73,8 @@ import java.util.Date
 @Composable
 fun MainScreen(
     viewModelFactory: ViewModelFactory,
-    onNetworkError: () -> Unit,
     isDarkTheme: Boolean,
+    paddingValues: PaddingValues,
     onCheckedChangeClickListener: (Boolean) -> Unit
 ) {
     val navigationState = rememberNavigationState()
@@ -169,12 +174,14 @@ fun MainScreen(
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
                     },
-                    isDarkTheme = isDarkTheme
+                    isDarkTheme = isDarkTheme,
+                    paddingValues = paddingValues
                 )
             }
 
             MainScreenState.ExpenseScreenForAdd -> {
                 ExpenseScreen(
+                    paddingValues = paddingValues,
                     viewModelFactory = viewModelFactory,
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
@@ -185,6 +192,7 @@ fun MainScreen(
 
             is MainScreenState.ExpenseScreenForChange -> {
                 ExpenseScreen(
+                    paddingValues = paddingValues,
                     isAddMode = false,
                     expense = screenState.expense,
                     viewModelFactory = viewModelFactory,
@@ -203,7 +211,8 @@ fun MainScreen(
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
                     },
-                    isDarkTheme = isDarkTheme
+                    isDarkTheme = isDarkTheme,
+                    paddingValues = paddingValues
                 )
             }
 
@@ -212,9 +221,6 @@ fun MainScreen(
                     viewModelFactory = viewModelFactory,
                     onBackHandlerClickListener = {
                         state.value = MainScreenState.AnyScreenWithTopAndBottomNav
-                    },
-                    onNetworkError = {
-                        onNetworkError()
                     },
                     isDarkTheme = isDarkTheme
                 )
