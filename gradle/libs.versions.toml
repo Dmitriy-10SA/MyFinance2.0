@@ -2,6 +2,7 @@
 agp = "8.8.2"
 charts = "0.2.4-alpha"
 converterGson = "2.9.0"
+coreSplashscreen = "1.0.1"
 dagger = "2.55"
 daggerCompiler = "2.55"
 gson = "2.11.0"
@@ -12,14 +13,15 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.02.00"
-navigationCompose = "2.8.8"
+composeBom = "2025.03.00"
+navigationCompose = "2.8.9"
 retrofit = "2.11.0"
 roomRuntime = "2.6.1"
 runtimeLivedata = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
