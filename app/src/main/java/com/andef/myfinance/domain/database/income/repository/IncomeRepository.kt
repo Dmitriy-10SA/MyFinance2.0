@@ -18,4 +18,5 @@ interface IncomeRepository {
     suspend fun removeIncome(id: Int)
     fun getIncomes(startDate: Date, endDate: Date): LiveData<List<Income>>
     fun getFullAmount(startDate: Date, endDate: Date): LiveData<Double>
+    suspend fun getIncomesAmount(incomes: List<Income>): List<Double>
 }

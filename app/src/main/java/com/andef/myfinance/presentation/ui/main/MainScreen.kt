@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,8 +54,10 @@ import com.andef.myfinance.navigation.main.NavigationState
 import com.andef.myfinance.navigation.main.rememberNavigationState
 import com.andef.myfinance.presentation.ui.currency.CurrencyScreen
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
+import com.andef.myfinance.presentation.ui.expense.DetailExpenseScreen
 import com.andef.myfinance.presentation.ui.expense.ExpenseScreen
 import com.andef.myfinance.presentation.ui.expense.ExpensesCheckScreen
+import com.andef.myfinance.presentation.ui.income.DetailIncomeScreen
 import com.andef.myfinance.presentation.ui.income.IncomeScreen
 import com.andef.myfinance.presentation.ui.income.IncomesCheckScreen
 import com.andef.myfinance.presentation.ui.total.TotalScreen
@@ -259,6 +262,35 @@ fun MainScreen(
                     }
                 )
             }
+
+            is MainScreenState.BankRuNewsScreen -> {
+                WebViewScreen(
+                    url = screenState.url,
+                    onBackClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
+
+            MainScreenState.DetailExpenseScreen -> {
+                DetailExpenseScreen(
+                    viewModelFactory = viewModelFactory,
+                    isDarkTheme = isDarkTheme,
+                    onBackClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
+
+            MainScreenState.DetailIncomeScreen -> {
+                DetailIncomeScreen(
+                    viewModelFactory = viewModelFactory,
+                    isDarkTheme = isDarkTheme,
+                    onBackClickListener = {
+                        state.value = MainScreenState.AnyScreenWithTopAndBottomNav
+                    }
+                )
+            }
         }
     }
 }
@@ -285,107 +317,11 @@ private fun AnyScreenWithTopAndBottomNavContent(
                 drawerContentColor = MaterialTheme.colorScheme.onBackground,
                 drawerTonalElevation = 8.dp
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    Icon(
-                        painter = painterResource(R.drawable.icon),
-                        contentDescription = stringResource(R.string.ruble_icon),
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    LazyColumn {
-                        item {
-                            MyTextButton(
-                                text = stringResource(R.string.currency_value),
-                                onTextButtonClickListener = {
-                                    state.value = MainScreenState.CurrencyScreen
-                                }
-                            )
-                        }
-                        item {
-                            MyTextButton(
-                                text = stringResource(R.string.deposits),
-                                onTextButtonClickListener = {
-                                    state.value = MainScreenState.BankRuDepositsScreen()
-                                }
-                            )
-                        }
-                        item {
-                            MyTextButton(
-                                text = stringResource(R.string.credits),
-                                onTextButtonClickListener = {
-                                    state.value = MainScreenState.BankRuCreditsScreen()
-                                }
-                            )
-                        }
-                        item {
-                            MyTextButton(
-                                text = stringResource(R.string.microloans),
-                                onTextButtonClickListener = {
-                                    state.value = MainScreenState.BankRuMicroloansScreen()
-                                }
-                            )
-                        }
-                        item {
-                            MyTextButton(
-                                text = stringResource(R.string.mortgage),
-                                onTextButtonClickListener = {
-                                    state.value = MainScreenState.BankRuMortgageScreen()
-                                }
-                            )
-                        }
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.Bottom,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.dark_theme),
-                            fontSize = 24.sp,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.padding(8.dp)
-                        )
-                        Spacer(modifier = Modifier.padding(5.dp))
-                        Switch(
-                            checked = isDarkTheme,
-                            colors = SwitchDefaults.colors(
-                                checkedBorderColor = MaterialTheme.colorScheme.onBackground,
-                                uncheckedBorderColor = MaterialTheme.colorScheme.onBackground,
-                                disabledCheckedBorderColor = MaterialTheme.colorScheme.onBackground,
-                                disabledUncheckedBorderColor = MaterialTheme.colorScheme.onBackground,
-                                checkedThumbColor = MaterialTheme.colorScheme.onBackground,
-                                uncheckedThumbColor = MaterialTheme.colorScheme.onBackground,
-                                disabledCheckedThumbColor = MaterialTheme.colorScheme.onBackground,
-                                disabledUncheckedThumbColor = MaterialTheme.colorScheme.onBackground,
-                                checkedIconColor = MaterialTheme.colorScheme.background,
-                                uncheckedIconColor = MaterialTheme.colorScheme.onBackground,
-                                disabledCheckedIconColor = MaterialTheme.colorScheme.onBackground,
-                                disabledUncheckedIconColor = MaterialTheme.colorScheme.onBackground,
-                                uncheckedTrackColor = MaterialTheme.colorScheme.background,
-                                disabledUncheckedTrackColor = MaterialTheme.colorScheme.background,
-                                disabledCheckedTrackColor = MaterialTheme.colorScheme.background,
-                                checkedTrackColor = MaterialTheme.colorScheme.background
-                            ),
-                            thumbContent = {
-                                if (isDarkTheme) {
-                                    Icon(
-                                        imageVector = Icons.Default.Check,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(SwitchDefaults.IconSize)
-                                    )
-                                }
-                            },
-                            onCheckedChange = { onCheckedChangeClickListener(it) }
-                        )
-                    }
-                }
+                ModalDrawerSheetContent(
+                    state = state,
+                    isDarkTheme = isDarkTheme,
+                    onCheckedChangeClickListener = onCheckedChangeClickListener
+                )
             }
             BackHandler {
                 coroutineScope.launch { drawerState.close() }
@@ -459,6 +395,139 @@ private fun AnyScreenWithTopAndBottomNavContent(
 }
 
 @Composable
+private fun ModalDrawerSheetContent(
+    state: MutableState<MainScreenState>,
+    isDarkTheme: Boolean,
+    onCheckedChangeClickListener: (Boolean) -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.padding(16.dp))
+        Icon(
+            painter = painterResource(R.drawable.icon),
+            contentDescription = stringResource(R.string.ruble_icon),
+            tint = MaterialTheme.colorScheme.onBackground
+        )
+        Spacer(modifier = Modifier.padding(16.dp))
+        LazyColumn {
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.income_analisis),
+                    onTextButtonClickListener = {
+                        state.value = MainScreenState.DetailIncomeScreen
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.expenses_analysis),
+                    onTextButtonClickListener = {
+                        state.value = MainScreenState.DetailExpenseScreen
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.currency_value),
+                    onTextButtonClickListener = {
+                        state.value = MainScreenState.CurrencyScreen
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.deposits),
+                    onTextButtonClickListener = {
+                        state.value = MainScreenState.BankRuDepositsScreen()
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.credits),
+                    onTextButtonClickListener = {
+                        state.value = MainScreenState.BankRuCreditsScreen()
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.microloans),
+                    onTextButtonClickListener = {
+                        state.value = MainScreenState.BankRuMicroloansScreen()
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.mortgage),
+                    onTextButtonClickListener = {
+                        state.value = MainScreenState.BankRuMortgageScreen()
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.news),
+                    onTextButtonClickListener = {
+                        state.value = MainScreenState.BankRuNewsScreen()
+                    }
+                )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = stringResource(R.string.dark_theme),
+                fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(8.dp)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            Switch(
+                checked = isDarkTheme,
+                colors = SwitchDefaults.colors(
+                    checkedBorderColor = MaterialTheme.colorScheme.onBackground,
+                    uncheckedBorderColor = MaterialTheme.colorScheme.onBackground,
+                    disabledCheckedBorderColor = MaterialTheme.colorScheme.onBackground,
+                    disabledUncheckedBorderColor = MaterialTheme.colorScheme.onBackground,
+                    checkedThumbColor = MaterialTheme.colorScheme.onBackground,
+                    uncheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                    disabledCheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                    disabledUncheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                    checkedIconColor = MaterialTheme.colorScheme.background,
+                    uncheckedIconColor = MaterialTheme.colorScheme.onBackground,
+                    disabledCheckedIconColor = MaterialTheme.colorScheme.onBackground,
+                    disabledUncheckedIconColor = MaterialTheme.colorScheme.onBackground,
+                    uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                    disabledUncheckedTrackColor = MaterialTheme.colorScheme.background,
+                    disabledCheckedTrackColor = MaterialTheme.colorScheme.background,
+                    checkedTrackColor = MaterialTheme.colorScheme.background
+                ),
+                thumbContent = {
+                    if (isDarkTheme) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                        )
+                    }
+                },
+                onCheckedChange = { onCheckedChangeClickListener(it) }
+            )
+        }
+    }
+}
+
+@Composable
 private fun MyTextButton(
     text: String,
     onTextButtonClickListener: () -> Unit
@@ -474,6 +543,7 @@ private fun MyTextButton(
             modifier = Modifier.padding(8.dp),
             textDecoration = TextDecoration.Underline,
             text = text,
+            textAlign = TextAlign.Start,
             fontSize = 24.sp,
             color = MaterialTheme.colorScheme.onBackground
         )

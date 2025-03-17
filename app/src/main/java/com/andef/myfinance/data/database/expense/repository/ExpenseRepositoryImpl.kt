@@ -8,6 +8,8 @@ import com.andef.myfinance.data.database.expense.mapper.ExpenseToExpenseModelMap
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.database.expense.repository.ExpenseRepository
+import com.andef.myfinance.domain.database.income.entities.Income
+import com.andef.myfinance.domain.database.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import java.util.Date
 import javax.inject.Inject
@@ -51,6 +53,45 @@ class ExpenseRepositoryImpl @Inject constructor(
         return dao.getFullAmount(
             startDate.toStartOfDay().toStartOfDay().time,
             endDate.toStartOfDay().toStartOfDay().time
+        )
+    }
+
+    override suspend fun getExpensesAmount(expenses: List<Expense>): List<Double> {
+        var productsAmount = 0.0
+        var cafeAmount = 0.0
+        var homeAmount = 0.0
+        var giftsAmount = 0.0
+        var studyAmount = 0.0
+        var healthAmount = 0.0
+        var transportAmount = 0.0
+        var sportAmount = 0.0
+        var clothesAmount = 0.0
+        var otherAmount = 0.0
+        expenses.forEach { expense ->
+            when(expense.category) {
+                ExpenseCategory.PRODUCTS -> productsAmount += expense.amount
+                ExpenseCategory.CAFE -> cafeAmount += expense.amount
+                ExpenseCategory.HOME -> homeAmount += expense.amount
+                ExpenseCategory.GIFTS -> giftsAmount += expense.amount
+                ExpenseCategory.STUDY -> studyAmount += expense.amount
+                ExpenseCategory.HEALTH -> healthAmount += expense.amount
+                ExpenseCategory.TRANSPORT -> transportAmount += expense.amount
+                ExpenseCategory.SPORT -> sportAmount += expense.amount
+                ExpenseCategory.CLOTHES -> clothesAmount += expense.amount
+                ExpenseCategory.OTHER -> otherAmount += expense.amount
+            }
+        }
+        return listOf(
+            productsAmount,
+            cafeAmount,
+            homeAmount,
+            giftsAmount,
+            studyAmount,
+            healthAmount,
+            transportAmount,
+            sportAmount,
+            clothesAmount,
+            otherAmount
         )
     }
 }

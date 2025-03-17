@@ -3,6 +3,7 @@ package com.andef.myfinance.domain.database.expense.repository
 import androidx.lifecycle.LiveData
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
+import com.andef.myfinance.domain.database.income.entities.Income
 import java.util.Date
 
 interface ExpenseRepository {
@@ -18,4 +19,5 @@ interface ExpenseRepository {
     suspend fun removeExpense(id: Int)
     fun getExpenses(startDate: Date, endDate: Date): LiveData<List<Expense>>
     fun getFullAmount(startDate: Date, endDate: Date): LiveData<Double>
+    suspend fun getExpensesAmount(expenses: List<Expense>): List<Double>
 }
