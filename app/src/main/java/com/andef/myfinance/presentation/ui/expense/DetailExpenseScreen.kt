@@ -13,6 +13,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -48,11 +50,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.domain.database.expense.entities.Expense
+import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.presentation.detail.DetailItem
 import com.andef.myfinance.presentation.detail.DetailScreenState
 import com.andef.myfinance.presentation.detail.DetailSegmentedButtonsRow
 import com.andef.myfinance.presentation.detail.DetailTopBar
 import com.andef.myfinance.presentation.error.UnKnownErrorScreen
+import com.andef.myfinance.presentation.formatter.AmountFormatter
+import com.andef.myfinance.presentation.formatter.PercentFormatter
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.ui.main.TopNavigationItem
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
@@ -388,7 +393,7 @@ private fun DetailExpenseScreenPieChart(
                 animation = simpleChartAnimation(),
                 sliceDrawer = SimpleSliceDrawer()
             )
-            Legend(isDarkTheme)
+            LegendWithPercent(isDarkTheme, expensesAmountPercent)
         }
 
         DetailExpensePieChartState.Initial -> {
@@ -419,9 +424,9 @@ private fun DetailExpenseScreenBarChart(
         viewModel.getExpenseAmountForBarChart(expenses)
     }
 
-    when (val currenctState = state.value) {
+    when (val currentState = state.value) {
         is DetailExpenseBarChartState.ExpensesAmount -> {
-            val expensesAmount = currenctState.expensesAmount
+            val expensesAmount = currentState.expensesAmount
 
             BarChart(
                 modifier = modifier,
@@ -509,7 +514,7 @@ private fun DetailExpenseScreenBarChart(
                             ""
                         ),
                         BarChartData.Bar(
-                            expensesAmount[4].toFloat(),
+                            expensesAmount[9].toFloat(),
                             if (isDarkTheme) {
                                 colorResource(R.color.my_orange)
                             } else {
@@ -529,6 +534,8 @@ private fun DetailExpenseScreenBarChart(
                 labelDrawer = SimpleValueDrawer(labelTextColor = MaterialTheme.colorScheme.onBackground)
             )
             Legend(isDarkTheme)
+            Spacer(modifier = Modifier.padding(8.dp))
+            FullInfo(expensesAmount)
         }
 
         DetailExpenseBarChartState.Initial -> {
@@ -548,6 +555,174 @@ private fun DetailExpenseScreenBarChart(
 @Composable
 private fun ErrorScreen(paddingValues: PaddingValues) {
     UnKnownErrorScreen(paddingValues)
+}
+
+@Composable
+private fun FullInfo(expensesAmount: List<Double>) {
+    val expenses = mutableListOf<Expense>()
+    for (i in expensesAmount.indices) {
+        if (expensesAmount[i] != 0.0) {
+            expenses.add(
+                Expense(
+                    amount = expensesAmount[i],
+                    category = getCategory(i),
+                    comment = "",
+                    date = Date()
+                )
+            )
+        }
+    }
+    Column {
+        for (expense in expenses) {
+            FullInfoCardOfExpense(expense)
+        }
+    }
+}
+
+private fun getCategory(i: Int): ExpenseCategory {
+    return if (i == 0) {
+        ExpenseCategory.PRODUCTS
+    } else if (i == 1) {
+        ExpenseCategory.CAFE
+    } else if (i == 2) {
+        ExpenseCategory.HOME
+    } else if (i == 3) {
+        ExpenseCategory.GIFTS
+    } else if (i == 4) {
+        ExpenseCategory.STUDY
+    } else if (i == 5) {
+        ExpenseCategory.HEALTH
+    } else if (i == 6) {
+        ExpenseCategory.TRANSPORT
+    } else if (i == 7) {
+        ExpenseCategory.SPORT
+    } else if (i == 8) {
+        ExpenseCategory.CLOTHES
+    } else {
+        ExpenseCategory.OTHER
+    }
+}
+
+@Composable
+private fun FullInfoCardOfExpense(expense: Expense) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        shape = RoundedCornerShape(10.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onBackground)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(expense.category.iconResId),
+                contentDescription = stringResource(expense.category.nameResId)
+            )
+            Spacer(modifier = Modifier.padding(6.dp))
+            Text(text = stringResource(expense.category.nameResId))
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = AmountFormatter.format(expense.amount),
+                modifier = Modifier.padding(start = 6.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun LegendWithPercent(isDarkTheme: Boolean, expensesAmountPercent: List<Float>) {
+    LazyRow(modifier = Modifier.padding(start = 1.dp, end = 1.dp)) {
+        item {
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_green_black),
+                lightColor = colorResource(R.color.my_green),
+                text = stringResource(R.string.products) +
+                        " (${PercentFormatter.format(expensesAmountPercent[0].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_coral_red),
+                lightColor = colorResource(R.color.my_coral_red),
+                text = stringResource(R.string.cafe) +
+                        " (${PercentFormatter.format(expensesAmountPercent[1].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_brown_black),
+                lightColor = colorResource(R.color.my_brown),
+                text = stringResource(R.string.home) +
+                        " (${PercentFormatter.format(expensesAmountPercent[2].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_blue),
+                lightColor = colorResource(R.color.my_blue),
+                text = stringResource(R.string.gifts) +
+                        " (${PercentFormatter.format(expensesAmountPercent[3].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_cyan),
+                lightColor = colorResource(R.color.my_cyan),
+                text = stringResource(R.string.study) +
+                        " (${PercentFormatter.format(expensesAmountPercent[4].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_teal),
+                lightColor = colorResource(R.color.my_teal),
+                text = stringResource(R.string.health) +
+                        " (${PercentFormatter.format(expensesAmountPercent[5].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_gray),
+                lightColor = colorResource(R.color.my_gray),
+                text = stringResource(R.string.transport) +
+                        " (${PercentFormatter.format(expensesAmountPercent[6].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_violet),
+                lightColor = colorResource(R.color.my_violet),
+                text = stringResource(R.string.sport) +
+                        " (${PercentFormatter.format(expensesAmountPercent[7].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_yellow_black),
+                lightColor = colorResource(R.color.my_yellow),
+                text = stringResource(R.string.clothes) +
+                        " (${PercentFormatter.format(expensesAmountPercent[8].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_orange),
+                lightColor = colorResource(R.color.my_orange),
+                text = stringResource(R.string.other) +
+                        " (${PercentFormatter.format(expensesAmountPercent[9].toDouble() * 100)})"
+            )
+        }
+
+    }
 }
 
 @Composable

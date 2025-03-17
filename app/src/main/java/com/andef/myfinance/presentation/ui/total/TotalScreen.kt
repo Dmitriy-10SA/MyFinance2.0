@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
+import com.andef.myfinance.presentation.formatter.AmountFormatter
+import com.andef.myfinance.presentation.formatter.PercentFormatter
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
 import com.andef.myfinance.presentation.utils.getScreenWidth
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
@@ -197,7 +199,7 @@ private fun MyFinanceBarChart(
         ),
         labelDrawer = SimpleValueDrawer(labelTextColor = MaterialTheme.colorScheme.onBackground)
     )
-    Legend(isDarkTheme)
+    Legend(isDarkTheme, fullAmountIncome, fullAmountExpense)
 }
 
 @Composable
@@ -235,11 +237,11 @@ private fun MyFinancePieChart(
         animation = simpleChartAnimation(),
         sliceDrawer = SimpleSliceDrawer()
     )
-    Legend(isDarkTheme)
+    LegendWithPercents(isDarkTheme, incomePercent = greenAmount, expensePercent = redAmount)
 }
 
 @Composable
-private fun Legend(isDarkTheme: Boolean) {
+private fun LegendWithPercents(isDarkTheme: Boolean, incomePercent: Float, expensePercent: Float) {
     LazyRow(modifier = Modifier.padding(start = 1.dp, end = 1.dp)) {
         item {
             CardWithText(
@@ -247,6 +249,7 @@ private fun Legend(isDarkTheme: Boolean) {
                 darkColor = colorResource(R.color.my_green_black),
                 lightColor = colorResource(R.color.my_green),
                 text = stringResource(R.string.incomes)
+                        + " (${PercentFormatter.format(incomePercent.toDouble() * 100)})"
             )
             Spacer(modifier = Modifier.padding(5.dp))
             CardWithText(
@@ -254,6 +257,28 @@ private fun Legend(isDarkTheme: Boolean) {
                 darkColor = colorResource(R.color.my_red_black),
                 lightColor = colorResource(R.color.my_red),
                 text = stringResource(R.string.expenses)
+                        + " (${PercentFormatter.format(expensePercent.toDouble() * 100)})"
+            )
+        }
+    }
+}
+
+@Composable
+private fun Legend(isDarkTheme: Boolean, incomes: Double, expenses: Double) {
+    LazyRow(modifier = Modifier.padding(start = 1.dp, end = 1.dp)) {
+        item {
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_green_black),
+                lightColor = colorResource(R.color.my_green),
+                text = stringResource(R.string.incomes) + " (${AmountFormatter.format(incomes)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_red_black),
+                lightColor = colorResource(R.color.my_red),
+                text = stringResource(R.string.expenses) + " (${AmountFormatter.format(expenses)})"
             )
         }
     }

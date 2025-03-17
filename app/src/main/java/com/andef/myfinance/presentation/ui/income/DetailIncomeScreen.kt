@@ -13,6 +13,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,12 +49,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
+import com.andef.myfinance.domain.database.expense.entities.Expense
+import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.database.income.entities.Income
+import com.andef.myfinance.domain.database.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.detail.DetailItem
 import com.andef.myfinance.presentation.detail.DetailScreenState
 import com.andef.myfinance.presentation.detail.DetailSegmentedButtonsRow
 import com.andef.myfinance.presentation.detail.DetailTopBar
 import com.andef.myfinance.presentation.error.UnKnownErrorScreen
+import com.andef.myfinance.presentation.formatter.AmountFormatter
+import com.andef.myfinance.presentation.formatter.PercentFormatter
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.ui.main.TopNavigationItem
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
@@ -348,7 +355,7 @@ private fun DetailIncomeScreenPieChart(
                 animation = simpleChartAnimation(),
                 sliceDrawer = SimpleSliceDrawer()
             )
-            Legend(isDarkTheme)
+            LegendWithPercents(isDarkTheme, incomesAmountPercent)
         }
 
         DetailIncomePieChartState.Initial -> {
@@ -444,6 +451,8 @@ private fun DetailIncomeScreenBarChart(
                 labelDrawer = SimpleValueDrawer(labelTextColor = MaterialTheme.colorScheme.onBackground)
             )
             Legend(isDarkTheme)
+            Spacer(modifier = Modifier.padding(8.dp))
+            FullInfo(incomesAmount)
         }
 
         DetailIncomeBarChartState.Initial -> {
@@ -461,8 +470,126 @@ private fun DetailIncomeScreenBarChart(
 }
 
 @Composable
+private fun FullInfo(incomesAmount: List<Double>) {
+    val incomes = mutableListOf<Income>()
+    for (i in incomesAmount.indices) {
+        if (incomesAmount[i] != 0.0) {
+            incomes.add(
+                Income(
+                    amount = incomesAmount[i],
+                    category = getCategory(i),
+                    comment = "",
+                    date = Date()
+                )
+            )
+        }
+    }
+    Column {
+        for (income in incomes) {
+            FullInfoCardOfExpense(income)
+        }
+    }
+}
+
+private fun getCategory(i: Int): IncomeCategory {
+    return if (i == 0) {
+        IncomeCategory.SALARY
+    } else if (i == 1) {
+        IncomeCategory.BANK
+    } else if (i == 2) {
+        IncomeCategory.LUCK
+    } else if (i == 3) {
+        IncomeCategory.GIFTS
+    } else {
+        IncomeCategory.OTHER
+    }
+}
+
+@Composable
+private fun FullInfoCardOfExpense(income: Income) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        shape = RoundedCornerShape(10.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onBackground)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(income.category.iconResId),
+                contentDescription = stringResource(income.category.nameResId)
+            )
+            Spacer(modifier = Modifier.padding(6.dp))
+            Text(text = stringResource(income.category.nameResId))
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = AmountFormatter.format(income.amount),
+                modifier = Modifier.padding(start = 6.dp)
+            )
+        }
+    }
+}
+
+@Composable
 private fun ErrorScreen(paddingValues: PaddingValues) {
     UnKnownErrorScreen(paddingValues)
+}
+
+@Composable
+private fun LegendWithPercents(isDarkTheme: Boolean, incomesAmountPercent: List<Float>) {
+    LazyRow(modifier = Modifier.padding(start = 1.dp, end = 1.dp)) {
+        item {
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_green_black),
+                lightColor = colorResource(R.color.my_green),
+                text = stringResource(R.string.salary) +
+                        " (${PercentFormatter.format(incomesAmountPercent[0].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_brown_black),
+                lightColor = colorResource(R.color.my_brown),
+                text = stringResource(R.string.bank) +
+                        " (${PercentFormatter.format(incomesAmountPercent[1].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_yellow_black),
+                lightColor = colorResource(R.color.my_yellow),
+                text = stringResource(R.string.luck) +
+                        " (${PercentFormatter.format(incomesAmountPercent[2].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_blue),
+                lightColor = colorResource(R.color.my_blue),
+                text = stringResource(R.string.gifts) +
+                        " (${PercentFormatter.format(incomesAmountPercent[3].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_orange),
+                lightColor = colorResource(R.color.my_orange),
+                text = stringResource(R.string.other) +
+                        " (${PercentFormatter.format(incomesAmountPercent[4].toDouble() * 100)})"
+            )
+        }
+
+    }
 }
 
 @Composable
