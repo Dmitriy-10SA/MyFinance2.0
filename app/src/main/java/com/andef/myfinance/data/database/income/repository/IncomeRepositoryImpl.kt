@@ -50,4 +50,22 @@ class IncomeRepositoryImpl @Inject constructor(
     override fun getFullAmount(startDate: Date, endDate: Date): LiveData<Double> {
         return dao.getFullAmount(startDate.toStartOfDay().time, endDate.toStartOfDay().time)
     }
+
+    override suspend fun getIncomesAmount(incomes: List<Income>): List<Double> {
+        var salaryAmount = 0.0
+        var bankAmount = 0.0
+        var luckAmount = 0.0
+        var giftsAmount = 0.0
+        var otherAmount = 0.0
+        incomes.forEach { income ->
+            when (income.category) {
+                IncomeCategory.SALARY -> salaryAmount += income.amount
+                IncomeCategory.BANK -> bankAmount += income.amount
+                IncomeCategory.LUCK -> luckAmount += income.amount
+                IncomeCategory.GIFTS -> giftsAmount += income.amount
+                IncomeCategory.OTHER -> otherAmount += income.amount
+            }
+        }
+        return listOf(salaryAmount, bankAmount, luckAmount, giftsAmount, otherAmount)
+    }
 }

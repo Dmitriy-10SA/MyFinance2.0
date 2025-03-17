@@ -12,8 +12,17 @@
     <color name="my_orange">#FFE65100</color>
     <color name="my_green_black">#309435</color>
     <color name="my_green">#64DD17</color>
+    <color name="my_brown">#A0522D </color>
+    <color name="my_yellow">#D9A427 </color>
+    <color name="my_yellow_black">#D4A029 </color>
+    <color name="my_brown_black">#8F5A2A </color>
     <color name="my_red_black">#AF0909</color>
     <color name="my_red">#D50000</color>
     <color name="my_orange_with_low_alpha">#45E65100</color>
     <color name="gray">#4D4949</color>
+    <color name="my_violet">#673AB7</color>
+    <color name="my_gray">#9E9E9E</color>
+    <color name="my_teal">#0E9B8E</color>
+    <color name="my_cyan">#4DB7F0</color>
+    <color name="my_coral_red">#D9534F</color>
 </resources>

@@ -76,4 +76,6 @@
     <string name="microloans">Займы</string>
     <string name="mortgage">Ипотека</string>
     <string name="news">Новости</string>
+    <string name="income_analisis">Анализ доходов</string>
+    <string name="expenses_analysis">Анализ расходов</string>
 </resources>

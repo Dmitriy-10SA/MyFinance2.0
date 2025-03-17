@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
+import com.andef.myfinance.presentation.utils.getScreenWidth
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.presentation.viewmodel.total.TotalViewModel
 import com.github.tehras.charts.bar.BarChart
@@ -218,11 +219,4 @@ private fun MyFinancePieChart(
         animation = simpleChartAnimation(),
         sliceDrawer = SimpleSliceDrawer()
     )
-}
-
-@Composable
-private fun getScreenWidth(): Int {
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp
-    return screenWidth
 }
