@@ -63,6 +63,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
+import com.andef.myfinance.presentation.formatter.DateFormatter
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.expense.ExpenseViewModel
@@ -237,6 +238,11 @@ fun ExpenseScreen(
                                     )
                                 }
                             }
+                            Spacer(modifier = Modifier.padding(6.dp))
+                            Text(
+                                text = "${stringResource(R.string.now_choose)}${DateFormatter.format(dateState.value.toStartOfDay())}",
+                                fontSize = 17.sp
+                            )
                         }
                     }
                     item {
