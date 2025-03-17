@@ -8,8 +8,6 @@ import com.andef.myfinance.data.database.expense.mapper.ExpenseToExpenseModelMap
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.database.expense.repository.ExpenseRepository
-import com.andef.myfinance.domain.database.income.entities.Income
-import com.andef.myfinance.domain.database.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import java.util.Date
 import javax.inject.Inject
@@ -68,7 +66,7 @@ class ExpenseRepositoryImpl @Inject constructor(
         var clothesAmount = 0.0
         var otherAmount = 0.0
         expenses.forEach { expense ->
-            when(expense.category) {
+            when (expense.category) {
                 ExpenseCategory.PRODUCTS -> productsAmount += expense.amount
                 ExpenseCategory.CAFE -> cafeAmount += expense.amount
                 ExpenseCategory.HOME -> homeAmount += expense.amount

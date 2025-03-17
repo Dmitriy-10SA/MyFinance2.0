@@ -69,7 +69,6 @@ import com.github.tehras.charts.piechart.animation.simpleChartAnimation
 import com.github.tehras.charts.piechart.renderer.SimpleSliceDrawer
 import java.time.LocalDate
 import java.util.Date
-import kotlin.math.exp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -260,12 +259,13 @@ private fun DetailExpenseScreenPieChart(
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
-    val state = viewModel.detailExpensePieChartState.observeAsState(DetailExpensePieChartState.Initial)
+    val state =
+        viewModel.detailExpensePieChartState.observeAsState(DetailExpensePieChartState.Initial)
     LaunchedEffect(expenses) {
         viewModel.getExpensesAmountForPieChart(expenses)
     }
 
-    when(val currentState = state.value) {
+    when (val currentState = state.value) {
         is DetailExpensePieChartState.ExpensesAmount -> {
             val expensesAmountPercent = currentState.expensesAmountPercent
             PieChart(
@@ -359,12 +359,15 @@ private fun DetailExpenseScreenPieChart(
             )
             Legend(isDarkTheme)
         }
+
         DetailExpensePieChartState.Initial -> {
             LoadScreen(paddingValues)
         }
+
         DetailExpensePieChartState.Loading -> {
             LoadScreen(paddingValues)
         }
+
         DetailExpensePieChartState.Error -> {
             ErrorScreen(paddingValues)
         }
@@ -379,12 +382,13 @@ private fun DetailExpenseScreenBarChart(
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
-    val state = viewModel.detailExpenseBarChartState.observeAsState(DetailExpenseBarChartState.Initial)
+    val state =
+        viewModel.detailExpenseBarChartState.observeAsState(DetailExpenseBarChartState.Initial)
     LaunchedEffect(expenses) {
         viewModel.getExpenseAmountForBarChart(expenses)
     }
 
-    when(val currenctState = state.value) {
+    when (val currenctState = state.value) {
         is DetailExpenseBarChartState.ExpensesAmount -> {
             val expensesAmount = currenctState.expensesAmount
 
@@ -495,9 +499,11 @@ private fun DetailExpenseScreenBarChart(
             )
             Legend(isDarkTheme)
         }
+
         DetailExpenseBarChartState.Initial -> {
             LoadScreen(paddingValues)
         }
+
         DetailExpenseBarChartState.Loading -> {
             LoadScreen(paddingValues)
         }

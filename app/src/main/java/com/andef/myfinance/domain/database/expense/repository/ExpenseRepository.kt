@@ -3,7 +3,6 @@ package com.andef.myfinance.domain.database.expense.repository
 import androidx.lifecycle.LiveData
 import com.andef.myfinance.domain.database.expense.entities.Expense
 import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
-import com.andef.myfinance.domain.database.income.entities.Income
 import java.util.Date
 
 interface ExpenseRepository {

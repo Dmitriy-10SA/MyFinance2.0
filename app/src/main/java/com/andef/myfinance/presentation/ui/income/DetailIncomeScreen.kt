@@ -19,13 +19,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -261,12 +259,13 @@ private fun DetailIncomeScreenPieChart(
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
-    val state = viewModel.detailIncomePieChartState.observeAsState(DetailIncomePieChartState.Initial)
+    val state =
+        viewModel.detailIncomePieChartState.observeAsState(DetailIncomePieChartState.Initial)
     LaunchedEffect(incomes) {
         viewModel.getIncomesAmountForPieChart(incomes)
     }
 
-    when(val currentState = state.value) {
+    when (val currentState = state.value) {
         is DetailIncomePieChartState.IncomesAmount -> {
             val incomesAmountPercent = currentState.incomesAmountPercent
             PieChart(
@@ -320,12 +319,15 @@ private fun DetailIncomeScreenPieChart(
             )
             Legend(isDarkTheme)
         }
+
         DetailIncomePieChartState.Initial -> {
             LoadScreen(paddingValues)
         }
+
         DetailIncomePieChartState.Loading -> {
             LoadScreen(paddingValues)
         }
+
         DetailIncomePieChartState.Error -> {
             ErrorScreen(paddingValues)
         }
@@ -340,12 +342,13 @@ private fun DetailIncomeScreenBarChart(
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
-    val state = viewModel.detailIncomeBarChartState.observeAsState(DetailIncomeBarChartState.Initial)
+    val state =
+        viewModel.detailIncomeBarChartState.observeAsState(DetailIncomeBarChartState.Initial)
     LaunchedEffect(incomes) {
         viewModel.getIncomesAmountForBarChart(incomes)
     }
 
-    when(val currentState = state.value) {
+    when (val currentState = state.value) {
         is DetailIncomeBarChartState.IncomesAmount -> {
             val incomesAmount = currentState.incomesAmount
 
@@ -411,12 +414,15 @@ private fun DetailIncomeScreenBarChart(
             )
             Legend(isDarkTheme)
         }
+
         DetailIncomeBarChartState.Initial -> {
             LoadScreen(paddingValues = paddingValues)
         }
+
         DetailIncomeBarChartState.Loading -> {
             LoadScreen(paddingValues = paddingValues)
         }
+
         DetailIncomeBarChartState.Error -> {
             ErrorScreen(paddingValues = paddingValues)
         }
