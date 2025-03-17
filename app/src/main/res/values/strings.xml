@@ -79,4 +79,9 @@
     <string name="income_analisis">Анализ доходов</string>
     <string name="expenses_analysis">Анализ расходов</string>
     <string name="unknown_exception_sorry">Извините, возникла неизвестная ошибка!</string>
+    <string name="wait_incomes">Ждем появления доходов</string>
+    <string name="wait_expenses">Ждем появления расходов</string>
+    <string name="watch">Часы</string>
+    <string name="angry_smile">Злой смайлик</string>
+    <string name="wait_incomes_and_expenses">Ждем появление доходов и расходов</string>
 </resources>

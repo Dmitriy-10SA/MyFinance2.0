@@ -8,6 +8,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,7 +39,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -168,6 +171,30 @@ fun DetailExpenseScreen(
 }
 
 @Composable
+private fun WaitScreen(paddingValues: PaddingValues) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .padding(start = 12.dp, end = 12.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(R.drawable.watch),
+            contentDescription = stringResource(R.string.watch),
+        )
+        Spacer(modifier = Modifier.padding(12.dp))
+        Text(
+            text = stringResource(R.string.wait_expenses),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
 private fun DetailExpenseScreenContent(
     viewModelFactory: ViewModelFactory,
     topBarState: MutableState<TopNavigationItem>,
@@ -207,43 +234,47 @@ private fun DetailExpenseScreenContent(
             }
         }
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-                .padding(bottom = 8.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                TopRowWithDateAndTotal(startDate, endDate, fullAmount.value ?: 0.0)
-                DetailSegmentedButtonsRow(selectedItem)
-            }
-            item {
-                Spacer(modifier = Modifier.padding(10.dp))
-                when (selectedItem.value) {
-                    DetailItem.BarChart -> {
-                        DetailExpenseScreenBarChart(
-                            paddingValues = it,
-                            expenses = expenses.value,
-                            modifier = Modifier
-                                .size(getScreenWidth().dp)
-                                .padding((getScreenWidth() / 6).dp),
-                            isDarkTheme = isDarkTheme,
-                            viewModel = viewModel
-                        )
-                    }
+        if (expenses.value.isEmpty()) {
+            WaitScreen(it)
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+                    .padding(bottom = 8.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    TopRowWithDateAndTotal(startDate, endDate, fullAmount.value ?: 0.0)
+                    DetailSegmentedButtonsRow(selectedItem)
+                }
+                item {
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    when (selectedItem.value) {
+                        DetailItem.BarChart -> {
+                            DetailExpenseScreenBarChart(
+                                paddingValues = it,
+                                expenses = expenses.value,
+                                modifier = Modifier
+                                    .size(getScreenWidth().dp)
+                                    .padding((getScreenWidth() / 6).dp),
+                                isDarkTheme = isDarkTheme,
+                                viewModel = viewModel
+                            )
+                        }
 
-                    DetailItem.PieChart -> {
-                        DetailExpenseScreenPieChart(
-                            paddingValues = it,
-                            expenses = expenses.value,
-                            modifier = Modifier
-                                .size(getScreenWidth().dp)
-                                .padding((getScreenWidth() / 6).dp),
-                            isDarkTheme = isDarkTheme,
-                            viewModel = viewModel
-                        )
+                        DetailItem.PieChart -> {
+                            DetailExpenseScreenPieChart(
+                                paddingValues = it,
+                                expenses = expenses.value,
+                                modifier = Modifier
+                                    .size(getScreenWidth().dp)
+                                    .padding((getScreenWidth() / 6).dp),
+                                isDarkTheme = isDarkTheme,
+                                viewModel = viewModel
+                            )
+                        }
                     }
                 }
             }
