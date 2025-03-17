@@ -8,10 +8,12 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,13 +21,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,18 +41,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.domain.database.income.entities.Income
+import com.andef.myfinance.domain.database.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.detail.DetailItem
 import com.andef.myfinance.presentation.detail.DetailScreenState
 import com.andef.myfinance.presentation.detail.DetailSegmentedButtonsRow
 import com.andef.myfinance.presentation.detail.DetailTopBar
 import com.andef.myfinance.presentation.error.UnKnownErrorScreen
+import com.andef.myfinance.presentation.formatter.AmountFormatter
+import com.andef.myfinance.presentation.formatter.PercentFormatter
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.ui.main.TopNavigationItem
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
@@ -209,47 +215,75 @@ private fun DetailIncomeScreenContent(
             }
         }
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-                .padding(bottom = 8.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                TopRowWithDateAndTotal(startDate, endDate, fullAmount.value ?: 0.0)
-                DetailSegmentedButtonsRow(selectedItem)
-            }
-            item {
-                Spacer(modifier = Modifier.padding(10.dp))
-                when (selectedItem.value) {
-                    DetailItem.BarChart -> {
-                        DetailIncomeScreenBarChart(
-                            incomes = incomes.value,
-                            modifier = Modifier
-                                .size(getScreenWidth().dp)
-                                .padding((getScreenWidth() / 6).dp),
-                            isDarkTheme = isDarkTheme,
-                            viewModel = viewModel,
-                            paddingValues = it
-                        )
-                    }
+        if (incomes.value.isEmpty()) {
+            WaitScreen(it)
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+                    .padding(bottom = 8.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    TopRowWithDateAndTotal(startDate, endDate, fullAmount.value ?: 0.0)
+                    DetailSegmentedButtonsRow(selectedItem)
+                }
+                item {
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    when (selectedItem.value) {
+                        DetailItem.BarChart -> {
+                            DetailIncomeScreenBarChart(
+                                incomes = incomes.value,
+                                modifier = Modifier
+                                    .size(getScreenWidth().dp)
+                                    .padding((getScreenWidth() / 6).dp),
+                                isDarkTheme = isDarkTheme,
+                                viewModel = viewModel,
+                                paddingValues = it
+                            )
+                        }
 
-                    DetailItem.PieChart -> {
-                        DetailIncomeScreenPieChart(
-                            paddingValues = it,
-                            incomes = incomes.value,
-                            modifier = Modifier
-                                .size(getScreenWidth().dp)
-                                .padding((getScreenWidth() / 6).dp),
-                            isDarkTheme = isDarkTheme,
-                            viewModel = viewModel
-                        )
+                        DetailItem.PieChart -> {
+                            DetailIncomeScreenPieChart(
+                                paddingValues = it,
+                                incomes = incomes.value,
+                                modifier = Modifier
+                                    .size(getScreenWidth().dp)
+                                    .padding((getScreenWidth() / 6).dp),
+                                isDarkTheme = isDarkTheme,
+                                viewModel = viewModel
+                            )
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun WaitScreen(paddingValues: PaddingValues) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .padding(start = 12.dp, end = 12.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(R.drawable.watch),
+            contentDescription = stringResource(R.string.watch),
+        )
+        Spacer(modifier = Modifier.padding(12.dp))
+        Text(
+            text = stringResource(R.string.wait_incomes),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -261,12 +295,13 @@ private fun DetailIncomeScreenPieChart(
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
-    val state = viewModel.detailIncomePieChartState.observeAsState(DetailIncomePieChartState.Initial)
+    val state =
+        viewModel.detailIncomePieChartState.observeAsState(DetailIncomePieChartState.Initial)
     LaunchedEffect(incomes) {
         viewModel.getIncomesAmountForPieChart(incomes)
     }
 
-    when(val currentState = state.value) {
+    when (val currentState = state.value) {
         is DetailIncomePieChartState.IncomesAmount -> {
             val incomesAmountPercent = currentState.incomesAmountPercent
             PieChart(
@@ -318,14 +353,17 @@ private fun DetailIncomeScreenPieChart(
                 animation = simpleChartAnimation(),
                 sliceDrawer = SimpleSliceDrawer()
             )
-            Legend(isDarkTheme)
+            LegendWithPercents(isDarkTheme, incomesAmountPercent)
         }
+
         DetailIncomePieChartState.Initial -> {
             LoadScreen(paddingValues)
         }
+
         DetailIncomePieChartState.Loading -> {
             LoadScreen(paddingValues)
         }
+
         DetailIncomePieChartState.Error -> {
             ErrorScreen(paddingValues)
         }
@@ -340,12 +378,13 @@ private fun DetailIncomeScreenBarChart(
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
-    val state = viewModel.detailIncomeBarChartState.observeAsState(DetailIncomeBarChartState.Initial)
+    val state =
+        viewModel.detailIncomeBarChartState.observeAsState(DetailIncomeBarChartState.Initial)
     LaunchedEffect(incomes) {
         viewModel.getIncomesAmountForBarChart(incomes)
     }
 
-    when(val currentState = state.value) {
+    when (val currentState = state.value) {
         is DetailIncomeBarChartState.IncomesAmount -> {
             val incomesAmount = currentState.incomesAmount
 
@@ -410,13 +449,18 @@ private fun DetailIncomeScreenBarChart(
                 labelDrawer = SimpleValueDrawer(labelTextColor = MaterialTheme.colorScheme.onBackground)
             )
             Legend(isDarkTheme)
+            Spacer(modifier = Modifier.padding(8.dp))
+            FullInfo(incomesAmount)
         }
+
         DetailIncomeBarChartState.Initial -> {
             LoadScreen(paddingValues = paddingValues)
         }
+
         DetailIncomeBarChartState.Loading -> {
             LoadScreen(paddingValues = paddingValues)
         }
+
         DetailIncomeBarChartState.Error -> {
             ErrorScreen(paddingValues = paddingValues)
         }
@@ -424,8 +468,126 @@ private fun DetailIncomeScreenBarChart(
 }
 
 @Composable
+private fun FullInfo(incomesAmount: List<Double>) {
+    val incomes = mutableListOf<Income>()
+    for (i in incomesAmount.indices) {
+        if (incomesAmount[i] != 0.0) {
+            incomes.add(
+                Income(
+                    amount = incomesAmount[i],
+                    category = getCategory(i),
+                    comment = "",
+                    date = Date()
+                )
+            )
+        }
+    }
+    Column {
+        for (income in incomes) {
+            FullInfoCardOfExpense(income)
+        }
+    }
+}
+
+private fun getCategory(i: Int): IncomeCategory {
+    return if (i == 0) {
+        IncomeCategory.SALARY
+    } else if (i == 1) {
+        IncomeCategory.BANK
+    } else if (i == 2) {
+        IncomeCategory.LUCK
+    } else if (i == 3) {
+        IncomeCategory.GIFTS
+    } else {
+        IncomeCategory.OTHER
+    }
+}
+
+@Composable
+private fun FullInfoCardOfExpense(income: Income) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        shape = RoundedCornerShape(10.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onBackground)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(income.category.iconResId),
+                contentDescription = stringResource(income.category.nameResId)
+            )
+            Spacer(modifier = Modifier.padding(6.dp))
+            Text(text = stringResource(income.category.nameResId))
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = AmountFormatter.format(income.amount),
+                modifier = Modifier.padding(start = 6.dp)
+            )
+        }
+    }
+}
+
+@Composable
 private fun ErrorScreen(paddingValues: PaddingValues) {
     UnKnownErrorScreen(paddingValues)
+}
+
+@Composable
+private fun LegendWithPercents(isDarkTheme: Boolean, incomesAmountPercent: List<Float>) {
+    LazyRow(modifier = Modifier.padding(start = 1.dp, end = 1.dp)) {
+        item {
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_green_black),
+                lightColor = colorResource(R.color.my_green),
+                text = stringResource(R.string.salary) +
+                        " (${PercentFormatter.format(incomesAmountPercent[0].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_brown_black),
+                lightColor = colorResource(R.color.my_brown),
+                text = stringResource(R.string.bank) +
+                        " (${PercentFormatter.format(incomesAmountPercent[1].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_yellow_black),
+                lightColor = colorResource(R.color.my_yellow),
+                text = stringResource(R.string.luck) +
+                        " (${PercentFormatter.format(incomesAmountPercent[2].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_blue),
+                lightColor = colorResource(R.color.my_blue),
+                text = stringResource(R.string.gifts) +
+                        " (${PercentFormatter.format(incomesAmountPercent[3].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_orange),
+                lightColor = colorResource(R.color.my_orange),
+                text = stringResource(R.string.other) +
+                        " (${PercentFormatter.format(incomesAmountPercent[4].toDouble() * 100)})"
+            )
+        }
+
+    }
 }
 
 @Composable

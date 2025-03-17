@@ -31,7 +31,7 @@ fun UnKnownErrorScreen(paddingValues: PaddingValues) {
     ) {
         Image(
             painter = painterResource(R.drawable.unknown_exception),
-            contentDescription = stringResource(R.string.dead_smile),
+            contentDescription = stringResource(R.string.angry_smile),
         )
         Spacer(modifier = Modifier.padding(12.dp))
         Text(

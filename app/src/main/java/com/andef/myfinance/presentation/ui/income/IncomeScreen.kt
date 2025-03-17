@@ -144,7 +144,7 @@ fun IncomeScreen(
     ) { isDatePickerScreen ->
         if (!isDatePickerScreen) {
             Scaffold(
-                modifier = Modifier.padding(paddingValues),
+                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
                 contentWindowInsets = WindowInsets.ime,
                 topBar = {
                     TopBar(onBackHandlerClickListener)
