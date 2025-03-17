@@ -10,6 +10,7 @@ import com.andef.myfinance.domain.database.income.usecases.GetIncomesAmountUseCa
 import com.andef.myfinance.domain.database.income.usecases.GetIncomesUseCase
 import com.andef.myfinance.presentation.ui.income.DetailIncomeBarChartState
 import com.andef.myfinance.presentation.ui.income.DetailIncomePieChartState
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,9 +26,17 @@ class DetailIncomeViewModel @Inject constructor(
     val detailIncomeBarChartState: LiveData<DetailIncomeBarChartState>
         get() = _detailIncomeBarChartState
 
+    private val barChartExceptionHandler = CoroutineExceptionHandler { _, _ ->
+        _detailIncomeBarChartState.value = DetailIncomeBarChartState.Error
+    }
+
     private val _detailIncomePieChartState = MutableLiveData<DetailIncomePieChartState>()
     val detailIncomePieChartState: LiveData<DetailIncomePieChartState>
         get() = _detailIncomePieChartState
+
+    private val pieChartExceptionHandler = CoroutineExceptionHandler { _, _ ->
+        _detailIncomePieChartState.value = DetailIncomePieChartState.Error
+    }
 
     fun getIncomes(startDate: Date, endDate: Date) = getIncomesUseCase.execute(startDate, endDate)
 
@@ -37,7 +46,7 @@ class DetailIncomeViewModel @Inject constructor(
     ) = getFullAmountIncomeUseCase.execute(startDate, endDate)
 
     fun getIncomesAmountForBarChart(incomes: List<Income>) {
-        viewModelScope.launch {
+        viewModelScope.launch(barChartExceptionHandler) {
             _detailIncomeBarChartState.value = DetailIncomeBarChartState.Loading
             val incomesAmount = withContext(Dispatchers.IO) {
                 getIncomesAmount.execute(incomes)
@@ -47,7 +56,7 @@ class DetailIncomeViewModel @Inject constructor(
     }
 
     fun getIncomesAmountForPieChart(incomes: List<Income>) {
-        viewModelScope.launch {
+        viewModelScope.launch(pieChartExceptionHandler) {
             _detailIncomePieChartState.value = DetailIncomePieChartState.Loading
             val incomesAmountPercent = withContext(Dispatchers.IO) {
                 val incomesAmount = getIncomesAmount.execute(incomes)

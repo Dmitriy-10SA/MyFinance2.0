@@ -78,4 +78,5 @@
     <string name="news">Новости</string>
     <string name="income_analisis">Анализ доходов</string>
     <string name="expenses_analysis">Анализ расходов</string>
+    <string name="unknown_exception_sorry">Извините, возникла неизвестная ошибка!</string>
 </resources>

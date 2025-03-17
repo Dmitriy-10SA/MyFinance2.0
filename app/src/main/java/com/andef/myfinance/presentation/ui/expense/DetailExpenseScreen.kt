@@ -49,6 +49,7 @@ import com.andef.myfinance.presentation.detail.DetailItem
 import com.andef.myfinance.presentation.detail.DetailScreenState
 import com.andef.myfinance.presentation.detail.DetailSegmentedButtonsRow
 import com.andef.myfinance.presentation.detail.DetailTopBar
+import com.andef.myfinance.presentation.error.UnKnownErrorScreen
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.ui.main.TopNavigationItem
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
@@ -364,6 +365,9 @@ private fun DetailExpenseScreenPieChart(
         DetailExpensePieChartState.Loading -> {
             LoadScreen(paddingValues)
         }
+        DetailExpensePieChartState.Error -> {
+            ErrorScreen(paddingValues)
+        }
     }
 }
 
@@ -497,7 +501,16 @@ private fun DetailExpenseScreenBarChart(
         DetailExpenseBarChartState.Loading -> {
             LoadScreen(paddingValues)
         }
+
+        DetailExpenseBarChartState.Error -> {
+            ErrorScreen(paddingValues)
+        }
     }
+}
+
+@Composable
+private fun ErrorScreen(paddingValues: PaddingValues) {
+    UnKnownErrorScreen(paddingValues)
 }
 
 @Composable

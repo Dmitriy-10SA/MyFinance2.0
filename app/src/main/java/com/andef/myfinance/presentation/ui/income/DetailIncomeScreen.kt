@@ -19,11 +19,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -49,6 +51,7 @@ import com.andef.myfinance.presentation.detail.DetailItem
 import com.andef.myfinance.presentation.detail.DetailScreenState
 import com.andef.myfinance.presentation.detail.DetailSegmentedButtonsRow
 import com.andef.myfinance.presentation.detail.DetailTopBar
+import com.andef.myfinance.presentation.error.UnKnownErrorScreen
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.ui.main.TopNavigationItem
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
@@ -323,6 +326,9 @@ private fun DetailIncomeScreenPieChart(
         DetailIncomePieChartState.Loading -> {
             LoadScreen(paddingValues)
         }
+        DetailIncomePieChartState.Error -> {
+            ErrorScreen(paddingValues)
+        }
     }
 }
 
@@ -411,7 +417,15 @@ private fun DetailIncomeScreenBarChart(
         DetailIncomeBarChartState.Loading -> {
             LoadScreen(paddingValues = paddingValues)
         }
+        DetailIncomeBarChartState.Error -> {
+            ErrorScreen(paddingValues = paddingValues)
+        }
     }
+}
+
+@Composable
+private fun ErrorScreen(paddingValues: PaddingValues) {
+    UnKnownErrorScreen(paddingValues)
 }
 
 @Composable
