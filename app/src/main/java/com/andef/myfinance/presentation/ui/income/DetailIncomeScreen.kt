@@ -49,8 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.database.expense.entities.Expense
-import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.database.income.entities.Income
 import com.andef.myfinance.domain.database.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.detail.DetailItem
