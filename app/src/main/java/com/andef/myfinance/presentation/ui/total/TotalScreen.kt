@@ -1,5 +1,6 @@
 package com.andef.myfinance.presentation.ui.total
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -21,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -60,7 +65,8 @@ fun TotalScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues),
+            .padding(paddingValues)
+            .padding(bottom = 8.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -153,22 +159,22 @@ private fun MyFinanceBarChart(
         barChartData = BarChartData(
             bars = listOf(
                 BarChartData.Bar(
-                    fullAmountExpense.toFloat(),
-                    if (isDarkTheme) {
-                        colorResource(R.color.my_red_black)
-                    } else {
-                        colorResource(R.color.my_red)
-                    },
-                    stringResource(R.string.expenses)
-                ),
-                BarChartData.Bar(
                     fullAmountIncome.toFloat(),
                     if (isDarkTheme) {
                         colorResource(R.color.my_green_black)
                     } else {
                         colorResource(R.color.my_green)
                     },
-                    stringResource(R.string.incomes)
+                    ""
+                ),
+                BarChartData.Bar(
+                    fullAmountExpense.toFloat(),
+                    if (isDarkTheme) {
+                        colorResource(R.color.my_red_black)
+                    } else {
+                        colorResource(R.color.my_red)
+                    },
+                    ""
                 )
             )
         ),
@@ -181,6 +187,7 @@ private fun MyFinanceBarChart(
         ),
         labelDrawer = SimpleValueDrawer(labelTextColor = MaterialTheme.colorScheme.onBackground)
     )
+    Legend(isDarkTheme)
 }
 
 @Composable
@@ -218,4 +225,55 @@ private fun MyFinancePieChart(
         animation = simpleChartAnimation(),
         sliceDrawer = SimpleSliceDrawer()
     )
+    Legend(isDarkTheme)
+}
+
+@Composable
+private fun Legend(isDarkTheme: Boolean) {
+    LazyRow(modifier = Modifier.padding(start = 1.dp, end = 1.dp)) {
+        item {
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_green_black),
+                lightColor = colorResource(R.color.my_green),
+                text = stringResource(R.string.incomes)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_red_black),
+                lightColor = colorResource(R.color.my_red),
+                text = stringResource(R.string.expenses)
+            )
+        }
+    }
+}
+
+@Composable
+private fun CardWithText(
+    isDarkTheme: Boolean,
+    darkColor: Color,
+    lightColor: Color,
+    text: String
+) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        ),
+        border = BorderStroke(
+            4.dp,
+            if (isDarkTheme) {
+                darkColor
+            } else {
+                lightColor
+            }
+        )
+    ) {
+        Text(
+            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, start = 12.dp, end = 12.dp),
+            text = text,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
 }
