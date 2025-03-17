@@ -84,4 +84,5 @@
     <string name="watch">Часы</string>
     <string name="angry_smile">Злой смайлик</string>
     <string name="wait_incomes_and_expenses">Ждем появление доходов и расходов</string>
+    <string name="now_choose">"Текущий выбор: "</string>
 </resources>
