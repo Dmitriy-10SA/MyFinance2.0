@@ -56,11 +56,11 @@ class IncomeRepositoryImpl @Inject constructor(
         var otherAmount = 0.0
         for (income in incomes) {
             when (income.category) {
-                IncomeCategory.Salary -> salaryAmount += income.amount
-                IncomeCategory.Bank -> bankAmount += income.amount
-                IncomeCategory.Luck -> luckAmount += income.amount
-                IncomeCategory.Gifts -> giftsAmount += income.amount
-                IncomeCategory.Other -> otherAmount += income.amount
+                IncomeCategory.SALARY -> salaryAmount += income.amount
+                IncomeCategory.BANK -> bankAmount += income.amount
+                IncomeCategory.LUCK -> luckAmount += income.amount
+                IncomeCategory.GIFTS -> giftsAmount += income.amount
+                IncomeCategory.OTHER -> otherAmount += income.amount
             }
         }
         return listOf(salaryAmount, bankAmount, luckAmount, giftsAmount, otherAmount)

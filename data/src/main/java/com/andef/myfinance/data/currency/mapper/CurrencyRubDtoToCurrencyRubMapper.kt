@@ -3,7 +3,7 @@ package com.andef.myfinance.data.currency.mapper
 import com.andef.myfinance.data.currency.dto.CurrencyRubDto
 import com.andef.myfinance.domain.currency.entities.CurrencyRub
 
-object CurrencyRubDtoToCurrencyRubMapper {
+internal object CurrencyRubDtoToCurrencyRubMapper {
     fun map(currencyRubDto: CurrencyRubDto): CurrencyRub {
         return when (currencyRubDto) {
             is CurrencyRubDto.AudRubDto -> CurrencyRub.Aud(currencyRubDto.audInRubDto.amount)

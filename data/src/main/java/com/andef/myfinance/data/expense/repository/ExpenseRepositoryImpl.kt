@@ -60,16 +60,16 @@ class ExpenseRepositoryImpl @Inject constructor(
         var otherAmount = 0.0
         for (expense in expenses) {
             when (expense.category) {
-                ExpenseCategory.Products -> productsAmount += expense.amount
-                ExpenseCategory.Cafe -> cafeAmount += expense.amount
-                ExpenseCategory.Home -> homeAmount += expense.amount
-                ExpenseCategory.Gifts -> giftsAmount += expense.amount
-                ExpenseCategory.Study -> studyAmount += expense.amount
-                ExpenseCategory.Health -> healthAmount += expense.amount
-                ExpenseCategory.Transport -> transportAmount += expense.amount
-                ExpenseCategory.Sport -> sportAmount += expense.amount
-                ExpenseCategory.Clothes -> clothesAmount += expense.amount
-                ExpenseCategory.Other -> otherAmount += expense.amount
+                ExpenseCategory.PRODUCTS -> productsAmount += expense.amount
+                ExpenseCategory.CAFE -> cafeAmount += expense.amount
+                ExpenseCategory.HOME -> homeAmount += expense.amount
+                ExpenseCategory.GIFTS -> giftsAmount += expense.amount
+                ExpenseCategory.STUDY -> studyAmount += expense.amount
+                ExpenseCategory.HEALTH -> healthAmount += expense.amount
+                ExpenseCategory.TRANSPORT -> transportAmount += expense.amount
+                ExpenseCategory.SPORT -> sportAmount += expense.amount
+                ExpenseCategory.CLOTHES -> clothesAmount += expense.amount
+                ExpenseCategory.OTHER -> otherAmount += expense.amount
             }
         }
         return listOf(
