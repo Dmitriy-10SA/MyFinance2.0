@@ -40,7 +40,7 @@ import com.andef.myfinance.R
 import com.andef.myfinance.presentation.formatter.AmountFormatter
 import com.andef.myfinance.presentation.formatter.PercentFormatter
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
-import com.andef.myfinance.presentation.utils.getScreenWidth
+import com.andef.myfinance.data.utils.getScreenWidth
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.presentation.viewmodel.total.TotalViewModel
 import com.github.tehras.charts.bar.BarChart
@@ -94,8 +94,8 @@ fun TotalScreen(
                     TotalItem.BarChart -> {
                         MyFinanceBarChart(
                             modifier = Modifier
-                                .size(getScreenWidth().dp)
-                                .padding((getScreenWidth() / 6).dp),
+                                .size(com.andef.myfinance.data.utils.getScreenWidth().dp)
+                                .padding((com.andef.myfinance.data.utils.getScreenWidth() / 6).dp),
                             isDarkTheme,
                             fullAmountIncome.value ?: 0.0,
                             fullAmountExpense.value ?: 0.0
@@ -105,7 +105,7 @@ fun TotalScreen(
                     TotalItem.PieChart -> {
                         MyFinancePieChart(
                             modifier = Modifier
-                                .size(getScreenWidth().dp)
+                                .size(com.andef.myfinance.data.utils.getScreenWidth().dp)
                                 .padding(16.dp),
                             isDarkTheme,
                             fullAmountIncome.value ?: 0.0,

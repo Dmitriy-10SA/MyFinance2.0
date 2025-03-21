@@ -42,7 +42,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.domain.currency.CurrencyRub
 import com.andef.myfinance.presentation.error.NetworkErrorScreen
-import com.andef.myfinance.presentation.utils.toDate
+import com.andef.myfinance.data.utils.toDate
 import com.andef.myfinance.presentation.viewmodel.currency.CurrencyViewModel
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import java.time.LocalDate

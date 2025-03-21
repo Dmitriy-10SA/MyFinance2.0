@@ -61,8 +61,8 @@ import com.andef.myfinance.presentation.formatter.PercentFormatter
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.ui.main.TopNavigationItem
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
-import com.andef.myfinance.presentation.utils.getScreenWidth
-import com.andef.myfinance.presentation.utils.toDate
+import com.andef.myfinance.data.utils.getScreenWidth
+import com.andef.myfinance.data.utils.toDate
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.presentation.viewmodel.income.DetailIncomeViewModel
 import com.github.tehras.charts.bar.BarChart
@@ -237,8 +237,8 @@ private fun DetailIncomeScreenContent(
                             DetailIncomeScreenBarChart(
                                 incomes = incomes.value,
                                 modifier = Modifier
-                                    .size(getScreenWidth().dp)
-                                    .padding((getScreenWidth() / 6).dp),
+                                    .size(com.andef.myfinance.data.utils.getScreenWidth().dp)
+                                    .padding((com.andef.myfinance.data.utils.getScreenWidth() / 6).dp),
                                 isDarkTheme = isDarkTheme,
                                 viewModel = viewModel,
                                 paddingValues = it
@@ -250,8 +250,8 @@ private fun DetailIncomeScreenContent(
                                 paddingValues = it,
                                 incomes = incomes.value,
                                 modifier = Modifier
-                                    .size(getScreenWidth().dp)
-                                    .padding((getScreenWidth() / 6).dp),
+                                    .size(com.andef.myfinance.data.utils.getScreenWidth().dp)
+                                    .padding((com.andef.myfinance.data.utils.getScreenWidth() / 6).dp),
                                 isDarkTheme = isDarkTheme,
                                 viewModel = viewModel
                             )

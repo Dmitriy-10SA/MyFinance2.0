@@ -65,7 +65,7 @@ import com.andef.myfinance.domain.income.entities.Income
 import com.andef.myfinance.domain.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.formatter.DateFormatter
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
-import com.andef.myfinance.presentation.utils.toStartOfDay
+import com.andef.myfinance.data.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.presentation.viewmodel.income.IncomeViewModel
 import java.util.Date

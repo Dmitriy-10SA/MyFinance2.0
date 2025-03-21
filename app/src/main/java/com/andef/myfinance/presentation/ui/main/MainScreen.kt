@@ -61,8 +61,8 @@ import com.andef.myfinance.presentation.ui.income.DetailIncomeScreen
 import com.andef.myfinance.presentation.ui.income.IncomeScreen
 import com.andef.myfinance.presentation.ui.income.IncomesCheckScreen
 import com.andef.myfinance.presentation.ui.total.TotalScreen
-import com.andef.myfinance.presentation.utils.toDate
-import com.andef.myfinance.presentation.utils.toStartOfDay
+import com.andef.myfinance.data.utils.toDate
+import com.andef.myfinance.data.utils.toStartOfDay
 import com.andef.myfinance.presentation.viewmodel.factory.ViewModelFactory
 import com.andef.myfinance.presentation.web.WebViewScreen
 import kotlinx.coroutines.launch
