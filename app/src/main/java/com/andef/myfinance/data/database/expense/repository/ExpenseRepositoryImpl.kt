@@ -5,9 +5,9 @@ import androidx.lifecycle.map
 import com.andef.myfinance.data.database.expense.datasource.ExpenseDao
 import com.andef.myfinance.data.database.expense.mapper.ExpenseModelListToExpenseListMapper
 import com.andef.myfinance.data.database.expense.mapper.ExpenseToExpenseModelMapper
-import com.andef.myfinance.domain.database.expense.entities.Expense
-import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
-import com.andef.myfinance.domain.database.expense.repository.ExpenseRepository
+import com.andef.myfinance.domain.expense.entities.Expense
+import com.andef.myfinance.domain.expense.entities.ExpenseCategory
+import com.andef.myfinance.domain.expense.repository.ExpenseRepository
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import java.util.Date
 import javax.inject.Inject
@@ -16,15 +16,15 @@ class ExpenseRepositoryImpl @Inject constructor(
     private val dao: ExpenseDao,
     private val expenseToExpenseModelMapper: ExpenseToExpenseModelMapper,
     private val expenseModelListToExpenseListMapper: ExpenseModelListToExpenseListMapper
-) : ExpenseRepository {
-    override suspend fun addExpense(expense: Expense) {
+) : com.andef.myfinance.domain.expense.repository.ExpenseRepository {
+    override suspend fun addExpense(expense: com.andef.myfinance.domain.expense.entities.Expense) {
         dao.addExpense(expenseToExpenseModelMapper.map(expense))
     }
 
     override suspend fun changeExpense(
-        expense: Expense,
+        expense: com.andef.myfinance.domain.expense.entities.Expense,
         newAmount: Double?,
-        newCategory: ExpenseCategory?,
+        newCategory: com.andef.myfinance.domain.expense.entities.ExpenseCategory?,
         newComment: String?,
         newDate: Date?
     ) {
@@ -41,7 +41,7 @@ class ExpenseRepositoryImpl @Inject constructor(
         dao.removeExpense(id)
     }
 
-    override fun getExpenses(startDate: Date, endDate: Date): LiveData<List<Expense>> {
+    override fun getExpenses(startDate: Date, endDate: Date): LiveData<List<com.andef.myfinance.domain.expense.entities.Expense>> {
         return dao.getExpense(startDate.toStartOfDay().time, endDate.toStartOfDay().time).map {
             expenseModelListToExpenseListMapper.map(it)
         }
@@ -54,7 +54,7 @@ class ExpenseRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getExpensesAmount(expenses: List<Expense>): List<Double> {
+    override suspend fun getExpensesAmount(expenses: List<com.andef.myfinance.domain.expense.entities.Expense>): List<Double> {
         var productsAmount = 0.0
         var cafeAmount = 0.0
         var homeAmount = 0.0
@@ -67,16 +67,16 @@ class ExpenseRepositoryImpl @Inject constructor(
         var otherAmount = 0.0
         expenses.forEach { expense ->
             when (expense.category) {
-                ExpenseCategory.PRODUCTS -> productsAmount += expense.amount
-                ExpenseCategory.CAFE -> cafeAmount += expense.amount
-                ExpenseCategory.HOME -> homeAmount += expense.amount
-                ExpenseCategory.GIFTS -> giftsAmount += expense.amount
-                ExpenseCategory.STUDY -> studyAmount += expense.amount
-                ExpenseCategory.HEALTH -> healthAmount += expense.amount
-                ExpenseCategory.TRANSPORT -> transportAmount += expense.amount
-                ExpenseCategory.SPORT -> sportAmount += expense.amount
-                ExpenseCategory.CLOTHES -> clothesAmount += expense.amount
-                ExpenseCategory.OTHER -> otherAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.PRODUCTS -> productsAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.CAFE -> cafeAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.HOME -> homeAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.GIFTS -> giftsAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.STUDY -> studyAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.HEALTH -> healthAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.TRANSPORT -> transportAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.SPORT -> sportAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.CLOTHES -> clothesAmount += expense.amount
+                com.andef.myfinance.domain.expense.entities.ExpenseCategory.OTHER -> otherAmount += expense.amount
             }
         }
         return listOf(

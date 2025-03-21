@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andef.myfinance.domain.database.expense.entities.Expense
-import com.andef.myfinance.domain.database.expense.usecases.GetExpensesAmountUseCase
-import com.andef.myfinance.domain.database.expense.usecases.GetExpensesUseCase
-import com.andef.myfinance.domain.database.expense.usecases.GetFullAmountExpenseUseCase
+import com.andef.myfinance.domain.expense.entities.Expense
+import com.andef.myfinance.domain.expense.usecases.GetExpensesAmountUseCase
+import com.andef.myfinance.domain.expense.usecases.GetExpensesUseCase
+import com.andef.myfinance.domain.expense.usecases.GetFullAmountExpenseUseCase
 import com.andef.myfinance.presentation.ui.expense.DetailExpenseBarChartState
 import com.andef.myfinance.presentation.ui.expense.DetailExpensePieChartState
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,9 +18,9 @@ import java.util.Date
 import javax.inject.Inject
 
 class DetailExpenseViewModel @Inject constructor(
-    private val getExpensesUseCase: GetExpensesUseCase,
-    private val getFullAmountExpenseUseCase: GetFullAmountExpenseUseCase,
-    private val getExpensesAmountUseCase: GetExpensesAmountUseCase
+    private val getExpensesUseCase: com.andef.myfinance.domain.expense.usecases.GetExpensesUseCase,
+    private val getFullAmountExpenseUseCase: com.andef.myfinance.domain.expense.usecases.GetFullAmountExpenseUseCase,
+    private val getExpensesAmountUseCase: com.andef.myfinance.domain.expense.usecases.GetExpensesAmountUseCase
 ) : ViewModel() {
     private val _detailExpenseBarChartState = MutableLiveData<DetailExpenseBarChartState>()
     val detailExpenseBarChartState: LiveData<DetailExpenseBarChartState>
@@ -45,7 +45,7 @@ class DetailExpenseViewModel @Inject constructor(
         endDate: Date
     ) = getFullAmountExpenseUseCase.execute(startDate, endDate)
 
-    fun getExpenseAmountForBarChart(expenses: List<Expense>) {
+    fun getExpenseAmountForBarChart(expenses: List<com.andef.myfinance.domain.expense.entities.Expense>) {
         viewModelScope.launch(barChartExceptionHandler) {
             _detailExpenseBarChartState.value = DetailExpenseBarChartState.Loading
             val expensesAmount = withContext(Dispatchers.IO) {
@@ -55,7 +55,7 @@ class DetailExpenseViewModel @Inject constructor(
         }
     }
 
-    fun getExpensesAmountForPieChart(expenses: List<Expense>) {
+    fun getExpensesAmountForPieChart(expenses: List<com.andef.myfinance.domain.expense.entities.Expense>) {
         viewModelScope.launch(pieChartExceptionHandler) {
             _detailExpensePieChartState.value = DetailExpensePieChartState.Loading
             val expensesAmountPercent = withContext(Dispatchers.IO) {

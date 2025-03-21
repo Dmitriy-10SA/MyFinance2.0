@@ -19,14 +19,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andef.myfinance.domain.database.income.entities.Income
-import com.andef.myfinance.domain.database.income.entities.IncomeCategory
+import com.andef.myfinance.domain.income.entities.Income
+import com.andef.myfinance.domain.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.formatter.AmountFormatter
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 
 @Composable
-fun IncomeCard(income: Income, onIncomeCardClickListener: (Income) -> Unit) {
+fun IncomeCard(income: com.andef.myfinance.domain.income.entities.Income, onIncomeCardClickListener: (com.andef.myfinance.domain.income.entities.Income) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,10 +67,10 @@ fun IncomeCard(income: Income, onIncomeCardClickListener: (Income) -> Unit) {
 private fun DarkIncomeCardTest() {
     MyFinanceTheme(darkTheme = true) {
         IncomeCard(
-            Income(
+            com.andef.myfinance.domain.income.entities.Income(
                 id = 1,
                 amount = 10000.0,
-                category = IncomeCategory.SALARY,
+                category = com.andef.myfinance.domain.income.entities.IncomeCategory.SALARY,
                 comment = "",
                 date = Date()
             ),
@@ -84,10 +84,10 @@ private fun DarkIncomeCardTest() {
 private fun LightIncomeCardTest() {
     MyFinanceTheme(darkTheme = false) {
         IncomeCard(
-            Income(
+            com.andef.myfinance.domain.income.entities.Income(
                 id = 1,
                 amount = 10000.0,
-                category = IncomeCategory.SALARY,
+                category = com.andef.myfinance.domain.income.entities.IncomeCategory.SALARY,
                 comment = "",
                 date = Date()
             ),

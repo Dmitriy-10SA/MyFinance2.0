@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.database.expense.entities.Expense
+import com.andef.myfinance.domain.expense.entities.Expense
 import com.andef.myfinance.presentation.ui.fab.FABForCheckScreen
 import com.andef.myfinance.presentation.ui.rows.TopRowWithDateAndTotal
 import com.andef.myfinance.presentation.viewmodel.expense.ExpensesCheckViewModel
@@ -52,7 +52,7 @@ fun ExpensesCheckScreen(
     endDate: Date,
     isDarkTheme: Boolean,
     paddingValues: PaddingValues,
-    onExpenseClickListener: (Expense) -> Unit,
+    onExpenseClickListener: (com.andef.myfinance.domain.expense.entities.Expense) -> Unit,
     onFABClickListener: () -> Unit
 ) {
     val viewModel: ExpensesCheckViewModel = viewModel(factory = viewModelFactory)

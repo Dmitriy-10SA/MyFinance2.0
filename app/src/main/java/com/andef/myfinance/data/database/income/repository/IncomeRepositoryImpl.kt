@@ -5,9 +5,9 @@ import androidx.lifecycle.map
 import com.andef.myfinance.data.database.income.datasource.IncomeDao
 import com.andef.myfinance.data.database.income.mapper.IncomeModelListToIncomeListMapper
 import com.andef.myfinance.data.database.income.mapper.IncomeToIncomeModelMapper
-import com.andef.myfinance.domain.database.income.entities.Income
-import com.andef.myfinance.domain.database.income.entities.IncomeCategory
-import com.andef.myfinance.domain.database.income.repository.IncomeRepository
+import com.andef.myfinance.domain.income.entities.Income
+import com.andef.myfinance.domain.income.entities.IncomeCategory
+import com.andef.myfinance.domain.income.repository.IncomeRepository
 import com.andef.myfinance.presentation.utils.toStartOfDay
 import java.util.Date
 import javax.inject.Inject
@@ -16,15 +16,15 @@ class IncomeRepositoryImpl @Inject constructor(
     private val dao: IncomeDao,
     private val incomeToIncomeModelMapper: IncomeToIncomeModelMapper,
     private val incomeModelListToIncomeListMapper: IncomeModelListToIncomeListMapper
-) : IncomeRepository {
-    override suspend fun addIncome(income: Income) {
+) : com.andef.myfinance.domain.income.repository.IncomeRepository {
+    override suspend fun addIncome(income: com.andef.myfinance.domain.income.entities.Income) {
         dao.addIncome(incomeToIncomeModelMapper.map(income))
     }
 
     override suspend fun changeIncome(
-        income: Income,
+        income: com.andef.myfinance.domain.income.entities.Income,
         newAmount: Double?,
-        newCategory: IncomeCategory?,
+        newCategory: com.andef.myfinance.domain.income.entities.IncomeCategory?,
         newComment: String?,
         newDate: Date?
     ) {
@@ -41,7 +41,7 @@ class IncomeRepositoryImpl @Inject constructor(
         dao.removeIncome(id)
     }
 
-    override fun getIncomes(startDate: Date, endDate: Date): LiveData<List<Income>> {
+    override fun getIncomes(startDate: Date, endDate: Date): LiveData<List<com.andef.myfinance.domain.income.entities.Income>> {
         return dao.getIncomes(startDate.toStartOfDay().time, endDate.toStartOfDay().time).map {
             incomeModelListToIncomeListMapper.map(it)
         }
@@ -51,7 +51,7 @@ class IncomeRepositoryImpl @Inject constructor(
         return dao.getFullAmount(startDate.toStartOfDay().time, endDate.toStartOfDay().time)
     }
 
-    override suspend fun getIncomesAmount(incomes: List<Income>): List<Double> {
+    override suspend fun getIncomesAmount(incomes: List<com.andef.myfinance.domain.income.entities.Income>): List<Double> {
         var salaryAmount = 0.0
         var bankAmount = 0.0
         var luckAmount = 0.0
@@ -59,11 +59,11 @@ class IncomeRepositoryImpl @Inject constructor(
         var otherAmount = 0.0
         incomes.forEach { income ->
             when (income.category) {
-                IncomeCategory.SALARY -> salaryAmount += income.amount
-                IncomeCategory.BANK -> bankAmount += income.amount
-                IncomeCategory.LUCK -> luckAmount += income.amount
-                IncomeCategory.GIFTS -> giftsAmount += income.amount
-                IncomeCategory.OTHER -> otherAmount += income.amount
+                com.andef.myfinance.domain.income.entities.IncomeCategory.SALARY -> salaryAmount += income.amount
+                com.andef.myfinance.domain.income.entities.IncomeCategory.BANK -> bankAmount += income.amount
+                com.andef.myfinance.domain.income.entities.IncomeCategory.LUCK -> luckAmount += income.amount
+                com.andef.myfinance.domain.income.entities.IncomeCategory.GIFTS -> giftsAmount += income.amount
+                com.andef.myfinance.domain.income.entities.IncomeCategory.OTHER -> otherAmount += income.amount
             }
         }
         return listOf(salaryAmount, bankAmount, luckAmount, giftsAmount, otherAmount)

@@ -49,8 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.database.income.entities.Income
-import com.andef.myfinance.domain.database.income.entities.IncomeCategory
+import com.andef.myfinance.domain.income.entities.Income
+import com.andef.myfinance.domain.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.detail.DetailItem
 import com.andef.myfinance.presentation.detail.DetailScreenState
 import com.andef.myfinance.presentation.detail.DetailSegmentedButtonsRow
@@ -291,7 +291,7 @@ private fun WaitScreen(paddingValues: PaddingValues) {
 private fun DetailIncomeScreenPieChart(
     paddingValues: PaddingValues,
     viewModel: DetailIncomeViewModel,
-    incomes: List<Income>,
+    incomes: List<com.andef.myfinance.domain.income.entities.Income>,
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
@@ -374,7 +374,7 @@ private fun DetailIncomeScreenPieChart(
 private fun DetailIncomeScreenBarChart(
     paddingValues: PaddingValues,
     viewModel: DetailIncomeViewModel,
-    incomes: List<Income>,
+    incomes: List<com.andef.myfinance.domain.income.entities.Income>,
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
@@ -469,11 +469,11 @@ private fun DetailIncomeScreenBarChart(
 
 @Composable
 private fun FullInfo(incomesAmount: List<Double>) {
-    val incomes = mutableListOf<Income>()
+    val incomes = mutableListOf<com.andef.myfinance.domain.income.entities.Income>()
     for (i in incomesAmount.indices) {
         if (incomesAmount[i] != 0.0) {
             incomes.add(
-                Income(
+                com.andef.myfinance.domain.income.entities.Income(
                     amount = incomesAmount[i],
                     category = getCategory(i),
                     comment = "",
@@ -489,22 +489,22 @@ private fun FullInfo(incomesAmount: List<Double>) {
     }
 }
 
-private fun getCategory(i: Int): IncomeCategory {
+private fun getCategory(i: Int): com.andef.myfinance.domain.income.entities.IncomeCategory {
     return if (i == 0) {
-        IncomeCategory.SALARY
+        com.andef.myfinance.domain.income.entities.IncomeCategory.SALARY
     } else if (i == 1) {
-        IncomeCategory.BANK
+        com.andef.myfinance.domain.income.entities.IncomeCategory.BANK
     } else if (i == 2) {
-        IncomeCategory.LUCK
+        com.andef.myfinance.domain.income.entities.IncomeCategory.LUCK
     } else if (i == 3) {
-        IncomeCategory.GIFTS
+        com.andef.myfinance.domain.income.entities.IncomeCategory.GIFTS
     } else {
-        IncomeCategory.OTHER
+        com.andef.myfinance.domain.income.entities.IncomeCategory.OTHER
     }
 }
 
 @Composable
-private fun FullInfoCardOfExpense(income: Income) {
+private fun FullInfoCardOfExpense(income: com.andef.myfinance.domain.income.entities.Income) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

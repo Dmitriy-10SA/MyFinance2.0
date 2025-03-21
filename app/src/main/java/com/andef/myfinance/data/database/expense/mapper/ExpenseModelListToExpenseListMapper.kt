@@ -1,13 +1,13 @@
 package com.andef.myfinance.data.database.expense.mapper
 
 import com.andef.myfinance.data.database.expense.model.ExpenseModel
-import com.andef.myfinance.domain.database.expense.entities.Expense
+import com.andef.myfinance.domain.expense.entities.Expense
 import java.util.Date
 import javax.inject.Inject
 
 class ExpenseModelListToExpenseListMapper @Inject constructor() {
-    private fun map(expenseModel: ExpenseModel): Expense {
-        return Expense(
+    private fun map(expenseModel: ExpenseModel): com.andef.myfinance.domain.expense.entities.Expense {
+        return com.andef.myfinance.domain.expense.entities.Expense(
             id = expenseModel.id,
             amount = expenseModel.amount,
             category = expenseModel.category,
@@ -16,7 +16,7 @@ class ExpenseModelListToExpenseListMapper @Inject constructor() {
         )
     }
 
-    fun map(expenseModelList: List<ExpenseModel>): List<Expense> {
+    fun map(expenseModelList: List<ExpenseModel>): List<com.andef.myfinance.domain.expense.entities.Expense> {
         return expenseModelList.map {
             this.map(it)
         }

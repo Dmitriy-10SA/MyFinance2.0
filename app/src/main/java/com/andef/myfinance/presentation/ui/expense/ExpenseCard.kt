@@ -19,14 +19,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andef.myfinance.domain.database.expense.entities.Expense
-import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
+import com.andef.myfinance.domain.expense.entities.Expense
+import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.presentation.formatter.AmountFormatter
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import java.util.Date
 
 @Composable
-fun ExpenseCard(expense: Expense, onExpenseCardClickListener: (Expense) -> Unit) {
+fun ExpenseCard(expense: com.andef.myfinance.domain.expense.entities.Expense, onExpenseCardClickListener: (com.andef.myfinance.domain.expense.entities.Expense) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,10 +67,10 @@ fun ExpenseCard(expense: Expense, onExpenseCardClickListener: (Expense) -> Unit)
 private fun DarkExpenseCardTest() {
     MyFinanceTheme(darkTheme = true) {
         ExpenseCard(
-            Expense(
+            com.andef.myfinance.domain.expense.entities.Expense(
                 id = 1,
                 amount = 10000.0,
-                category = ExpenseCategory.PRODUCTS,
+                category = com.andef.myfinance.domain.expense.entities.ExpenseCategory.PRODUCTS,
                 comment = "",
                 date = Date()
             ),
@@ -84,10 +84,10 @@ private fun DarkExpenseCardTest() {
 private fun LightExpenseCardTest() {
     MyFinanceTheme(darkTheme = false) {
         ExpenseCard(
-            Expense(
+            com.andef.myfinance.domain.expense.entities.Expense(
                 id = 1,
                 amount = 10000.0,
-                category = ExpenseCategory.PRODUCTS,
+                category = com.andef.myfinance.domain.expense.entities.ExpenseCategory.PRODUCTS,
                 comment = "",
                 date = Date()
             ),

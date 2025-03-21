@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.network.currency.entities.CurrencyRub
+import com.andef.myfinance.domain.currency.CurrencyRub
 import com.andef.myfinance.presentation.error.NetworkErrorScreen
 import com.andef.myfinance.presentation.utils.toDate
 import com.andef.myfinance.presentation.viewmodel.currency.CurrencyViewModel
@@ -201,7 +201,7 @@ private fun TopOfTopBar(onBackHandlerClickListener: () -> Unit) {
 
 @Composable
 private fun CurrencyWithPercentListScreen(
-    currency: List<Pair<CurrencyRub, Double>>,
+    currency: List<Pair<com.andef.myfinance.domain.currency.CurrencyRub, Double>>,
     paddingValues: PaddingValues,
     isDarkTheme: Boolean,
     isAll: Boolean = false

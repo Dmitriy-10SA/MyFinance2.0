@@ -61,8 +61,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.database.expense.entities.Expense
-import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
+import com.andef.myfinance.domain.expense.entities.Expense
+import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.presentation.formatter.DateFormatter
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
 import com.andef.myfinance.presentation.utils.toStartOfDay
@@ -108,18 +108,18 @@ fun ExpenseScreen(
     onBackHandlerClickListener: () -> Unit,
     isAddMode: Boolean = true,
     isDarkTheme: Boolean,
-    expense: Expense? = null
+    expense: com.andef.myfinance.domain.expense.entities.Expense? = null
 ) {
     val viewModel: ExpenseViewModel = viewModel(factory = viewModelFactory)
 
     val amount: MutableState<String>
     val comment: MutableState<String>
-    val category: MutableState<ExpenseCategory>
+    val category: MutableState<com.andef.myfinance.domain.expense.entities.ExpenseCategory>
     val dateState: MutableState<Date>
     if (isAddMode) {
         amount = remember { mutableStateOf("") }
         comment = remember { mutableStateOf("") }
-        category = remember { mutableStateOf(ExpenseCategory.PRODUCTS) }
+        category = remember { mutableStateOf(com.andef.myfinance.domain.expense.entities.ExpenseCategory.PRODUCTS) }
         dateState = remember { mutableStateOf(Date()) }
     } else {
         amount = remember { mutableStateOf(expense!!.amount.toString()) }
@@ -259,7 +259,7 @@ fun ExpenseScreen(
                                 onClick = {
                                     if (isAddMode) {
                                         viewModel.addExpense(
-                                            Expense(
+                                            com.andef.myfinance.domain.expense.entities.Expense(
                                                 amount = amount.value.toDouble(),
                                                 category = category.value,
                                                 comment = comment.value,
@@ -336,21 +336,21 @@ private fun isFullInfoForAddOrChange(amount: MutableState<String>): Boolean {
 
 @Composable
 private fun CategoryChoose(
-    category: MutableState<ExpenseCategory>,
-    onCardClickListener: (ExpenseCategory) -> Unit,
+    category: MutableState<com.andef.myfinance.domain.expense.entities.ExpenseCategory>,
+    onCardClickListener: (com.andef.myfinance.domain.expense.entities.ExpenseCategory) -> Unit,
     isDarkTheme: Boolean
 ) {
     val items = listOf(
-        ExpenseCategory.PRODUCTS,
-        ExpenseCategory.CAFE,
-        ExpenseCategory.HOME,
-        ExpenseCategory.GIFTS,
-        ExpenseCategory.STUDY,
-        ExpenseCategory.HEALTH,
-        ExpenseCategory.TRANSPORT,
-        ExpenseCategory.SPORT,
-        ExpenseCategory.CLOTHES,
-        ExpenseCategory.OTHER
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.PRODUCTS,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.CAFE,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.HOME,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.GIFTS,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.STUDY,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.HEALTH,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.TRANSPORT,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.SPORT,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.CLOTHES,
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.OTHER
     )
     Column {
         ExpenseCategoryCardsRow(items, 0, 3, isDarkTheme, category, onCardClickListener)
@@ -365,12 +365,12 @@ private fun CategoryChoose(
 
 @Composable
 private fun ExpenseCategoryCardsRow(
-    items: List<ExpenseCategory>,
+    items: List<com.andef.myfinance.domain.expense.entities.ExpenseCategory>,
     startI: Int,
     endI: Int,
     isDarkTheme: Boolean,
-    category: MutableState<ExpenseCategory>,
-    onCardClickListener: (ExpenseCategory) -> Unit
+    category: MutableState<com.andef.myfinance.domain.expense.entities.ExpenseCategory>,
+    onCardClickListener: (com.andef.myfinance.domain.expense.entities.ExpenseCategory) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -385,11 +385,11 @@ private fun ExpenseCategoryCardsRow(
 
 @Composable
 private fun ExpenseCategoryCard(
-    items: List<ExpenseCategory>,
+    items: List<com.andef.myfinance.domain.expense.entities.ExpenseCategory>,
     i: Int,
     isDarkTheme: Boolean,
-    category: MutableState<ExpenseCategory>,
-    onCardClickListener: (ExpenseCategory) -> Unit
+    category: MutableState<com.andef.myfinance.domain.expense.entities.ExpenseCategory>,
+    onCardClickListener: (com.andef.myfinance.domain.expense.entities.ExpenseCategory) -> Unit
 ) {
     Card(
         modifier = Modifier.padding(8.dp),

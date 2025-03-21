@@ -12,18 +12,18 @@ import com.andef.myfinance.data.network.currency.mapper.gbp.GbpRubDtoToGbpRubMap
 import com.andef.myfinance.data.network.currency.mapper.hkd.HkdRubDtoToHkdRubMapper
 import com.andef.myfinance.data.network.currency.mapper.jpy.JpyRubDtoToJpyRubMapper
 import com.andef.myfinance.data.network.currency.mapper.usd.UsdRubDtoToUsdRubMapper
-import com.andef.myfinance.domain.network.currency.entities.aud.AudRub
-import com.andef.myfinance.domain.network.currency.entities.btc.BtcRub
-import com.andef.myfinance.domain.network.currency.entities.cad.CadRub
-import com.andef.myfinance.domain.network.currency.entities.chf.ChfRub
-import com.andef.myfinance.domain.network.currency.entities.cny.CnyRub
-import com.andef.myfinance.domain.network.currency.entities.eth.EthRub
-import com.andef.myfinance.domain.network.currency.entities.eur.EurRub
-import com.andef.myfinance.domain.network.currency.entities.gbp.GbpRub
-import com.andef.myfinance.domain.network.currency.entities.hkd.HkdRub
-import com.andef.myfinance.domain.network.currency.entities.jpy.JpyRub
-import com.andef.myfinance.domain.network.currency.entities.usd.UsdRub
-import com.andef.myfinance.domain.network.currency.repository.CurrencyRubRepository
+import com.andef.myfinance.domain.currency.AudRub
+import com.andef.myfinance.domain.currency.BtcRub
+import com.andef.myfinance.domain.currency.CadRub
+import com.andef.myfinance.domain.currency.ChfRub
+import com.andef.myfinance.domain.currency.CnyRub
+import com.andef.myfinance.domain.currency.EthRub
+import com.andef.myfinance.domain.currency.EurRub
+import com.andef.myfinance.domain.currency.GbpRub
+import com.andef.myfinance.domain.currency.HkdRub
+import com.andef.myfinance.domain.currency.JpyRub
+import com.andef.myfinance.domain.currency.UsdRub
+import com.andef.myfinance.domain.currency.repository.CurrencyRubRepository
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -42,92 +42,92 @@ class CurrencyRubRepositoryImpl @Inject constructor(
     private val jpyRubMapper: JpyRubDtoToJpyRubMapper,
     private val usdRubMapper: UsdRubDtoToUsdRubMapper,
     private val hkdRubMapper: HkdRubDtoToHkdRubMapper
-) : CurrencyRubRepository {
-    override suspend fun getAudRub(): AudRub {
+) : com.andef.myfinance.domain.currency.repository.CurrencyRubRepository {
+    override suspend fun getAudRub(): com.andef.myfinance.domain.currency.AudRub {
         return audRubMapper.map(apiService.getAudRub())
     }
 
-    override suspend fun getBtcRub(): BtcRub {
+    override suspend fun getBtcRub(): com.andef.myfinance.domain.currency.BtcRub {
         return btcRubMapper.map(apiService.getBtcRub())
     }
 
-    override suspend fun getCadRub(): CadRub {
+    override suspend fun getCadRub(): com.andef.myfinance.domain.currency.CadRub {
         return cadRubMapper.map(apiService.getCadRub())
     }
 
-    override suspend fun getChfRub(): ChfRub {
+    override suspend fun getChfRub(): com.andef.myfinance.domain.currency.ChfRub {
         return chfRubMapper.map(apiService.getChfRub())
     }
 
-    override suspend fun getCnyRub(): CnyRub {
+    override suspend fun getCnyRub(): com.andef.myfinance.domain.currency.CnyRub {
         return cnyRubMapper.map(apiService.getCnyRub())
     }
 
-    override suspend fun getEthRub(): EthRub {
+    override suspend fun getEthRub(): com.andef.myfinance.domain.currency.EthRub {
         return ethRubMapper.map(apiService.getEthRub())
     }
 
-    override suspend fun getEurRub(): EurRub {
+    override suspend fun getEurRub(): com.andef.myfinance.domain.currency.EurRub {
         return eurRubMapper.map(apiService.getEurRub())
     }
 
-    override suspend fun getGbpRub(): GbpRub {
+    override suspend fun getGbpRub(): com.andef.myfinance.domain.currency.GbpRub {
         return gbpRubMapper.map(apiService.getGbpRub())
     }
 
-    override suspend fun getJpyRub(): JpyRub {
+    override suspend fun getJpyRub(): com.andef.myfinance.domain.currency.JpyRub {
         return jpyRubMapper.map(apiService.getJpyRub())
     }
 
-    override suspend fun getUsdRub(): UsdRub {
+    override suspend fun getUsdRub(): com.andef.myfinance.domain.currency.UsdRub {
         return usdRubMapper.map(apiService.getUsdRub())
     }
 
-    override suspend fun getHkdRub(): HkdRub {
+    override suspend fun getHkdRub(): com.andef.myfinance.domain.currency.HkdRub {
         return hkdRubMapper.map(apiService.getHkdRub())
     }
 
-    override suspend fun getAudRub(date: Date): AudRub {
+    override suspend fun getAudRub(date: Date): com.andef.myfinance.domain.currency.AudRub {
         return audRubMapper.map(apiService.getAudRub(formatDate(date)))
     }
 
-    override suspend fun getBtcRub(date: Date): BtcRub {
+    override suspend fun getBtcRub(date: Date): com.andef.myfinance.domain.currency.BtcRub {
         return btcRubMapper.map(apiService.getBtcRub(formatDate(date)))
     }
 
-    override suspend fun getCadRub(date: Date): CadRub {
+    override suspend fun getCadRub(date: Date): com.andef.myfinance.domain.currency.CadRub {
         return cadRubMapper.map(apiService.getCadRub(formatDate(date)))
     }
 
-    override suspend fun getChfRub(date: Date): ChfRub {
+    override suspend fun getChfRub(date: Date): com.andef.myfinance.domain.currency.ChfRub {
         return chfRubMapper.map(apiService.getChfRub(formatDate(date)))
     }
 
-    override suspend fun getCnyRub(date: Date): CnyRub {
+    override suspend fun getCnyRub(date: Date): com.andef.myfinance.domain.currency.CnyRub {
         return cnyRubMapper.map(apiService.getCnyRub(formatDate(date)))
     }
 
-    override suspend fun getEthRub(date: Date): EthRub {
+    override suspend fun getEthRub(date: Date): com.andef.myfinance.domain.currency.EthRub {
         return ethRubMapper.map(apiService.getEthRub(formatDate(date)))
     }
 
-    override suspend fun getEurRub(date: Date): EurRub {
+    override suspend fun getEurRub(date: Date): com.andef.myfinance.domain.currency.EurRub {
         return eurRubMapper.map(apiService.getEurRub(formatDate(date)))
     }
 
-    override suspend fun getGbpRub(date: Date): GbpRub {
+    override suspend fun getGbpRub(date: Date): com.andef.myfinance.domain.currency.GbpRub {
         return gbpRubMapper.map(apiService.getGbpRub(formatDate(date)))
     }
 
-    override suspend fun getJpyRub(date: Date): JpyRub {
+    override suspend fun getJpyRub(date: Date): com.andef.myfinance.domain.currency.JpyRub {
         return jpyRubMapper.map(apiService.getJpyRub(formatDate(date)))
     }
 
-    override suspend fun getUsdRub(date: Date): UsdRub {
+    override suspend fun getUsdRub(date: Date): com.andef.myfinance.domain.currency.UsdRub {
         return usdRubMapper.map(apiService.getUsdRub(formatDate(date)))
     }
 
-    override suspend fun getHkdRub(date: Date): HkdRub {
+    override suspend fun getHkdRub(date: Date): com.andef.myfinance.domain.currency.HkdRub {
         return hkdRubMapper.map(apiService.getHkdRub(formatDate(date)))
     }
 

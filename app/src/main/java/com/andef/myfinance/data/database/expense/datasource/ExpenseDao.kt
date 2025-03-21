@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.andef.myfinance.data.database.expense.model.ExpenseModel
-import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
+import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 
 @Dao
 interface ExpenseDao {
@@ -21,7 +21,7 @@ interface ExpenseDao {
     suspend fun changeExpense(
         id: Int,
         newAmount: Double,
-        newCategory: ExpenseCategory,
+        newCategory: com.andef.myfinance.domain.expense.entities.ExpenseCategory,
         newComment: String,
         newDate: Long
     )

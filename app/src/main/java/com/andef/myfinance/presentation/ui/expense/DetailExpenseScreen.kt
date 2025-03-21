@@ -49,8 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.database.expense.entities.Expense
-import com.andef.myfinance.domain.database.expense.entities.ExpenseCategory
+import com.andef.myfinance.domain.expense.entities.Expense
+import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.presentation.detail.DetailItem
 import com.andef.myfinance.presentation.detail.DetailScreenState
 import com.andef.myfinance.presentation.detail.DetailSegmentedButtonsRow
@@ -291,7 +291,7 @@ private fun DetailExpenseScreenContent(
 private fun DetailExpenseScreenPieChart(
     paddingValues: PaddingValues,
     viewModel: DetailExpenseViewModel,
-    expenses: List<Expense>,
+    expenses: List<com.andef.myfinance.domain.expense.entities.Expense>,
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
@@ -414,7 +414,7 @@ private fun DetailExpenseScreenPieChart(
 private fun DetailExpenseScreenBarChart(
     paddingValues: PaddingValues,
     viewModel: DetailExpenseViewModel,
-    expenses: List<Expense>,
+    expenses: List<com.andef.myfinance.domain.expense.entities.Expense>,
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
@@ -559,11 +559,11 @@ private fun ErrorScreen(paddingValues: PaddingValues) {
 
 @Composable
 private fun FullInfo(expensesAmount: List<Double>) {
-    val expenses = mutableListOf<Expense>()
+    val expenses = mutableListOf<com.andef.myfinance.domain.expense.entities.Expense>()
     for (i in expensesAmount.indices) {
         if (expensesAmount[i] != 0.0) {
             expenses.add(
-                Expense(
+                com.andef.myfinance.domain.expense.entities.Expense(
                     amount = expensesAmount[i],
                     category = getCategory(i),
                     comment = "",
@@ -579,32 +579,32 @@ private fun FullInfo(expensesAmount: List<Double>) {
     }
 }
 
-private fun getCategory(i: Int): ExpenseCategory {
+private fun getCategory(i: Int): com.andef.myfinance.domain.expense.entities.ExpenseCategory {
     return if (i == 0) {
-        ExpenseCategory.PRODUCTS
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.PRODUCTS
     } else if (i == 1) {
-        ExpenseCategory.CAFE
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.CAFE
     } else if (i == 2) {
-        ExpenseCategory.HOME
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.HOME
     } else if (i == 3) {
-        ExpenseCategory.GIFTS
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.GIFTS
     } else if (i == 4) {
-        ExpenseCategory.STUDY
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.STUDY
     } else if (i == 5) {
-        ExpenseCategory.HEALTH
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.HEALTH
     } else if (i == 6) {
-        ExpenseCategory.TRANSPORT
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.TRANSPORT
     } else if (i == 7) {
-        ExpenseCategory.SPORT
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.SPORT
     } else if (i == 8) {
-        ExpenseCategory.CLOTHES
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.CLOTHES
     } else {
-        ExpenseCategory.OTHER
+        com.andef.myfinance.domain.expense.entities.ExpenseCategory.OTHER
     }
 }
 
 @Composable
-private fun FullInfoCardOfExpense(expense: Expense) {
+private fun FullInfoCardOfExpense(expense: com.andef.myfinance.domain.expense.entities.Expense) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andef.myfinance.domain.network.currency.entities.CurrencyRub
-import com.andef.myfinance.domain.network.currency.usecases.aud.GetAudRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.btc.GetBtcRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.cad.GetCadRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.chf.GetChfRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.cny.GetCnyRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.eth.GetEthRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.eur.GetEurRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.gbp.GetGbpRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.hkd.GetHkdRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.jpy.GetJpyRubUseCase
-import com.andef.myfinance.domain.network.currency.usecases.usd.GetUsdRubUseCase
+import com.andef.myfinance.domain.currency.CurrencyRub
+import com.andef.myfinance.domain.currency.usecases.GetAudRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetBtcRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetCadRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetChfRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetCnyRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetEthRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetEurRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetGbpRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetHkdRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetJpyRubUseCase
+import com.andef.myfinance.domain.currency.usecases.GetUsdRubUseCase
 import com.andef.myfinance.presentation.ui.currency.CurrencyState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -27,17 +27,17 @@ import java.util.Date
 import javax.inject.Inject
 
 class CurrencyViewModel @Inject constructor(
-    private val getAudRubUseCase: GetAudRubUseCase,
-    private val getBtcRubUseCase: GetBtcRubUseCase,
-    private val getCadRubUseCase: GetCadRubUseCase,
-    private val getChfRubUseCase: GetChfRubUseCase,
-    private val getCnyRubUseCase: GetCnyRubUseCase,
-    private val getEthRubUseCase: GetEthRubUseCase,
-    private val getEurRubUseCase: GetEurRubUseCase,
-    private val getGbpRubUseCase: GetGbpRubUseCase,
-    private val getJpyRubUseCase: GetJpyRubUseCase,
-    private val getUsdRubUseCase: GetUsdRubUseCase,
-    private val getHkdRubUseCase: GetHkdRubUseCase
+    private val getAudRubUseCase: com.andef.myfinance.domain.currency.usecases.GetAudRubUseCase,
+    private val getBtcRubUseCase: com.andef.myfinance.domain.currency.usecases.GetBtcRubUseCase,
+    private val getCadRubUseCase: com.andef.myfinance.domain.currency.usecases.GetCadRubUseCase,
+    private val getChfRubUseCase: com.andef.myfinance.domain.currency.usecases.GetChfRubUseCase,
+    private val getCnyRubUseCase: com.andef.myfinance.domain.currency.usecases.GetCnyRubUseCase,
+    private val getEthRubUseCase: com.andef.myfinance.domain.currency.usecases.GetEthRubUseCase,
+    private val getEurRubUseCase: com.andef.myfinance.domain.currency.usecases.GetEurRubUseCase,
+    private val getGbpRubUseCase: com.andef.myfinance.domain.currency.usecases.GetGbpRubUseCase,
+    private val getJpyRubUseCase: com.andef.myfinance.domain.currency.usecases.GetJpyRubUseCase,
+    private val getUsdRubUseCase: com.andef.myfinance.domain.currency.usecases.GetUsdRubUseCase,
+    private val getHkdRubUseCase: com.andef.myfinance.domain.currency.usecases.GetHkdRubUseCase
 ) : ViewModel() {
     private val _state = MutableLiveData<CurrencyState>()
     val state: LiveData<CurrencyState>
@@ -52,7 +52,7 @@ class CurrencyViewModel @Inject constructor(
     fun loadCurrency(date: Date) {
         viewModelScope.launch(exceptionHandler) {
             _state.value = CurrencyState.Loading
-            val allCurrency = mutableListOf<Pair<CurrencyRub, Double>>()
+            val allCurrency = mutableListOf<Pair<com.andef.myfinance.domain.currency.CurrencyRub, Double>>()
             val bestCurrency = withContext(Dispatchers.IO) {
                 val usdRubNow = async { getUsdRubUseCase.execute() }
                 val usdRubBefore = async { getUsdRubUseCase.execute(date) }
@@ -65,7 +65,7 @@ class CurrencyViewModel @Inject constructor(
 
                 val now = listOf(usdRubNow, eurRubNow, cnyRubNow).awaitAll()
                 val before = listOf(usdRubBefore, eurRubBefore, cnyRubBefore).awaitAll()
-                val outList = mutableListOf<Pair<CurrencyRub, Double>>()
+                val outList = mutableListOf<Pair<com.andef.myfinance.domain.currency.CurrencyRub, Double>>()
                 for (i in 0..2) {
                     outList.add(now[i] to calcPercent(now[i].amount, before[i].amount))
                 }
@@ -85,7 +85,7 @@ class CurrencyViewModel @Inject constructor(
 
                 val now = listOf(jpyRubNow, gbpRubNow, btcRubNow).awaitAll()
                 val before = listOf(jpyRubBefore, gbpRubBefore, btcRubBefore).awaitAll()
-                val outList = mutableListOf<Pair<CurrencyRub, Double>>()
+                val outList = mutableListOf<Pair<com.andef.myfinance.domain.currency.CurrencyRub, Double>>()
                 for (i in 0..2) {
                     outList.add(now[i] to calcPercent(now[i].amount, before[i].amount))
                 }
@@ -105,7 +105,7 @@ class CurrencyViewModel @Inject constructor(
 
                 val now = listOf(ethRubNow, chfRubNow, audRubNow).awaitAll()
                 val before = listOf(ethRubBefore, chfRubBefore, audRubBefore).awaitAll()
-                val outList = mutableListOf<Pair<CurrencyRub, Double>>()
+                val outList = mutableListOf<Pair<com.andef.myfinance.domain.currency.CurrencyRub, Double>>()
                 for (i in 0..2) {
                     outList.add(now[i] to calcPercent(now[i].amount, before[i].amount))
                 }
@@ -122,7 +122,7 @@ class CurrencyViewModel @Inject constructor(
 
                 val now = listOf(cadRubNow, hkdRubNow).awaitAll()
                 val before = listOf(cadRubBefore, hkdRubBefore).awaitAll()
-                val outList = mutableListOf<Pair<CurrencyRub, Double>>()
+                val outList = mutableListOf<Pair<com.andef.myfinance.domain.currency.CurrencyRub, Double>>()
                 for (i in 0..1) {
                     outList.add(now[i] to calcPercent(now[i].amount, before[i].amount))
                 }

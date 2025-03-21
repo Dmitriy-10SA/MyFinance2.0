@@ -61,8 +61,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.database.income.entities.Income
-import com.andef.myfinance.domain.database.income.entities.IncomeCategory
+import com.andef.myfinance.domain.income.entities.Income
+import com.andef.myfinance.domain.income.entities.IncomeCategory
 import com.andef.myfinance.presentation.formatter.DateFormatter
 import com.andef.myfinance.presentation.ui.datepicker.MyFinanceDatePicker
 import com.andef.myfinance.presentation.utils.toStartOfDay
@@ -108,18 +108,18 @@ fun IncomeScreen(
     onBackHandlerClickListener: () -> Unit,
     isAddMode: Boolean = true,
     isDarkTheme: Boolean,
-    income: Income? = null
+    income: com.andef.myfinance.domain.income.entities.Income? = null
 ) {
     val viewModel: IncomeViewModel = viewModel(factory = viewModelFactory)
 
     val amount: MutableState<String>
     val comment: MutableState<String>
-    val category: MutableState<IncomeCategory>
+    val category: MutableState<com.andef.myfinance.domain.income.entities.IncomeCategory>
     val dateState: MutableState<Date>
     if (isAddMode) {
         amount = remember { mutableStateOf("") }
         comment = remember { mutableStateOf("") }
-        category = remember { mutableStateOf(IncomeCategory.SALARY) }
+        category = remember { mutableStateOf(com.andef.myfinance.domain.income.entities.IncomeCategory.SALARY) }
         dateState = remember { mutableStateOf(Date()) }
     } else {
         amount = remember { mutableStateOf(income!!.amount.toString()) }
@@ -259,7 +259,7 @@ fun IncomeScreen(
                                 onClick = {
                                     if (isAddMode) {
                                         viewModel.addIncome(
-                                            Income(
+                                            com.andef.myfinance.domain.income.entities.Income(
                                                 amount = amount.value.toDouble(),
                                                 category = category.value,
                                                 comment = comment.value,
@@ -337,16 +337,16 @@ private fun isFullInfoForAddOrChange(amount: MutableState<String>): Boolean {
 
 @Composable
 private fun CategoryChoose(
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit,
+    category: MutableState<com.andef.myfinance.domain.income.entities.IncomeCategory>,
+    onCardClickListener: (com.andef.myfinance.domain.income.entities.IncomeCategory) -> Unit,
     isDarkTheme: Boolean
 ) {
     val items = listOf(
-        IncomeCategory.SALARY,
-        IncomeCategory.BANK,
-        IncomeCategory.LUCK,
-        IncomeCategory.GIFTS,
-        IncomeCategory.OTHER
+        com.andef.myfinance.domain.income.entities.IncomeCategory.SALARY,
+        com.andef.myfinance.domain.income.entities.IncomeCategory.BANK,
+        com.andef.myfinance.domain.income.entities.IncomeCategory.LUCK,
+        com.andef.myfinance.domain.income.entities.IncomeCategory.GIFTS,
+        com.andef.myfinance.domain.income.entities.IncomeCategory.OTHER
     )
     Column {
         IncomesCategoryCardsRow(items, 0, 3, isDarkTheme, category, onCardClickListener)
@@ -357,12 +357,12 @@ private fun CategoryChoose(
 
 @Composable
 private fun IncomesCategoryCardsRow(
-    items: List<IncomeCategory>,
+    items: List<com.andef.myfinance.domain.income.entities.IncomeCategory>,
     startI: Int,
     endI: Int,
     isDarkTheme: Boolean,
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit
+    category: MutableState<com.andef.myfinance.domain.income.entities.IncomeCategory>,
+    onCardClickListener: (com.andef.myfinance.domain.income.entities.IncomeCategory) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -377,11 +377,11 @@ private fun IncomesCategoryCardsRow(
 
 @Composable
 private fun IncomeCategoryCard(
-    items: List<IncomeCategory>,
+    items: List<com.andef.myfinance.domain.income.entities.IncomeCategory>,
     i: Int,
     isDarkTheme: Boolean,
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit
+    category: MutableState<com.andef.myfinance.domain.income.entities.IncomeCategory>,
+    onCardClickListener: (com.andef.myfinance.domain.income.entities.IncomeCategory) -> Unit
 ) {
     Card(
         modifier = Modifier.padding(8.dp),

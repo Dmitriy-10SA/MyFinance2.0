@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.andef.myfinance.data.database.income.model.IncomeModel
-import com.andef.myfinance.domain.database.income.entities.IncomeCategory
+import com.andef.myfinance.domain.income.entities.IncomeCategory
 
 @Dao
 interface IncomeDao {
@@ -21,7 +21,7 @@ interface IncomeDao {
     suspend fun changeIncome(
         id: Int,
         newAmount: Double,
-        newCategory: IncomeCategory,
+        newCategory: com.andef.myfinance.domain.income.entities.IncomeCategory,
         newComment: String,
         newDate: Long
     )

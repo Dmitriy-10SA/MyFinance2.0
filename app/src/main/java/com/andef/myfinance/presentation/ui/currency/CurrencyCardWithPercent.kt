@@ -23,14 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andef.myfinance.R
-import com.andef.myfinance.domain.network.currency.entities.CurrencyRub
-import com.andef.myfinance.domain.network.currency.entities.aud.AudRub
+import com.andef.myfinance.domain.currency.CurrencyRub
+import com.andef.myfinance.domain.currency.AudRub
 import com.andef.myfinance.presentation.formatter.AmountFormatter
 import com.andef.myfinance.presentation.formatter.PercentFormatter
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 
 @Composable
-fun CurrencyCardWithPercent(currencyRub: CurrencyRub, percent: Double, isDarkTheme: Boolean) {
+fun CurrencyCardWithPercent(currencyRub: com.andef.myfinance.domain.currency.CurrencyRub, percent: Double, isDarkTheme: Boolean) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -85,7 +85,7 @@ fun CurrencyCardWithPercent(currencyRub: CurrencyRub, percent: Double, isDarkThe
 @Composable
 private fun TestDark() {
     MyFinanceTheme(darkTheme = true) {
-        CurrencyCardWithPercent(AudRub(1000.00), -100.1414, true)
+        CurrencyCardWithPercent(com.andef.myfinance.domain.currency.AudRub(1000.00), -100.1414, true)
     }
 }
 
@@ -93,6 +93,6 @@ private fun TestDark() {
 @Composable
 private fun TestLight() {
     MyFinanceTheme(darkTheme = false) {
-        CurrencyCardWithPercent(AudRub(1000.00), -100.11244, false)
+        CurrencyCardWithPercent(com.andef.myfinance.domain.currency.AudRub(1000.00), -100.11244, false)
     }
 }

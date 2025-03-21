@@ -2,9 +2,9 @@ package com.andef.myfinance.presentation.viewmodel.income
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andef.myfinance.domain.database.income.usecases.GetFullAmountIncomeUseCase
-import com.andef.myfinance.domain.database.income.usecases.GetIncomesUseCase
-import com.andef.myfinance.domain.database.income.usecases.RemoveIncomeUseCase
+import com.andef.myfinance.domain.income.usecases.GetFullAmountIncomeUseCase
+import com.andef.myfinance.domain.income.usecases.GetIncomesUseCase
+import com.andef.myfinance.domain.income.usecases.RemoveIncomeUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,9 +12,9 @@ import java.util.Date
 import javax.inject.Inject
 
 class IncomesCheckViewModel @Inject constructor(
-    private val getIncomesUseCase: GetIncomesUseCase,
-    private val getFullAmountUseCase: GetFullAmountIncomeUseCase,
-    private val removeIncomeUseCase: RemoveIncomeUseCase
+    private val getIncomesUseCase: com.andef.myfinance.domain.income.usecases.GetIncomesUseCase,
+    private val getFullAmountUseCase: com.andef.myfinance.domain.income.usecases.GetFullAmountIncomeUseCase,
+    private val removeIncomeUseCase: com.andef.myfinance.domain.income.usecases.RemoveIncomeUseCase
 ) : ViewModel() {
     private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 

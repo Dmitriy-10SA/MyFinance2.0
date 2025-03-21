@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andef.myfinance.domain.database.income.entities.Income
-import com.andef.myfinance.domain.database.income.usecases.GetFullAmountIncomeUseCase
-import com.andef.myfinance.domain.database.income.usecases.GetIncomesAmountUseCase
-import com.andef.myfinance.domain.database.income.usecases.GetIncomesUseCase
+import com.andef.myfinance.domain.income.entities.Income
+import com.andef.myfinance.domain.income.usecases.GetFullAmountIncomeUseCase
+import com.andef.myfinance.domain.income.usecases.GetIncomesAmountUseCase
+import com.andef.myfinance.domain.income.usecases.GetIncomesUseCase
 import com.andef.myfinance.presentation.ui.income.DetailIncomeBarChartState
 import com.andef.myfinance.presentation.ui.income.DetailIncomePieChartState
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,9 +18,9 @@ import java.util.Date
 import javax.inject.Inject
 
 class DetailIncomeViewModel @Inject constructor(
-    private val getIncomesUseCase: GetIncomesUseCase,
-    private val getFullAmountIncomeUseCase: GetFullAmountIncomeUseCase,
-    private val getIncomesAmount: GetIncomesAmountUseCase
+    private val getIncomesUseCase: com.andef.myfinance.domain.income.usecases.GetIncomesUseCase,
+    private val getFullAmountIncomeUseCase: com.andef.myfinance.domain.income.usecases.GetFullAmountIncomeUseCase,
+    private val getIncomesAmount: com.andef.myfinance.domain.income.usecases.GetIncomesAmountUseCase
 ) : ViewModel() {
     private val _detailIncomeBarChartState = MutableLiveData<DetailIncomeBarChartState>()
     val detailIncomeBarChartState: LiveData<DetailIncomeBarChartState>
@@ -45,7 +45,7 @@ class DetailIncomeViewModel @Inject constructor(
         endDate: Date
     ) = getFullAmountIncomeUseCase.execute(startDate, endDate)
 
-    fun getIncomesAmountForBarChart(incomes: List<Income>) {
+    fun getIncomesAmountForBarChart(incomes: List<com.andef.myfinance.domain.income.entities.Income>) {
         viewModelScope.launch(barChartExceptionHandler) {
             _detailIncomeBarChartState.value = DetailIncomeBarChartState.Loading
             val incomesAmount = withContext(Dispatchers.IO) {
@@ -55,7 +55,7 @@ class DetailIncomeViewModel @Inject constructor(
         }
     }
 
-    fun getIncomesAmountForPieChart(incomes: List<Income>) {
+    fun getIncomesAmountForPieChart(incomes: List<com.andef.myfinance.domain.income.entities.Income>) {
         viewModelScope.launch(pieChartExceptionHandler) {
             _detailIncomePieChartState.value = DetailIncomePieChartState.Loading
             val incomesAmountPercent = withContext(Dispatchers.IO) {

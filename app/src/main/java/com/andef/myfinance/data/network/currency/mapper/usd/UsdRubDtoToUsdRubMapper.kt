@@ -1,12 +1,12 @@
 package com.andef.myfinance.data.network.currency.mapper.usd
 
 import com.andef.myfinance.data.network.currency.dto.usd.UsdRubDto
-import com.andef.myfinance.domain.network.currency.entities.usd.UsdRub
+import com.andef.myfinance.domain.currency.UsdRub
 import javax.inject.Inject
 
 class UsdRubDtoToUsdRubMapper @Inject constructor() {
-    fun map(usdRubDto: UsdRubDto): UsdRub {
-        return UsdRub(
+    fun map(usdRubDto: UsdRubDto): com.andef.myfinance.domain.currency.UsdRub {
+        return com.andef.myfinance.domain.currency.UsdRub(
             amount = usdRubDto.usdInRub.amount
         )
     }
