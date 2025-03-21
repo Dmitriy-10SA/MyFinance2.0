@@ -1,29 +1,29 @@
 package com.andef.myfinance.domain.currency.repository
 
+import com.andef.myfinance.domain.currency.entities.CurrencyRub
 import java.util.Date
 
 interface CurrencyRubRepository {
-    suspend fun getAudRub(): AudRub
-    suspend fun getBtcRub(): BtcRub
-    suspend fun getCadRub(): CadRub
-    suspend fun getChfRub(): ChfRub
-    suspend fun getCnyRub(): CnyRub
-    suspend fun getEthRub(): EthRub
-    suspend fun getEurRub(): EurRub
-    suspend fun getGbpRub(): GbpRub
-    suspend fun getJpyRub(): JpyRub
-    suspend fun getUsdRub(): UsdRub
-    suspend fun getHkdRub(): HkdRub
-
-    suspend fun getAudRub(date: Date): AudRub
-    suspend fun getBtcRub(date: Date): BtcRub
-    suspend fun getCadRub(date: Date): CadRub
-    suspend fun getChfRub(date: Date): ChfRub
-    suspend fun getCnyRub(date: Date): CnyRub
-    suspend fun getEthRub(date: Date): EthRub
-    suspend fun getEurRub(date: Date): EurRub
-    suspend fun getGbpRub(date: Date): GbpRub
-    suspend fun getJpyRub(date: Date): JpyRub
-    suspend fun getUsdRub(date: Date): UsdRub
-    suspend fun getHkdRub(date: Date): HkdRub
+    suspend fun getAudRub(): CurrencyRub.Aud
+    suspend fun getBtcRub(): CurrencyRub.Btc
+    suspend fun getCadRub(): CurrencyRub.Cad
+    suspend fun getChfRub(): CurrencyRub.Chf
+    suspend fun getCnyRub(): CurrencyRub.Cny
+    suspend fun getEthRub(): CurrencyRub.Eth
+    suspend fun getEurRub(): CurrencyRub.Eur
+    suspend fun getGbpRub(): CurrencyRub.Gbp
+    suspend fun getJpyRub(): CurrencyRub.Jpy
+    suspend fun getUsdRub(): CurrencyRub.Usd
+    suspend fun getHkdRub(): CurrencyRub.Hkd
+    suspend fun getAudRub(date: Date): CurrencyRub.Aud
+    suspend fun getBtcRub(date: Date): CurrencyRub.Btc
+    suspend fun getCadRub(date: Date): CurrencyRub.Cad
+    suspend fun getChfRub(date: Date): CurrencyRub.Chf
+    suspend fun getCnyRub(date: Date): CurrencyRub.Cny
+    suspend fun getEthRub(date: Date): CurrencyRub.Eth
+    suspend fun getEurRub(date: Date): CurrencyRub.Eur
+    suspend fun getGbpRub(date: Date): CurrencyRub.Gbp
+    suspend fun getJpyRub(date: Date): CurrencyRub.Jpy
+    suspend fun getUsdRub(date: Date): CurrencyRub.Usd
+    suspend fun getHkdRub(date: Date): CurrencyRub.Hkd
 }

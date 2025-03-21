@@ -1,17 +1,18 @@
 package com.andef.myfinance.domain.currency.usecases
 
-import com.andef.myfinance.domain.currency.CadRub
+import com.andef.myfinance.domain.currency.entities.CurrencyRub
+import com.andef.myfinance.domain.currency.repository.CurrencyRubRepository
 import java.util.Date
 import javax.inject.Inject
 
 class GetCadRubUseCase @Inject constructor(
-    private val repository: com.andef.myfinance.domain.currency.repository.CurrencyRubRepository
+    private val repository: CurrencyRubRepository
 ) {
-    suspend fun execute(): com.andef.myfinance.domain.currency.CadRub {
+    suspend fun execute(): CurrencyRub.Cad {
         return repository.getCadRub()
     }
 
-    suspend fun execute(date: Date): com.andef.myfinance.domain.currency.CadRub {
+    suspend fun execute(date: Date): CurrencyRub.Cad {
         return repository.getCadRub(date)
     }
 }
