@@ -85,4 +85,7 @@
     <string name="angry_smile">Злой смайлик</string>
     <string name="wait_incomes_and_expenses">Ждем появление доходов и расходов</string>
     <string name="now_choose">"Текущий выбор: "</string>
+    <string name="button_for_add">Кнопка добавления</string>
+    <string name="menu">Меню</string>
+    <string name="confirm_date_choose">Подтвердить выбор даты</string>
 </resources>

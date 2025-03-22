@@ -1,7 +1,7 @@
 package com.andef.myfinance.di.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.andef.myfinance.presentation.MainViewModel
+import com.andef.myfinance.presentation.main.MainActivityViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -10,6 +10,6 @@ import dagger.multibindings.IntoMap
 interface ViewModelModule {
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    fun bindMainViewModel(impl: MainViewModel): ViewModel
+    @ViewModelKey(MainActivityViewModel::class)
+    fun bindMainViewModel(impl: MainActivityViewModel): ViewModel
 }

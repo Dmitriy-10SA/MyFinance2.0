@@ -1,107 +1,57 @@
-package com.andef.myfinance.old_presentation.ui.datepicker
+package com.andef.myfinance.presentation.datepickers
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.DateRangePicker
+import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.andef.myfinance.R
+import com.andef.myfinance.ui.theme.Blue
+import com.andef.myfinance.ui.theme.Orange
+import com.andef.myfinance.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyFinanceRangeDatePicker(
-    paddingValues: PaddingValues,
-    onCloseClickListener: () -> Unit,
-    onSaveClickListener: (Long, Long) -> Unit,
     isDarkTheme: Boolean,
-    dateFormatter: DatePickerFormatter = remember { DatePickerDefaults.dateFormatter() }
+    onCloseClickListener: () -> Unit,
+    onActionDateRangePickerIconClickListener: (Long, Long) -> Unit
 ) {
     val state = rememberDateRangePickerState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        verticalArrangement = Arrangement.Top
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            IconButton(
-                onClick = {
-                    onCloseClickListener()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
-            TextButton(
-                onClick = {
-                    onSaveClickListener(
-                        state.selectedStartDateMillis!!,
-                        state.selectedEndDateMillis!!
-                    )
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isDarkTheme) {
-                        colorResource(R.color.my_blue)
-                    } else {
-                        colorResource(R.color.my_orange)
-                    },
-                    disabledContainerColor = if (isDarkTheme) {
-                        colorResource(R.color.my_blue_with_low_alpha)
-                    } else {
-                        colorResource(R.color.my_orange_with_low_alpha)
-                    },
-                    contentColor = Color.White,
-                    disabledContentColor = Color.White
-                ),
-                enabled = state.selectedEndDateMillis != null
-            ) {
-                Text(
-                    modifier = Modifier.padding(start = 5.dp, end = 5.dp),
-                    text = stringResource(R.string.save),
-                    fontSize = 16.sp
-                )
-            }
+    val dateFormatter: DatePickerFormatter = remember { DatePickerDefaults.dateFormatter() }
+
+    Scaffold(
+        topBar = {
+            RangeDatePickerTopBar(
+                isDarkTheme = isDarkTheme,
+                state = state,
+                onNavigationDateRangePickerIconClickListener = onCloseClickListener,
+                onActionDateRangePickerIconClickListener = onActionDateRangePickerIconClickListener
+            )
         }
+    ) { paddingValues ->
         DateRangePicker(
+            modifier = Modifier.padding(paddingValues),
             state = state,
-            modifier = Modifier.weight(1f),
             dateFormatter = dateFormatter,
             title = {},
             headline = {},
@@ -123,20 +73,12 @@ fun MyFinanceRangeDatePicker(
                 disabledDayContentColor = MaterialTheme.colorScheme.onBackground,
                 selectedDayContentColor = Color.White,
                 disabledSelectedDayContentColor = MaterialTheme.colorScheme.background,
-                selectedDayContainerColor = if (isDarkTheme) {
-                    colorResource(R.color.my_blue)
-                } else {
-                    colorResource(R.color.my_orange)
-                },
+                selectedDayContainerColor = if (isDarkTheme) Blue else Orange,
                 disabledSelectedDayContainerColor = MaterialTheme.colorScheme.background,
                 todayContentColor = MaterialTheme.colorScheme.onBackground,
                 todayDateBorderColor = MaterialTheme.colorScheme.onBackground,
                 dayInSelectionRangeContentColor = Color.White,
-                dayInSelectionRangeContainerColor = if (isDarkTheme) {
-                    colorResource(R.color.my_blue)
-                } else {
-                    colorResource(R.color.my_orange)
-                },
+                dayInSelectionRangeContainerColor = if (isDarkTheme) Blue else Orange,
                 dividerColor = MaterialTheme.colorScheme.background,
                 dateTextFieldColors = TextFieldDefaults.colors(
                     disabledTextColor = MaterialTheme.colorScheme.onBackground,
@@ -180,4 +122,56 @@ fun MyFinanceRangeDatePicker(
     BackHandler {
         onCloseClickListener()
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun RangeDatePickerTopBar(
+    isDarkTheme: Boolean,
+    state: DateRangePickerState,
+    onNavigationDateRangePickerIconClickListener: () -> Unit,
+    onActionDateRangePickerIconClickListener: (Long, Long) -> Unit
+) {
+    CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+            titleContentColor = MaterialTheme.colorScheme.onBackground
+        ),
+        title = {},
+        navigationIcon = {
+            IconButton(onClick = onNavigationDateRangePickerIconClickListener) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        actions = {
+            IconButton(
+                enabled = state.selectedEndDateMillis != null,
+                colors = IconButtonDefaults.iconButtonColors(
+                    containerColor = if (isDarkTheme) Blue else Orange,
+                    contentColor = White,
+                    disabledContainerColor = if (isDarkTheme) {
+                        Blue.copy(alpha = 0.2f)
+                    } else {
+                        Orange.copy(alpha = 0.2f)
+                    },
+                    disabledContentColor = White
+                ),
+                onClick = {
+                    onActionDateRangePickerIconClickListener(
+                        state.selectedStartDateMillis!!,
+                        state.selectedEndDateMillis!!
+                    )
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = stringResource(R.string.save)
+                )
+            }
+        }
+    )
 }
