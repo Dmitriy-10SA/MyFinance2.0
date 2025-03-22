@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.income
+package com.andef.myfinance.presentation.expense
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
@@ -49,8 +49,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.data.utils.toStartOfDay
-import com.andef.myfinance.domain.income.entities.Income
-import com.andef.myfinance.domain.income.entities.IncomeCategory
+import com.andef.myfinance.domain.expense.entities.Expense
+import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.navigation.defaultScreenAnim
 import com.andef.myfinance.navigation.rangePickerAnim
 import com.andef.myfinance.presentation.datepicker.MyFinanceDatePicker
@@ -64,33 +64,33 @@ import com.andef.myfinance.utils.ui.ErrorScreen
 import com.andef.myfinance.utils.ui.IfEmptyScreen
 import com.andef.myfinance.utils.ui.IncomeOrExpenseTopBar
 import com.andef.myfinance.utils.ui.TextInputTextForAmount
-import com.andef.myfinance.utils.ui.getIncomeIconResId
-import com.andef.myfinance.utils.ui.getIncomeNameResId
+import com.andef.myfinance.utils.ui.getExpenseIconResId
+import com.andef.myfinance.utils.ui.getExpenseNameResId
 import com.andef.myfinance.utils.ui.isFullInfoForAddOrChange
 import java.time.LocalDate
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncomeScreen(
+fun ExpenseScreen(
     isDarkTheme: Boolean,
     viewModelFactory: ViewModelFactory,
     id: Int? = null,
     onBackClickListener: () -> Unit
 ) {
-    val viewModel: IncomeViewModel = viewModel(factory = viewModelFactory)
+    val viewModel: ExpenseViewModel = viewModel(factory = viewModelFactory)
     val state = viewModel.state.collectAsState()
 
     val firstStart = remember { mutableStateOf(true) }
     val isVisible = remember { mutableStateOf(false) }
     val amount = remember { mutableStateOf("") }
     val comment = remember { mutableStateOf("") }
-    val category = remember { mutableStateOf(IncomeCategory.SALARY) }
+    val category = remember { mutableStateOf(ExpenseCategory.PRODUCTS) }
     val dateState = remember { mutableStateOf(LocalDate.now().toDate()) }
 
     val isDatePickerScreen = remember { mutableStateOf(false) }
 
-    LaunchedEffect(id) { viewModel.loadIncome(id) }
+    LaunchedEffect(id) { viewModel.loadExpense(id) }
 
     AnimatedContent(
         targetState = isDatePickerScreen.value,
@@ -107,7 +107,7 @@ fun IncomeScreen(
                 }
             ) { paddingValues ->
                 when (val currentState = state.value) {
-                    IncomeState.Error -> {
+                    ExpenseState.Error -> {
                         ErrorScreen(
                             paddingValues = paddingValues,
                             text = stringResource(R.string.unknown_exception),
@@ -115,9 +115,9 @@ fun IncomeScreen(
                         )
                     }
 
-                    is IncomeState.IncomeLoad -> {
+                    is ExpenseState.ExpenseLoad -> {
                         if (firstStart.value) {
-                            currentState.income?.let {
+                            currentState.expense?.let {
                                 amount.value = it.amount.toString()
                                 comment.value = it.comment
                                 category.value = it.category
@@ -128,8 +128,8 @@ fun IncomeScreen(
                         }
 
                         if (isVisible.value) {
-                            IncomeScreenContent(
-                                income = currentState.income,
+                            ExpenseScreenContent(
+                                expense = currentState.expense,
                                 paddingValues = paddingValues,
                                 isDarkTheme = isDarkTheme,
                                 amount = amount,
@@ -148,14 +148,14 @@ fun IncomeScreen(
                         }
                     }
 
-                    IncomeState.Initial -> {
+                    ExpenseState.Initial -> {
                         IfEmptyScreen(
                             paddingValues = paddingValues,
                             text = stringResource(R.string.wait_we_working)
                         )
                     }
 
-                    IncomeState.Loading -> {
+                    ExpenseState.Loading -> {
                         IfEmptyScreen(
                             paddingValues = paddingValues,
                             text = stringResource(R.string.wait_we_working)
@@ -187,15 +187,15 @@ fun IncomeScreen(
 }
 
 @Composable
-private fun IncomeScreenContent(
-    income: Income?,
+private fun ExpenseScreenContent(
+    expense: Expense?,
     paddingValues: PaddingValues,
     isDarkTheme: Boolean,
     amount: MutableState<String>,
     comment: MutableState<String>,
     dateState: MutableState<Date>,
-    category: MutableState<IncomeCategory>,
-    viewModel: IncomeViewModel,
+    category: MutableState<ExpenseCategory>,
+    viewModel: ExpenseViewModel,
     isDatePickerState: MutableState<Boolean>,
     onBackClickListener: () -> Unit
 ) {
@@ -305,9 +305,9 @@ private fun IncomeScreenContent(
                         .padding(8.dp),
                     enabled = isFullInfoForAddOrChange(amount),
                     onClick = {
-                        if (income == null) {
-                            viewModel.addIncome(
-                                Income(
+                        if (expense == null) {
+                            viewModel.addExpense(
+                                Expense(
                                     amount = amount.value.toDouble(),
                                     category = category.value,
                                     comment = comment.value,
@@ -315,8 +315,8 @@ private fun IncomeScreenContent(
                                 )
                             )
                         } else {
-                            viewModel.changeIncome(
-                                id = income.id,
+                            viewModel.changeExpense(
+                                id = expense.id,
                                 amount = amount.value.toDouble(),
                                 category = category.value,
                                 comment = comment.value,
@@ -356,32 +356,41 @@ private fun IncomeScreenContent(
 
 @Composable
 private fun CategoryChoose(
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit,
+    category: MutableState<ExpenseCategory>,
+    onCardClickListener: (ExpenseCategory) -> Unit,
     isDarkTheme: Boolean
 ) {
     val items = listOf(
-        IncomeCategory.SALARY,
-        IncomeCategory.BANK,
-        IncomeCategory.LUCK,
-        IncomeCategory.GIFTS,
-        IncomeCategory.OTHER
+        ExpenseCategory.PRODUCTS,
+        ExpenseCategory.CAFE,
+        ExpenseCategory.HOME,
+        ExpenseCategory.GIFTS,
+        ExpenseCategory.STUDY,
+        ExpenseCategory.HEALTH,
+        ExpenseCategory.TRANSPORT,
+        ExpenseCategory.SPORT,
+        ExpenseCategory.CLOTHES,
+        ExpenseCategory.OTHER
     )
     Column {
-        IncomesCategoryCardsRow(items, 0, 3, isDarkTheme, category, onCardClickListener)
+        ExpenseCategoryCardsRow(items, 0, 3, isDarkTheme, category, onCardClickListener)
         Spacer(modifier = Modifier.padding(4.dp))
-        IncomesCategoryCardsRow(items, 3, 5, isDarkTheme, category, onCardClickListener)
+        ExpenseCategoryCardsRow(items, 3, 6, isDarkTheme, category, onCardClickListener)
+        Spacer(modifier = Modifier.padding(4.dp))
+        ExpenseCategoryCardsRow(items, 6, 9, isDarkTheme, category, onCardClickListener)
+        Spacer(modifier = Modifier.padding(4.dp))
+        ExpenseCategoryCardsRow(items, 9, 10, isDarkTheme, category, onCardClickListener)
     }
 }
 
 @Composable
-private fun IncomesCategoryCardsRow(
-    items: List<IncomeCategory>,
+private fun ExpenseCategoryCardsRow(
+    items: List<ExpenseCategory>,
     startI: Int,
     endI: Int,
     isDarkTheme: Boolean,
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit
+    category: MutableState<ExpenseCategory>,
+    onCardClickListener: (ExpenseCategory) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -389,18 +398,18 @@ private fun IncomesCategoryCardsRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in startI until endI) {
-            IncomeCategoryCard(items, i, isDarkTheme, category, onCardClickListener)
+            ExpenseCategoryCard(items, i, isDarkTheme, category, onCardClickListener)
         }
     }
 }
 
 @Composable
-private fun IncomeCategoryCard(
-    items: List<IncomeCategory>,
+private fun ExpenseCategoryCard(
+    items: List<ExpenseCategory>,
     i: Int,
     isDarkTheme: Boolean,
-    category: MutableState<IncomeCategory>,
-    onCardClickListener: (IncomeCategory) -> Unit
+    category: MutableState<ExpenseCategory>,
+    onCardClickListener: (ExpenseCategory) -> Unit
 ) {
     Card(
         modifier = Modifier.padding(8.dp),
@@ -432,12 +441,12 @@ private fun IncomeCategoryCard(
         ) {
             Image(
                 modifier = Modifier.size(65.dp),
-                painter = painterResource(getIncomeIconResId(items[i])),
-                contentDescription = stringResource(getIncomeNameResId(items[i]))
+                painter = painterResource(getExpenseIconResId(items[i])),
+                contentDescription = stringResource(getExpenseNameResId(items[i]))
             )
             Spacer(modifier = Modifier.padding(5.dp))
             Text(
-                text = stringResource(getIncomeNameResId(items[i])),
+                text = stringResource(getExpenseNameResId(items[i])),
                 fontSize = 12.sp
             )
         }

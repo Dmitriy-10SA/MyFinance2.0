@@ -3,6 +3,8 @@ package com.andef.myfinance.navigation.main
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +22,10 @@ fun MainNavGraph(
     expensesScreenContent: @Composable () -> Unit,
     totalsScreenContent: @Composable () -> Unit,
 ) {
+    val lastDestination = remember {
+        mutableStateOf(Screen.MainScreen.Incomes as Screen)
+    }
+
     NavHost(
         navController = navHostController,
         startDestination = Screen.MainScreen.route
@@ -34,11 +40,16 @@ fun MainNavGraph(
                 exitTransition = { slideOutLeft }
             ) {
                 incomesScreenContent()
+                lastDestination.value = Screen.MainScreen.Incomes
             }
             composable(
                 route = Screen.MainScreen.Expenses.route,
                 enterTransition = {
-                    fadeIn(tween(1500))
+                    if (lastDestination.value.route == Screen.MainScreen.Incomes.route) {
+                        slideInLeft
+                    } else {
+                        slideInRight
+                    }
                 },
                 exitTransition = {
                     if (navHostController.currentDestination?.route == Screen.MainScreen.Incomes.route) {
@@ -49,6 +60,7 @@ fun MainNavGraph(
                 }
             ) {
                 expensesScreenContent()
+                lastDestination.value = Screen.MainScreen.Expenses
             }
             composable(
                 route = Screen.MainScreen.Totals.route,
@@ -56,6 +68,7 @@ fun MainNavGraph(
                 exitTransition = { slideOutRight }
             ) {
                 totalsScreenContent()
+                lastDestination.value = Screen.MainScreen.Totals
             }
         }
     }

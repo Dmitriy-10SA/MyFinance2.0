@@ -5,13 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.andef.myfinance.presentation.income.IncomeActivity
 import com.andef.myfinance.MyFinanceApplication
+import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
+import com.andef.myfinance.presentation.expense.ExpenseActivity
+import com.andef.myfinance.presentation.income.IncomeActivity
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import javax.inject.Inject
 
@@ -31,23 +32,41 @@ class MainActivity : ComponentActivity() {
                     isDarkTheme = isSystemInDarkTheme(),
                     viewModelFactory = viewModelFactory,
                     onIncomeFABClickListener = {
-                        IncomeActivity.newIntent(this, isDarkTheme.value).apply {
-                            startActivity(this)
-                        }
+                        openIncomeActivity(isDarkTheme.value)
                     },
                     onExpenseFABClickListener = {
-
+                        openExpenseActivity(isDarkTheme.value)
                     },
                     onIncomeClickListener = { income ->
-                        IncomeActivity.newIntent(this, isDarkTheme.value, income.id).apply {
-                            startActivity(this)
-                        }
+                        openIncomeActivity(isDarkTheme.value, income.id)
                     },
                     onExpenseClickListener = { expense ->
-                        //TODO()
+                        openExpenseActivity(isDarkTheme.value, expense.id)
                     }
                 )
             }
         }
+    }
+
+    private fun openIncomeActivity(isDarkTheme: Boolean, id: Int? = null) {
+        val intent = if (id != null) {
+            IncomeActivity.newIntent(this, isDarkTheme, id)
+        } else {
+            IncomeActivity.newIntent(this, isDarkTheme)
+        }
+        startActivity(intent)
+        @Suppress("DEPRECATION")
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top)
+    }
+
+    private fun openExpenseActivity(isDarkTheme: Boolean, id: Int? = null) {
+        val intent = if (id != null) {
+            ExpenseActivity.newIntent(this, isDarkTheme, id)
+        } else {
+            ExpenseActivity.newIntent(this, isDarkTheme)
+        }
+        startActivity(intent)
+        @Suppress("DEPRECATION")
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top)
     }
 }

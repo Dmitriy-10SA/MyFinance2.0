@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.income
+package com.andef.myfinance.presentation.expense
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +12,7 @@ import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import javax.inject.Inject
 
-class IncomeActivity : ComponentActivity() {
+class ExpenseActivity : ComponentActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -28,7 +28,7 @@ class IncomeActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyFinanceTheme(darkTheme = isDarkTheme, dynamicColor = false) {
-                IncomeScreen(
+                ExpenseScreen(
                     isDarkTheme = isDarkTheme,
                     id = id,
                     onBackClickListener = {
@@ -44,7 +44,7 @@ class IncomeActivity : ComponentActivity() {
 
     companion object {
         fun newIntent(context: Context, isDarkTheme: Boolean, id: Int? = null): Intent {
-            return Intent(context, IncomeActivity::class.java).apply {
+            return Intent(context, ExpenseActivity::class.java).apply {
                 putExtra(IS_DARK_THEME_EXTRA, isDarkTheme)
                 id?.let { putExtra(ID_EXTRA, it) }
             }

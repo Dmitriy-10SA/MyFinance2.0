@@ -22,10 +22,21 @@
         android:theme="@style/Theme.MyFinance"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.expense.ExpenseActivity"
+            android:exported="false"
+            android:label="@string/title_activity_expense"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
+        <activity
             android:name=".presentation.income.IncomeActivity"
             android:exported="false"
             android:label="@string/title_activity_income"
-            android:theme="@style/Theme.MyFinance" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".presentation.main.MainActivity"
             android:exported="true"

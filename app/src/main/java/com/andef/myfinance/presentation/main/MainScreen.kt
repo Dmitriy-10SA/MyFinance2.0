@@ -9,7 +9,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -55,9 +57,15 @@ import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.domain.expense.entities.Expense
 import com.andef.myfinance.domain.income.entities.Income
 import com.andef.myfinance.navigation.Screen
+import com.andef.myfinance.navigation.defaultScreenAnim
 import com.andef.myfinance.navigation.main.MainNavGraph
 import com.andef.myfinance.navigation.main.MainNavigationState
 import com.andef.myfinance.navigation.main.rememberMainNavigationState
+import com.andef.myfinance.navigation.rangePickerAnim
+import com.andef.myfinance.navigation.slideInDown
+import com.andef.myfinance.navigation.slideInUp
+import com.andef.myfinance.navigation.slideOutDown
+import com.andef.myfinance.navigation.slideOutUp
 import com.andef.myfinance.presentation.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.expense.ExpensesScreen
 import com.andef.myfinance.presentation.income.IncomesScreen
@@ -215,8 +223,8 @@ private fun MainFAB(
             Screen.MainScreen.Incomes.route,
             Screen.MainScreen.Expenses.route
         ),
-        enter = scaleIn(tween(500)),
-        exit = scaleOut(tween(500))
+        enter = scaleIn(tween(800)),
+        exit = scaleOut(tween(800))
     ) {
         if (currentDestination?.route == Screen.MainScreen.Incomes.route) {
             FAB(isDarkTheme = isDarkTheme, onFABClickListener = onIncomeFABClickListener)
@@ -363,34 +371,6 @@ private fun MainBottomBar(mainNavigationState: MainNavigationState) {
         }
     }
 }
-
-private val rangePickerAnim = (slideInHorizontally(
-    initialOffsetX = { it },
-    animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-) + fadeIn(
-    animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-)).togetherWith(
-    slideOutHorizontally(
-        targetOffsetX = { -it },
-        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-    ) + fadeOut(
-        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-    )
-)
-
-private val defaultScreenAnim = (slideInHorizontally(
-    initialOffsetX = { -it },
-    animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-) + fadeIn(
-    animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-)).togetherWith(
-    slideOutHorizontally(
-        targetOffsetX = { it },
-        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-    ) + fadeOut(
-        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-    )
-)
 
 private val mainTopBarItems = listOf(
     MainTopBarItem.Day,
