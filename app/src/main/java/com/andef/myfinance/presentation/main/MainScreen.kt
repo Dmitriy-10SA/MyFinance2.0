@@ -2,17 +2,9 @@ package com.andef.myfinance.presentation.main
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,10 +54,6 @@ import com.andef.myfinance.navigation.main.MainNavGraph
 import com.andef.myfinance.navigation.main.MainNavigationState
 import com.andef.myfinance.navigation.main.rememberMainNavigationState
 import com.andef.myfinance.navigation.rangePickerAnim
-import com.andef.myfinance.navigation.slideInDown
-import com.andef.myfinance.navigation.slideInUp
-import com.andef.myfinance.navigation.slideOutDown
-import com.andef.myfinance.navigation.slideOutUp
 import com.andef.myfinance.presentation.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.expense.ExpensesScreen
 import com.andef.myfinance.presentation.income.IncomesScreen

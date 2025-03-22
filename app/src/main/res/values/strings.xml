@@ -91,6 +91,6 @@
     <string name="title_activity_income">IncomeActivity</string>
     <string name="wait">Ждем…</string>
     <string name="icon_for_exception">Иконка для ошибки</string>
-    <string name="wait_we_working">Подождите немного, мы стараемся...</string>
+    <string name="wait_we_working">Подождите немного, мы стараемся…</string>
     <string name="title_activity_expense">ExpenseActivity</string>
 </resources>

@@ -7,9 +7,6 @@ import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.expense.usecases.AddExpenseUseCase
 import com.andef.myfinance.domain.expense.usecases.ChangeExpenseUseCase
 import com.andef.myfinance.domain.expense.usecases.GetExpenseUseCase
-import com.andef.myfinance.domain.income.entities.Income
-import com.andef.myfinance.domain.income.entities.IncomeCategory
-import com.andef.myfinance.presentation.income.IncomeState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
