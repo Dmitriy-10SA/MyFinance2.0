@@ -3,7 +3,7 @@ package com.andef.myfinance.data.utils
 import java.time.ZoneId
 import java.util.Date
 
-internal fun Date.toStartOfDay(incDays: Long = 0): Date {
+fun Date.toStartOfDay(incDays: Long = 0): Date {
     return this.toInstant()
         .atZone(ZoneId.systemDefault())
         .toLocalDate()
