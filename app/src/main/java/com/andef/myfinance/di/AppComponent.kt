@@ -1,7 +1,7 @@
 package com.andef.myfinance.di
 
 import android.app.Application
-import com.andef.myfinance.presentation.main.MainActivity
+import com.andef.myfinance.MainActivity
 import com.andef.myfinance.di.currency.CurrencyApiServiceModule
 import com.andef.myfinance.di.currency.CurrencyRepositoryModule
 import com.andef.myfinance.di.expense.ExpenseDaoModule

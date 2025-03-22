@@ -1,7 +1,7 @@
 package com.andef.myfinance.di.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.andef.myfinance.presentation.main.MainActivityViewModel
+import com.andef.myfinance.MainActivityViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

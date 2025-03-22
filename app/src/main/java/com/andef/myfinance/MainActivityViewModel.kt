@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.main
+package com.andef.myfinance
 
 import androidx.lifecycle.ViewModel
 import com.andef.myfinance.domain.theme.usecases.ChangeThemeUseCase
