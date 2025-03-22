@@ -45,6 +45,6 @@ val slideOutDown = slideOutVertically(
     animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing)
 )
 
-val rangePickerAnim = (slideInDown).togetherWith(slideOutUp)
+val rangePickerAnim = (slideInLeft).togetherWith(slideOutLeft)
 
-val defaultScreenAnim = (slideInUp).togetherWith(slideOutDown)
+val defaultScreenAnim = (slideInRight).togetherWith(slideOutRight)
