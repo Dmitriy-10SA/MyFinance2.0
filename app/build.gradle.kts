@@ -2,8 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-kapt")
+    //for Room
     id("com.google.devtools.ksp")
+
+    //for Dagger 2
+    id("kotlin-kapt")
 }
 
 android {
@@ -14,8 +17,8 @@ android {
         applicationId = "com.andef.myfinance"
         minSdk = 26
         targetSdk = 34
-        versionCode = 9
-        versionName = "9.0"
+        versionCode = 10
+        versionName = "10.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,24 +45,26 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.splashscreen)
-
+    //Dagger 2
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
-    implementation(libs.charts)
+    //domain
+    implementation(project(":domain"))
 
-    implementation(libs.androidx.navigation.compose)
+    //data
+    implementation(project(":data"))
 
-    implementation(libs.androidx.runtime.livedata)
-
-    implementation(libs.androidx.room.ktx)
+    //Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
-    implementation(libs.gson)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
+    //Charts, Bars, Pies
+    implementation(libs.charts)
+
+    //Jetpack Compose Navigation
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

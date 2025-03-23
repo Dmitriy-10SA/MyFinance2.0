@@ -3,5 +3,6 @@
 
     <style name="Theme.MyFinance" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/icon_for_splash_screen</item>
+        <item name="android:windowSplashScreenBackground">@color/my_gray</item>
     </style>
 </resources>

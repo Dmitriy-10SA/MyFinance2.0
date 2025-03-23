@@ -40,6 +40,7 @@
     <string name="on_week">За неделю</string>
     <string name="month">Месяц</string>
     <string name="on_month">За месяц</string>
+    <string name="on_half_year">За полгода</string>
     <string name="year">Год</string>
     <string name="on_year">За год</string>
     <string name="period">Период</string>
@@ -76,7 +77,7 @@
     <string name="microloans">Займы</string>
     <string name="mortgage">Ипотека</string>
     <string name="news">Новости</string>
-    <string name="income_analisis">Анализ доходов</string>
+    <string name="income_analysis">Анализ доходов</string>
     <string name="expenses_analysis">Анализ расходов</string>
     <string name="unknown_exception_sorry">Извините, возникла неизвестная ошибка!</string>
     <string name="wait_incomes">Ждем появления доходов</string>
@@ -85,4 +86,17 @@
     <string name="angry_smile">Злой смайлик</string>
     <string name="wait_incomes_and_expenses">Ждем появление доходов и расходов</string>
     <string name="now_choose">"Текущий выбор: "</string>
+    <string name="button_for_add">Кнопка добавления</string>
+    <string name="menu">Меню</string>
+    <string name="confirm_date_choose">Подтвердить выбор даты</string>
+    <string name="title_activity_income">IncomeActivity</string>
+    <string name="wait">Ждем…</string>
+    <string name="icon_for_exception">Иконка для ошибки</string>
+    <string name="wait_we_working">Подождите немного, мы стараемся…</string>
+    <string name="title_activity_expense">ExpenseActivity</string>
+    <string name="title_activity_currency">CurrencyActivity</string>
+    <string name="reload_one_time_in_day">Обновление происходит раз в день</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
+    <string name="title_activity_income_analysis">IncomeAnalysisActivity</string>
+    <string name="title_activity_expense_analysis">ExpenseAnalysisActivity</string>
 </resources>

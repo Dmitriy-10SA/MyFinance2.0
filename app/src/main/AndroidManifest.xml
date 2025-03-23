@@ -2,16 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.andef.myfinance"
-    android:versionCode="9"
-    android:versionName="9.0">
+    android:versionCode="10"
+    android:versionName="10.0">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".presentation.app.MyFinanceApplication"
+        android:name=".MyFinanceApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -22,11 +19,58 @@
         android:theme="@style/Theme.MyFinance"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.activity.MainActivity"
+            android:name=".presentation.analysis.expense.ExpenseAnalysisActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_expense_analysis"
+            android:theme="@style/Theme.MyFinance"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.analysis.income.IncomeAnalysisActivity"
+            android:exported="false"
+            android:label="@string/title_activity_income_analysis"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.webview.WebViewActivity"
+            android:exported="false"
+            android:label="@string/title_activity_web_view"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.currency.CurrencyActivity"
+            android:exported="false"
+            android:label="@string/title_activity_currency"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.expense.ExpenseActivity"
+            android:exported="false"
+            android:label="@string/title_activity_expense"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.income.IncomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_income"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.MyFinance"
+            android:windowSoftInputMode="adjustResize"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
