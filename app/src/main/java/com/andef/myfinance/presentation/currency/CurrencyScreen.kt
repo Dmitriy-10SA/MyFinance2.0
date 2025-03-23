@@ -233,8 +233,7 @@ private fun CurrencyWithPercentListScreen(
                         .padding(12.dp),
                     text = stringResource(R.string.reload_one_time_in_day),
                     textAlign = TextAlign.Center,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 16.sp
                 )
             }
         }

@@ -96,4 +96,5 @@
     <string name="title_activity_expense">ExpenseActivity</string>
     <string name="title_activity_currency">CurrencyActivity</string>
     <string name="reload_one_time_in_day">Обновление происходит раз в день</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
 </resources>

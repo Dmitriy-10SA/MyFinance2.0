@@ -81,6 +81,7 @@ import com.andef.myfinance.presentation.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.expense.ExpensesScreen
 import com.andef.myfinance.presentation.income.IncomesScreen
 import com.andef.myfinance.presentation.total.TotalsScreen
+import com.andef.myfinance.presentation.webview.WebViewLink
 import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
@@ -225,7 +226,7 @@ private fun ModalDrawerSheetContent(
                 MyTextButton(
                     text = stringResource(R.string.deposits),
                     onTextButtonClickListener = {
-                        // TODO()
+                        onWebViewActionClickListener(WebViewLink.BankRuDepositsScreen.link)
                     }
                 )
             }
@@ -233,7 +234,7 @@ private fun ModalDrawerSheetContent(
                 MyTextButton(
                     text = stringResource(R.string.credits),
                     onTextButtonClickListener = {
-                        // TODO()
+                        onWebViewActionClickListener(WebViewLink.BankRuCreditsScreen.link)
                     }
                 )
             }
@@ -241,7 +242,7 @@ private fun ModalDrawerSheetContent(
                 MyTextButton(
                     text = stringResource(R.string.microloans),
                     onTextButtonClickListener = {
-                        // TODO()
+                        onWebViewActionClickListener(WebViewLink.BankRuMicroloansScreen.link)
                     }
                 )
             }
@@ -249,7 +250,7 @@ private fun ModalDrawerSheetContent(
                 MyTextButton(
                     text = stringResource(R.string.mortgage),
                     onTextButtonClickListener = {
-                        // TODO()
+                        onWebViewActionClickListener(WebViewLink.BankRuMortgageScreen.link)
                     }
                 )
             }
@@ -257,7 +258,7 @@ private fun ModalDrawerSheetContent(
                 MyTextButton(
                     text = stringResource(R.string.news),
                     onTextButtonClickListener = {
-                        // TODO()
+                        onWebViewActionClickListener(WebViewLink.BankRuNewsScreen.link)
                     }
                 )
             }

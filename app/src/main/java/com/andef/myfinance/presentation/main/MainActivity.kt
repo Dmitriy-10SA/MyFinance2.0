@@ -13,6 +13,8 @@ import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.presentation.currency.CurrencyActivity
 import com.andef.myfinance.presentation.expense.ExpenseActivity
 import com.andef.myfinance.presentation.income.IncomeActivity
+import com.andef.myfinance.presentation.webview.WebViewActivity
+import com.andef.myfinance.presentation.webview.WebViewScreen
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import javax.inject.Inject
 
@@ -57,10 +59,18 @@ class MainActivity : ComponentActivity() {
                         openCurrencyActivity(isDarkTheme.value)
                     },
                     onWebViewActionClickListener = { link ->
-
+                        openWebViewActivity(isDarkTheme.value, link)
                     }
                 )
             }
+        }
+    }
+
+    private fun openWebViewActivity(isDarkTheme: Boolean, link: String) {
+        WebViewActivity.newIntent(this, isDarkTheme, link).apply {
+            startActivity(this)
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.slide_in_top, 0)
         }
     }
 

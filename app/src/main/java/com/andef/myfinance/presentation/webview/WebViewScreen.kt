@@ -27,7 +27,7 @@ import com.andef.myfinance.R
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun WebViewScreen(url: String, onBackClickListener: () -> Unit) {
+fun WebViewScreen(link: String, onBackClickListener: () -> Unit) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -67,11 +67,11 @@ fun WebViewScreen(url: String, onBackClickListener: () -> Unit) {
                     settings.javaScriptCanOpenWindowsAutomatically = true
 
                     webViewClient = WebViewClient()
-                    loadUrl(url)
+                    loadUrl(link)
                 }
             },
             update = {
-                it.loadUrl(url)
+                it.loadUrl(link)
             }
         )
     }
