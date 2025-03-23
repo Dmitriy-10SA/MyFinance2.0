@@ -10,6 +10,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.MyFinanceApplication
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
+import com.andef.myfinance.presentation.analysis.income.IncomeAnalysisActivity
+import com.andef.myfinance.presentation.analysis.income.IncomeAnalysisScreen
 import com.andef.myfinance.presentation.currency.CurrencyActivity
 import com.andef.myfinance.presentation.expense.ExpenseActivity
 import com.andef.myfinance.presentation.income.IncomeActivity
@@ -50,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         isDarkTheme.value = viewModel.isDarkTheme()
                     },
                     onIncomeAnalysisClickListener = {
-
+                        openIncomeAnalysisActivity(isDarkTheme.value)
                     },
                     onExpenseAnalysisClickListener = {
 
@@ -63,6 +65,14 @@ class MainActivity : ComponentActivity() {
                     }
                 )
             }
+        }
+    }
+
+    private fun openIncomeAnalysisActivity(isDarkTheme: Boolean) {
+        IncomeAnalysisActivity.newIntent(this, isDarkTheme).apply {
+            startActivity(this)
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.slide_in_top, 0)
         }
     }
 

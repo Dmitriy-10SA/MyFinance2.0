@@ -49,6 +49,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.domain.currency.entities.CurrencyRub
+import com.andef.myfinance.utils.ui.LoadScreen
 import com.andef.myfinance.utils.ui.toDate
 import java.time.LocalDate
 
@@ -237,22 +238,6 @@ private fun CurrencyWithPercentListScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun LoadScreen(paddingValues: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircularProgressIndicator(
-            color = Color.Gray,
-            trackColor = MaterialTheme.colorScheme.onBackground
-        )
     }
 }
 

@@ -12,6 +12,7 @@ import com.andef.myfinance.di.income.IncomeRepositoryModule
 import com.andef.myfinance.di.theme.ThemePreferencesRepositoryModule
 import com.andef.myfinance.di.theme.ThemeSharedPreferencesModule
 import com.andef.myfinance.di.viewmodel.ViewModelModule
+import com.andef.myfinance.presentation.analysis.income.IncomeAnalysisActivity
 import com.andef.myfinance.presentation.currency.CurrencyActivity
 import com.andef.myfinance.presentation.expense.ExpenseActivity
 import dagger.BindsInstance
@@ -36,6 +37,7 @@ interface AppComponent {
     fun inject(incomeActivity: IncomeActivity)
     fun inject(expenseActivity: ExpenseActivity)
     fun inject(currencyActivity: CurrencyActivity)
+    fun inject(incomeAnalysisActivity: IncomeAnalysisActivity)
 
     @Component.Factory
     interface AppComponentFactory {
