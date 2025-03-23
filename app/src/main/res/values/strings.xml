@@ -98,4 +98,5 @@
     <string name="reload_one_time_in_day">Обновление происходит раз в день</string>
     <string name="title_activity_web_view">WebViewActivity</string>
     <string name="title_activity_income_analysis">IncomeAnalysisActivity</string>
+    <string name="title_activity_expense_analysis">ExpenseAnalysisActivity</string>
 </resources>

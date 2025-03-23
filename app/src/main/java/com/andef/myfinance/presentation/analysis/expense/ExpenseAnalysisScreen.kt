@@ -1,5 +1,4 @@
-package com.andef.myfinance.presentation.analysis.income
-
+package com.andef.myfinance.presentation.analysis.expense
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
@@ -44,8 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
-import com.andef.myfinance.domain.income.entities.Income
-import com.andef.myfinance.domain.income.entities.IncomeCategory
+import com.andef.myfinance.domain.expense.entities.Expense
+import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.navigation.defaultScreenAnim
 import com.andef.myfinance.navigation.rangePickerAnim
 import com.andef.myfinance.presentation.analysis.AnalysisItem
@@ -53,6 +52,7 @@ import com.andef.myfinance.presentation.analysis.AnalysisSegmentedButtonsRow
 import com.andef.myfinance.presentation.analysis.AnalysisSetDate
 import com.andef.myfinance.presentation.analysis.AnalysisTopBar
 import com.andef.myfinance.presentation.analysis.AnalysisTopBarItem
+import com.andef.myfinance.presentation.analysis.CardWithText
 import com.andef.myfinance.presentation.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.utils.formatter.AmountFormatter
 import com.andef.myfinance.utils.formatter.PercentFormatter
@@ -60,8 +60,8 @@ import com.andef.myfinance.utils.ui.ErrorScreen
 import com.andef.myfinance.utils.ui.IfEmptyScreen
 import com.andef.myfinance.utils.ui.LoadScreen
 import com.andef.myfinance.utils.ui.TopRowWithDateAndTotal
-import com.andef.myfinance.utils.ui.getIncomeIconResId
-import com.andef.myfinance.utils.ui.getIncomeNameResId
+import com.andef.myfinance.utils.ui.getExpenseIconResId
+import com.andef.myfinance.utils.ui.getExpenseNameResId
 import com.andef.myfinance.utils.ui.getScreenWidth
 import com.andef.myfinance.utils.ui.toDate
 import com.github.tehras.charts.bar.BarChart
@@ -79,7 +79,7 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncomeAnalysisScreen(
+fun ExpenseAnalysisScreen(
     isDarkTheme: Boolean,
     viewModelFactory: ViewModelFactory,
     onBackClickListener: () -> Unit
@@ -104,15 +104,15 @@ fun IncomeAnalysisScreen(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) { isRangeDatePicker ->
         if (!isRangeDatePicker) {
-            IncomeAnalysisContent(
+            ExpenseAnalysisContent(
                 viewModelFactory = viewModelFactory,
                 topBarState = topBarState,
                 startDate = startDateState.value,
                 endDate = endDateState.value,
                 selectedItem = selectedItem,
                 isDarkTheme = isDarkTheme,
-                isRangeDatePickerScreen = isRangeDatePickerScreen,
-                onBackClickListener = onBackClickListener
+                onBackClickListener = onBackClickListener,
+                isRangeDatePickerScreen = isRangeDatePickerScreen
             )
         } else {
             MyFinanceRangeDatePicker(
@@ -134,7 +134,7 @@ fun IncomeAnalysisScreen(
 }
 
 @Composable
-private fun IncomeAnalysisContent(
+private fun ExpenseAnalysisContent(
     viewModelFactory: ViewModelFactory,
     topBarState: MutableState<AnalysisTopBarItem>,
     startDate: Date,
@@ -144,9 +144,9 @@ private fun IncomeAnalysisContent(
     isRangeDatePickerScreen: MutableState<Boolean>,
     onBackClickListener: () -> Unit
 ) {
-    val viewModel: IncomeAnalysisViewModel = viewModel(factory = viewModelFactory)
-    val incomes = viewModel.getIncomes(startDate, endDate).collectAsState(listOf())
-    val fullAmount = viewModel.getFullAmountIncome(startDate, endDate).collectAsState(0.0)
+    val viewModel: ExpenseAnalysisViewModel = viewModel(factory = viewModelFactory)
+    val expenses = viewModel.getExpenses(startDate, endDate).collectAsState(listOf())
+    val fullAmount = viewModel.getFullAmountExpense(startDate, endDate).collectAsState(0.0)
 
     Scaffold(
         topBar = {
@@ -170,17 +170,17 @@ private fun IncomeAnalysisContent(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.income_analysis),
+                    text = stringResource(R.string.expenses_analysis),
                     fontSize = 24.sp,
                     textAlign = TextAlign.Center
                 )
             }
         }
     ) { paddingValues ->
-        if (incomes.value.isEmpty()) {
+        if (expenses.value.isEmpty()) {
             IfEmptyScreen(
                 paddingValues = paddingValues,
-                text = stringResource(R.string.wait_incomes)
+                text = stringResource(R.string.wait_expenses)
             )
         } else {
             LazyColumn(
@@ -199,26 +199,26 @@ private fun IncomeAnalysisContent(
                     Spacer(modifier = Modifier.padding(10.dp))
                     when (selectedItem.value) {
                         AnalysisItem.BarChart -> {
-                            DetailIncomeScreenBarChart(
-                                incomes = incomes.value,
+                            DetailExpenseScreenBarChart(
+                                paddingValues = paddingValues,
+                                viewModel = viewModel,
+                                expenses = expenses.value,
                                 modifier = Modifier
                                     .size(getScreenWidth().dp)
                                     .padding((getScreenWidth() / 6).dp),
-                                isDarkTheme = isDarkTheme,
-                                viewModel = viewModel,
-                                paddingValues = paddingValues
+                                isDarkTheme = isDarkTheme
                             )
                         }
 
                         AnalysisItem.PieChart -> {
-                            DetailIncomeScreenPieChart(
+                            DetailExpenseScreenPieChart(
                                 paddingValues = paddingValues,
-                                incomes = incomes.value,
+                                viewModel = viewModel,
+                                expenses = expenses.value,
                                 modifier = Modifier
                                     .size(getScreenWidth().dp)
                                     .padding((getScreenWidth() / 6).dp),
-                                isDarkTheme = isDarkTheme,
-                                viewModel = viewModel
+                                isDarkTheme = isDarkTheme
                             )
                         }
                     }
@@ -229,26 +229,28 @@ private fun IncomeAnalysisContent(
 }
 
 @Composable
-private fun DetailIncomeScreenPieChart(
+private fun DetailExpenseScreenPieChart(
     paddingValues: PaddingValues,
-    viewModel: IncomeAnalysisViewModel,
-    incomes: List<Income>,
+    viewModel: ExpenseAnalysisViewModel,
+    expenses: List<Expense>,
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
     val state =
-        viewModel.detailIncomePieChartState.collectAsState(IncomeAnalysisPieChartState.Initial)
-    LaunchedEffect(incomes) { viewModel.getIncomesAmountForPieChart(incomes) }
+        viewModel.detailExpensePieChartState.collectAsState(ExpenseAnalysisPieChartState.Initial)
+    LaunchedEffect(expenses) {
+        viewModel.getExpensesAmountForPieChart(expenses)
+    }
 
     when (val currentState = state.value) {
-        is IncomeAnalysisPieChartState.IncomesAmountPercent -> {
-            val incomesAmountPercent = currentState.incomesAmountPercent
+        is ExpenseAnalysisPieChartState.ExpenseAmountPercent -> {
+            val expensesAmountPercent = currentState.expenseAmountPercent
             PieChart(
                 modifier = modifier,
                 pieChartData = PieChartData(
                     slices = listOf(
                         PieChartData.Slice(
-                            incomesAmountPercent[0],
+                            expensesAmountPercent[0],
                             if (isDarkTheme) {
                                 colorResource(R.color.my_green_black)
                             } else {
@@ -256,7 +258,15 @@ private fun DetailIncomeScreenPieChart(
                             }
                         ),
                         PieChartData.Slice(
-                            incomesAmountPercent[1],
+                            expensesAmountPercent[1],
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_coral_red)
+                            } else {
+                                colorResource(R.color.my_coral_red)
+                            }
+                        ),
+                        PieChartData.Slice(
+                            expensesAmountPercent[2],
                             if (isDarkTheme) {
                                 colorResource(R.color.my_brown_black)
                             } else {
@@ -264,7 +274,47 @@ private fun DetailIncomeScreenPieChart(
                             }
                         ),
                         PieChartData.Slice(
-                            incomesAmountPercent[2],
+                            expensesAmountPercent[3],
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_blue)
+                            } else {
+                                colorResource(R.color.my_blue)
+                            }
+                        ),
+                        PieChartData.Slice(
+                            expensesAmountPercent[4],
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_cyan)
+                            } else {
+                                colorResource(R.color.my_cyan)
+                            }
+                        ),
+                        PieChartData.Slice(
+                            expensesAmountPercent[5],
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_teal)
+                            } else {
+                                colorResource(R.color.my_teal)
+                            }
+                        ),
+                        PieChartData.Slice(
+                            expensesAmountPercent[6],
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_gray)
+                            } else {
+                                colorResource(R.color.my_gray)
+                            }
+                        ),
+                        PieChartData.Slice(
+                            expensesAmountPercent[7],
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_violet)
+                            } else {
+                                colorResource(R.color.my_violet)
+                            }
+                        ),
+                        PieChartData.Slice(
+                            expensesAmountPercent[8],
                             if (isDarkTheme) {
                                 colorResource(R.color.my_yellow_black)
                             } else {
@@ -272,15 +322,7 @@ private fun DetailIncomeScreenPieChart(
                             }
                         ),
                         PieChartData.Slice(
-                            incomesAmountPercent[3],
-                            if (isDarkTheme) {
-                                colorResource(R.color.my_blue)
-                            } else {
-                                colorResource(R.color.my_blue)
-                            }
-                        ),
-                        PieChartData.Slice(
-                            incomesAmountPercent[4],
+                            expensesAmountPercent[9],
                             if (isDarkTheme) {
                                 colorResource(R.color.my_orange)
                             } else {
@@ -292,18 +334,18 @@ private fun DetailIncomeScreenPieChart(
                 animation = simpleChartAnimation(),
                 sliceDrawer = SimpleSliceDrawer()
             )
-            LegendWithPercents(isDarkTheme, incomesAmountPercent)
+            LegendWithPercent(isDarkTheme, expensesAmountPercent)
         }
 
-        IncomeAnalysisPieChartState.Initial -> {
+        ExpenseAnalysisPieChartState.Initial -> {
             LoadScreen(paddingValues)
         }
 
-        IncomeAnalysisPieChartState.Loading -> {
+        ExpenseAnalysisPieChartState.Loading -> {
             LoadScreen(paddingValues)
         }
 
-        IncomeAnalysisPieChartState.Error -> {
+        ExpenseAnalysisPieChartState.Error -> {
             ErrorScreen(
                 paddingValues = paddingValues,
                 text = stringResource(R.string.unknown_exception),
@@ -314,77 +356,27 @@ private fun DetailIncomeScreenPieChart(
 }
 
 @Composable
-private fun LegendWithPercents(isDarkTheme: Boolean, incomesAmountPercent: List<Float>) {
-    LazyRow(modifier = Modifier.padding(start = 1.dp, end = 1.dp)) {
-        item {
-            CardWithText(
-                isDarkTheme = isDarkTheme,
-                darkColor = colorResource(R.color.my_green_black),
-                lightColor = colorResource(R.color.my_green),
-                text = stringResource(R.string.salary) +
-                        " (${PercentFormatter.format(incomesAmountPercent[0].toDouble() * 100)})"
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            CardWithText(
-                isDarkTheme = isDarkTheme,
-                darkColor = colorResource(R.color.my_brown_black),
-                lightColor = colorResource(R.color.my_brown),
-                text = stringResource(R.string.bank) +
-                        " (${PercentFormatter.format(incomesAmountPercent[1].toDouble() * 100)})"
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            CardWithText(
-                isDarkTheme = isDarkTheme,
-                darkColor = colorResource(R.color.my_yellow_black),
-                lightColor = colorResource(R.color.my_yellow),
-                text = stringResource(R.string.luck) +
-                        " (${PercentFormatter.format(incomesAmountPercent[2].toDouble() * 100)})"
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            CardWithText(
-                isDarkTheme = isDarkTheme,
-                darkColor = colorResource(R.color.my_blue),
-                lightColor = colorResource(R.color.my_blue),
-                text = stringResource(R.string.gifts) +
-                        " (${PercentFormatter.format(incomesAmountPercent[3].toDouble() * 100)})"
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            CardWithText(
-                isDarkTheme = isDarkTheme,
-                darkColor = colorResource(R.color.my_orange),
-                lightColor = colorResource(R.color.my_orange),
-                text = stringResource(R.string.other) +
-                        " (${PercentFormatter.format(incomesAmountPercent[4].toDouble() * 100)})"
-            )
-        }
-
-    }
-}
-
-@Composable
-private fun DetailIncomeScreenBarChart(
+private fun DetailExpenseScreenBarChart(
     paddingValues: PaddingValues,
-    viewModel: IncomeAnalysisViewModel,
-    incomes: List<Income>,
+    viewModel: ExpenseAnalysisViewModel,
+    expenses: List<Expense>,
     modifier: Modifier,
     isDarkTheme: Boolean
 ) {
     val state =
-        viewModel.detailIncomeBarChartState.collectAsState(IncomeAnalysisBarChartState.Initial)
-    LaunchedEffect(incomes) {
-        viewModel.getIncomesAmountForBarChart(incomes)
-    }
+        viewModel.detailExpenseBarChartState.collectAsState(ExpenseAnalysisBarChartState.Initial)
+    LaunchedEffect(expenses) { viewModel.getExpenseAmountForBarChart(expenses) }
 
     when (val currentState = state.value) {
-        is IncomeAnalysisBarChartState.IncomesAmount -> {
-            val incomesAmount = currentState.incomesAmount
+        is ExpenseAnalysisBarChartState.ExpenseAmount -> {
+            val expensesAmount = currentState.expenseAmount
 
             BarChart(
                 modifier = modifier,
                 barChartData = BarChartData(
                     bars = listOf(
                         BarChartData.Bar(
-                            incomesAmount[0].toFloat(),
+                            expensesAmount[0].toFloat(),
                             if (isDarkTheme) {
                                 colorResource(R.color.my_green_black)
                             } else {
@@ -393,16 +385,70 @@ private fun DetailIncomeScreenBarChart(
                             ""
                         ),
                         BarChartData.Bar(
-                            incomesAmount[1].toFloat(),
+                            expensesAmount[1].toFloat(),
                             if (isDarkTheme) {
-                                colorResource(R.color.my_brown_black)
+                                colorResource(R.color.my_coral_red)
+                            } else {
+                                colorResource(R.color.my_coral_red)
+                            },
+                            ""
+                        ),
+                        BarChartData.Bar(
+                            expensesAmount[2].toFloat(),
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_brown)
                             } else {
                                 colorResource(R.color.my_brown)
                             },
                             ""
                         ),
                         BarChartData.Bar(
-                            incomesAmount[2].toFloat(),
+                            expensesAmount[3].toFloat(),
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_blue)
+                            } else {
+                                colorResource(R.color.my_blue)
+                            },
+                            ""
+                        ),
+                        BarChartData.Bar(
+                            expensesAmount[4].toFloat(),
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_cyan)
+                            } else {
+                                colorResource(R.color.my_cyan)
+                            },
+                            ""
+                        ),
+                        BarChartData.Bar(
+                            expensesAmount[5].toFloat(),
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_teal)
+                            } else {
+                                colorResource(R.color.my_teal)
+                            },
+                            ""
+                        ),
+                        BarChartData.Bar(
+                            expensesAmount[6].toFloat(),
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_gray)
+                            } else {
+                                colorResource(R.color.my_gray)
+                            },
+                            ""
+                        ),
+                        BarChartData.Bar(
+                            expensesAmount[7].toFloat(),
+                            if (isDarkTheme) {
+                                colorResource(R.color.my_violet)
+                            } else {
+                                colorResource(R.color.my_violet)
+                            },
+                            ""
+                        ),
+                        BarChartData.Bar(
+                            expensesAmount[8].toFloat(),
                             if (isDarkTheme) {
                                 colorResource(R.color.my_yellow_black)
                             } else {
@@ -411,16 +457,7 @@ private fun DetailIncomeScreenBarChart(
                             ""
                         ),
                         BarChartData.Bar(
-                            incomesAmount[3].toFloat(),
-                            if (isDarkTheme) {
-                                colorResource(R.color.my_blue)
-                            } else {
-                                colorResource(R.color.my_blue)
-                            },
-                            ""
-                        ),
-                        BarChartData.Bar(
-                            incomesAmount[4].toFloat(),
+                            expensesAmount[9].toFloat(),
                             if (isDarkTheme) {
                                 colorResource(R.color.my_orange)
                             } else {
@@ -441,18 +478,18 @@ private fun DetailIncomeScreenBarChart(
             )
             Legend(isDarkTheme)
             Spacer(modifier = Modifier.padding(8.dp))
-            FullInfo(incomesAmount)
+            FullInfo(expensesAmount)
         }
 
-        IncomeAnalysisBarChartState.Initial -> {
-            LoadScreen(paddingValues = paddingValues)
+        ExpenseAnalysisBarChartState.Initial -> {
+            LoadScreen(paddingValues)
         }
 
-        IncomeAnalysisBarChartState.Loading -> {
-            LoadScreen(paddingValues = paddingValues)
+        ExpenseAnalysisBarChartState.Loading -> {
+            LoadScreen(paddingValues)
         }
 
-        IncomeAnalysisBarChartState.Error -> {
+        ExpenseAnalysisBarChartState.Error -> {
             ErrorScreen(
                 paddingValues = paddingValues,
                 text = stringResource(R.string.unknown_exception),
@@ -463,13 +500,13 @@ private fun DetailIncomeScreenBarChart(
 }
 
 @Composable
-private fun FullInfo(incomesAmount: List<Double>) {
-    val incomes = mutableListOf<Income>()
-    for (i in incomesAmount.indices) {
-        if (incomesAmount[i] != 0.0) {
-            incomes.add(
-                Income(
-                    amount = incomesAmount[i],
+private fun FullInfo(expensesAmount: List<Double>) {
+    val expenses = mutableListOf<Expense>()
+    for (i in expensesAmount.indices) {
+        if (expensesAmount[i] != 0.0) {
+            expenses.add(
+                Expense(
+                    amount = expensesAmount[i],
                     category = getCategory(i),
                     comment = "",
                     date = Date()
@@ -478,14 +515,29 @@ private fun FullInfo(incomesAmount: List<Double>) {
         }
     }
     Column {
-        for (income in incomes) {
-            FullInfoCardOfIncome(income)
+        for (expense in expenses) {
+            FullInfoCardOfExpense(expense)
         }
     }
 }
 
+private fun getCategory(i: Int): ExpenseCategory {
+    return when (i) {
+        0 -> ExpenseCategory.PRODUCTS
+        1 -> ExpenseCategory.CAFE
+        2 -> ExpenseCategory.HOME
+        3 -> ExpenseCategory.GIFTS
+        4 -> ExpenseCategory.STUDY
+        5 -> ExpenseCategory.HEALTH
+        6 -> ExpenseCategory.TRANSPORT
+        7 -> ExpenseCategory.SPORT
+        8 -> ExpenseCategory.CLOTHES
+        else -> ExpenseCategory.OTHER
+    }
+}
+
 @Composable
-private fun FullInfoCardOfIncome(income: Income) {
+private fun FullInfoCardOfExpense(expense: Expense) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -504,17 +556,105 @@ private fun FullInfoCardOfIncome(income: Income) {
             horizontalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(getIncomeIconResId(income.category)),
-                contentDescription = stringResource(getIncomeNameResId(income.category))
+                painter = painterResource(getExpenseIconResId(expense.category)),
+                contentDescription = stringResource(getExpenseNameResId(expense.category))
             )
             Spacer(modifier = Modifier.padding(6.dp))
-            Text(text = stringResource(getIncomeNameResId(income.category)))
+            Text(text = stringResource(getExpenseNameResId(expense.category)))
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = AmountFormatter.format(income.amount),
+                text = AmountFormatter.format(expense.amount),
                 modifier = Modifier.padding(start = 6.dp)
             )
         }
+    }
+}
+
+@Composable
+private fun LegendWithPercent(isDarkTheme: Boolean, expensesAmountPercent: List<Float>) {
+    LazyRow(modifier = Modifier.padding(start = 1.dp, end = 1.dp)) {
+        item {
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_green_black),
+                lightColor = colorResource(R.color.my_green),
+                text = stringResource(R.string.products) +
+                        " (${PercentFormatter.format(expensesAmountPercent[0].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_coral_red),
+                lightColor = colorResource(R.color.my_coral_red),
+                text = stringResource(R.string.cafe) +
+                        " (${PercentFormatter.format(expensesAmountPercent[1].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_brown_black),
+                lightColor = colorResource(R.color.my_brown),
+                text = stringResource(R.string.home) +
+                        " (${PercentFormatter.format(expensesAmountPercent[2].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_blue),
+                lightColor = colorResource(R.color.my_blue),
+                text = stringResource(R.string.gifts) +
+                        " (${PercentFormatter.format(expensesAmountPercent[3].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_cyan),
+                lightColor = colorResource(R.color.my_cyan),
+                text = stringResource(R.string.study) +
+                        " (${PercentFormatter.format(expensesAmountPercent[4].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_teal),
+                lightColor = colorResource(R.color.my_teal),
+                text = stringResource(R.string.health) +
+                        " (${PercentFormatter.format(expensesAmountPercent[5].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_gray),
+                lightColor = colorResource(R.color.my_gray),
+                text = stringResource(R.string.transport) +
+                        " (${PercentFormatter.format(expensesAmountPercent[6].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_violet),
+                lightColor = colorResource(R.color.my_violet),
+                text = stringResource(R.string.sport) +
+                        " (${PercentFormatter.format(expensesAmountPercent[7].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_yellow_black),
+                lightColor = colorResource(R.color.my_yellow),
+                text = stringResource(R.string.clothes) +
+                        " (${PercentFormatter.format(expensesAmountPercent[8].toDouble() * 100)})"
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_orange),
+                lightColor = colorResource(R.color.my_orange),
+                text = stringResource(R.string.other) +
+                        " (${PercentFormatter.format(expensesAmountPercent[9].toDouble() * 100)})"
+            )
+        }
+
     }
 }
 
@@ -526,21 +666,21 @@ private fun Legend(isDarkTheme: Boolean) {
                 isDarkTheme = isDarkTheme,
                 darkColor = colorResource(R.color.my_green_black),
                 lightColor = colorResource(R.color.my_green),
-                text = stringResource(R.string.salary)
+                text = stringResource(R.string.products)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_coral_red),
+                lightColor = colorResource(R.color.my_coral_red),
+                text = stringResource(R.string.cafe)
             )
             Spacer(modifier = Modifier.padding(5.dp))
             CardWithText(
                 isDarkTheme = isDarkTheme,
                 darkColor = colorResource(R.color.my_brown_black),
                 lightColor = colorResource(R.color.my_brown),
-                text = stringResource(R.string.bank)
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            CardWithText(
-                isDarkTheme = isDarkTheme,
-                darkColor = colorResource(R.color.my_yellow_black),
-                lightColor = colorResource(R.color.my_yellow),
-                text = stringResource(R.string.luck)
+                text = stringResource(R.string.home)
             )
             Spacer(modifier = Modifier.padding(5.dp))
             CardWithText(
@@ -552,46 +692,46 @@ private fun Legend(isDarkTheme: Boolean) {
             Spacer(modifier = Modifier.padding(5.dp))
             CardWithText(
                 isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_cyan),
+                lightColor = colorResource(R.color.my_cyan),
+                text = stringResource(R.string.study)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_teal),
+                lightColor = colorResource(R.color.my_teal),
+                text = stringResource(R.string.health)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_gray),
+                lightColor = colorResource(R.color.my_gray),
+                text = stringResource(R.string.transport)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_violet),
+                lightColor = colorResource(R.color.my_violet),
+                text = stringResource(R.string.sport)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
+                darkColor = colorResource(R.color.my_yellow_black),
+                lightColor = colorResource(R.color.my_yellow),
+                text = stringResource(R.string.clothes)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            CardWithText(
+                isDarkTheme = isDarkTheme,
                 darkColor = colorResource(R.color.my_orange),
                 lightColor = colorResource(R.color.my_orange),
                 text = stringResource(R.string.other)
             )
         }
 
-    }
-}
-
-@Composable
-private fun CardWithText(
-    isDarkTheme: Boolean,
-    darkColor: Color,
-    lightColor: Color,
-    text: String
-) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground
-        ),
-        border = BorderStroke(
-            width = 4.dp,
-            color = if (isDarkTheme) darkColor else lightColor
-        )
-    ) {
-        Text(
-            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, start = 12.dp, end = 12.dp),
-            text = text,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-    }
-}
-
-private fun getCategory(i: Int): IncomeCategory {
-    return when (i) {
-        0 -> IncomeCategory.SALARY
-        1 -> IncomeCategory.BANK
-        2 -> IncomeCategory.LUCK
-        3 -> IncomeCategory.GIFTS
-        else -> IncomeCategory.OTHER
     }
 }
