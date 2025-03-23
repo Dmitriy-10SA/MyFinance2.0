@@ -15,8 +15,8 @@
 - Jetpack Compose
 - MVVM
 - Retrofit
-- Clean Architecture
-- Coroutines
+- Clean Architecture (division into modules)
+- Coroutines + Flow
 - Dagger 2
 
 ---
