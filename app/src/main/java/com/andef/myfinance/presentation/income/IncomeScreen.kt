@@ -184,20 +184,17 @@ fun IncomeScreen(
                 }
             }
         } else {
-            Scaffold { paddingValues ->
-                MyFinanceDatePicker(
-                    paddingValues = paddingValues,
-                    onCloseClickListener = {
-                        isDatePickerScreen.value = false
-                    },
-                    onSaveClickListener = { date ->
-                        dateState.value = Date(date)
-                        isDatePickerScreen.value = false
-                    },
-                    date = dateState.value.toStartOfDay(1).time,
-                    isDarkTheme = isDarkTheme
-                )
-            }
+            MyFinanceDatePicker(
+                onCloseClickListener = {
+                    isDatePickerScreen.value = false
+                },
+                onSaveClickListener = { date ->
+                    dateState.value = Date(date)
+                    isDatePickerScreen.value = false
+                },
+                date = dateState.value.toStartOfDay(1).time,
+                isDarkTheme = isDarkTheme
+            )
         }
     }
 
@@ -223,17 +220,21 @@ private fun IncomeScreenContent(
     ) {
         item {
             Spacer(modifier = Modifier.padding(4.dp))
-            DoubleInputTextForAmount(amount, { number ->
-                number.toDoubleOrNull()?.let {
-                    amount.value = number
+            DoubleInputTextForAmount(
+                amount = amount,
+                label = stringResource(R.string.input_income),
+                onValueChanged = { number ->
+                    number.toDoubleOrNull()?.let {
+                        amount.value = number
+                    }
+                    if (number.isEmpty()
+                        || number.startsWith("0")
+                        || number.startsWith(".")
+                    ) {
+                        amount.value = ""
+                    }
                 }
-                if (number.isEmpty()
-                    || number.startsWith("0")
-                    || number.startsWith(".")
-                ) {
-                    amount.value = ""
-                }
-            })
+            )
         }
         item {
             Spacer(modifier = Modifier.padding(16.dp))

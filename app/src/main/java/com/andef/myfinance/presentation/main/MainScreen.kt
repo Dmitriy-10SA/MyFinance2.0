@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.domain.expense.entities.Expense
@@ -263,7 +264,7 @@ private fun TitleAndMenuIconButtonOfTopBar(onMenuClickListener: () -> Unit) {
             titleContentColor = MaterialTheme.colorScheme.onBackground,
             navigationIconContentColor = MaterialTheme.colorScheme.onBackground
         ),
-        title = { Text(text = stringResource(R.string.app_name)) },
+        title = { Text(text = stringResource(R.string.app_name), fontSize = 24.sp) },
         navigationIcon = {
             IconButton(
                 colors = IconButtonDefaults.iconButtonColors(

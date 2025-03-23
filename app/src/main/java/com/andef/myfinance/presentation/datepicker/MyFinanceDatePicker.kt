@@ -1,44 +1,38 @@
 package com.andef.myfinance.presentation.datepicker
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerFormatter
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andef.myfinance.R
 import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
+import com.andef.myfinance.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyFinanceDatePicker(
-    paddingValues: PaddingValues,
     onCloseClickListener: () -> Unit,
     onSaveClickListener: (Long) -> Unit,
     date: Long,
@@ -46,57 +40,20 @@ fun MyFinanceDatePicker(
     dateFormatter: DatePickerFormatter = remember { DatePickerDefaults.dateFormatter() }
 ) {
     val state = rememberDatePickerState(initialSelectedDateMillis = date)
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        verticalArrangement = Arrangement.Top
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            IconButton(
-                onClick = {
-                    onCloseClickListener()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
-            TextButton(
-                onClick = {
-                    onSaveClickListener(state.selectedDateMillis!!)
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isDarkTheme) Blue else Orange,
-                    disabledContainerColor = if (isDarkTheme) {
-                        Blue.copy(alpha = 0.3f)
-                    } else {
-                        Orange.copy(alpha = 0.3f)
-                    },
-                    contentColor = Color.White,
-                    disabledContentColor = Color.White
-                ),
-                enabled = state.selectedDateMillis != null
-            ) {
-                Text(
-                    modifier = Modifier.padding(start = 5.dp, end = 5.dp),
-                    text = stringResource(R.string.save),
-                    fontSize = 16.sp
-                )
-            }
+
+    Scaffold(
+        topBar = {
+            TopNavigationAndActionRow(
+                isDarkTheme = isDarkTheme,
+                state = state,
+                onCloseClickListener = onCloseClickListener,
+                onSaveClickListener = onSaveClickListener
+            )
         }
+    ) { paddingValues ->
         DatePicker(
             state = state,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.padding(paddingValues),
             dateFormatter = dateFormatter,
             title = {},
             headline = {},
@@ -167,4 +124,50 @@ fun MyFinanceDatePicker(
     BackHandler {
         onCloseClickListener()
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopNavigationAndActionRow(
+    isDarkTheme: Boolean,
+    state: DatePickerState,
+    onCloseClickListener: () -> Unit,
+    onSaveClickListener: (Long) -> Unit
+) {
+    CenterAlignedTopAppBar(
+        title = { Text(text = stringResource(R.string.app_name), fontSize = 24.sp) },
+        navigationIcon = {
+            IconButton(onClick = onCloseClickListener) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        },
+        actions = {
+            IconButton(
+                colors = IconButtonDefaults.iconButtonColors(
+                    containerColor = if (isDarkTheme) Blue else Orange,
+                    contentColor = White,
+                    disabledContainerColor = if (isDarkTheme) {
+                        Blue.copy(alpha = 0.3f)
+                    } else {
+                        Orange.copy(alpha = 0.3f)
+                    },
+                    disabledContentColor = White
+                ),
+                enabled = state.selectedDateMillis != null,
+                onClick = {
+                    onSaveClickListener(state.selectedDateMillis!!)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    tint = White,
+                    contentDescription = stringResource(R.string.confirm_date_choose)
+                )
+            }
+        }
+    )
 }

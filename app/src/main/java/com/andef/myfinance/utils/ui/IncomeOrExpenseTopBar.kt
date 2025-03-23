@@ -29,12 +29,7 @@ fun IncomeOrExpenseTopBar(
     onActionClickListener: () -> Unit
 ) {
     CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = stringResource(R.string.app_name),
-                fontSize = 24.sp
-            )
-        },
+        title = { Text(text = stringResource(R.string.app_name), fontSize = 24.sp) },
         navigationIcon = {
             IconButton(
                 onClick = {
