@@ -345,7 +345,7 @@ private fun MainBottomBar(mainNavigationState: MainNavigationState) {
                         contentDescription = stringResource(item.contentDescriptionResId)
                     )
                 },
-                label = { Text(text = stringResource(item.titleResId)) },
+                label = { Text(text = stringResource(item.titleResId), fontSize = 13.sp) },
                 colors = NavigationBarItemColors(
                     selectedIconColor = MaterialTheme.colorScheme.onBackground,
                     selectedTextColor = MaterialTheme.colorScheme.onBackground,
