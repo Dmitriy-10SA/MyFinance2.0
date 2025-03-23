@@ -57,7 +57,6 @@ import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
 import com.andef.myfinance.utils.formatter.DateFormatter
-import com.andef.myfinance.utils.ui.toDate
 import com.andef.myfinance.utils.ui.DoubleInputTextForAmount
 import com.andef.myfinance.utils.ui.ErrorScreen
 import com.andef.myfinance.utils.ui.IfEmptyScreen
@@ -65,6 +64,7 @@ import com.andef.myfinance.utils.ui.IncomeOrExpenseTopBar
 import com.andef.myfinance.utils.ui.TextInputTextForAmount
 import com.andef.myfinance.utils.ui.getExpenseIconResId
 import com.andef.myfinance.utils.ui.getExpenseNameResId
+import com.andef.myfinance.utils.ui.toDate
 import java.time.LocalDate
 import java.util.Date
 
@@ -152,16 +152,13 @@ fun ExpenseScreen(
 
                         if (isVisible.value) {
                             ExpenseScreenContent(
-                                expense = currentState.expense,
                                 paddingValues = paddingValues,
                                 isDarkTheme = isDarkTheme,
                                 amount = amount,
                                 comment = comment,
                                 dateState = dateState,
                                 category = category,
-                                viewModel = viewModel,
-                                isDatePickerState = isDatePickerScreen,
-                                onBackClickListener = onBackClickListener
+                                isDatePickerState = isDatePickerScreen
                             )
                         } else {
                             IfEmptyScreen(
@@ -211,16 +208,13 @@ fun ExpenseScreen(
 
 @Composable
 private fun ExpenseScreenContent(
-    expense: Expense?,
     paddingValues: PaddingValues,
     isDarkTheme: Boolean,
     amount: MutableState<String>,
     comment: MutableState<String>,
     dateState: MutableState<Date>,
     category: MutableState<ExpenseCategory>,
-    viewModel: ExpenseViewModel,
-    isDatePickerState: MutableState<Boolean>,
-    onBackClickListener: () -> Unit
+    isDatePickerState: MutableState<Boolean>
 ) {
     LazyColumn(
         modifier = Modifier
