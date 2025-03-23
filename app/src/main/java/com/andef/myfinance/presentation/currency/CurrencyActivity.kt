@@ -1,4 +1,4 @@
-package com.andef.myfinance.presentation.expense
+package com.andef.myfinance.presentation.currency
 
 import android.content.Context
 import android.content.Intent
@@ -9,48 +9,42 @@ import androidx.activity.enableEdgeToEdge
 import com.andef.myfinance.MyFinanceApplication
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
+import com.andef.myfinance.presentation.expense.ExpenseActivity
+import com.andef.myfinance.presentation.expense.ExpenseActivity.Companion
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import javax.inject.Inject
 
-class ExpenseActivity : ComponentActivity() {
+class CurrencyActivity : ComponentActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MyFinanceApplication).component.inject(this)
         val isDarkTheme = intent.getBooleanExtra(IS_DARK_THEME_EXTRA, false)
-        val id = if (intent.hasExtra(ID_EXTRA)) {
-            intent.extras?.getInt(ID_EXTRA)
-        } else {
-            null
-        }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MyFinanceTheme(darkTheme = isDarkTheme, dynamicColor = false) {
-                ExpenseScreen(
+                CurrencyScreen(
                     isDarkTheme = isDarkTheme,
-                    id = id,
+                    viewModelFactory = viewModelFactory,
                     onBackClickListener = {
                         finish()
                         @Suppress("DEPRECATION")
-                        overridePendingTransition(0, R.anim.slide_out_bottom)
-                    },
-                    viewModelFactory = viewModelFactory
+                        overridePendingTransition(0, R.anim.slide_out_top)
+                    }
                 )
             }
         }
     }
 
     companion object {
-        fun newIntent(context: Context, isDarkTheme: Boolean, id: Int? = null): Intent {
-            return Intent(context, ExpenseActivity::class.java).apply {
+        fun newIntent(context: Context, isDarkTheme: Boolean): Intent {
+            return Intent(context, CurrencyActivity::class.java).apply {
                 putExtra(IS_DARK_THEME_EXTRA, isDarkTheme)
-                id?.let { putExtra(ID_EXTRA, it) }
             }
         }
 
         private const val IS_DARK_THEME_EXTRA = "isDarkTheme"
-        private const val ID_EXTRA = "id"
     }
 }

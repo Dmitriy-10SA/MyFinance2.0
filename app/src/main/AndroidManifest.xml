@@ -22,13 +22,18 @@
         android:theme="@style/Theme.MyFinance"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.currency.CurrencyActivity"
+            android:exported="false"
+            android:label="@string/title_activity_currency"
+            android:theme="@style/Theme.MyFinance" />
+        <activity
             android:name=".presentation.expense.ExpenseActivity"
             android:exported="false"
             android:label="@string/title_activity_expense"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyFinance"
             android:windowSoftInputMode="adjustResize"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".presentation.income.IncomeActivity"
             android:exported="false"

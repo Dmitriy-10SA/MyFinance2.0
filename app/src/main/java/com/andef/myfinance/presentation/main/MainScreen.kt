@@ -1,21 +1,32 @@
 package com.andef.myfinance.presentation.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -23,26 +34,37 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andef.myfinance.R
@@ -64,6 +86,8 @@ import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
 import com.andef.myfinance.utils.ui.toDate
 import com.andef.myfinance.utils.ui.getCurrentDestination
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Date
 
@@ -75,7 +99,12 @@ fun MainScreen(
     onIncomeFABClickListener: () -> Unit,
     onExpenseFABClickListener: () -> Unit,
     onIncomeClickListener: (Income) -> Unit,
-    onExpenseClickListener: (Expense) -> Unit
+    onExpenseClickListener: (Expense) -> Unit,
+    onCheckedChangeClickListener: (Boolean) -> Unit,
+    onIncomeAnalysisClickListener: () -> Unit,
+    onExpenseAnalysisClickListener: () -> Unit,
+    onCurrencyValueClickListener: () -> Unit,
+    onWebViewActionClickListener: (String) -> Unit
 ) {
     val mainNavigationState = rememberMainNavigationState()
 
@@ -83,6 +112,9 @@ fun MainScreen(
     val topBarState = remember { mutableStateOf(MainTopBarItem.Day as MainTopBarItem) }
     val startDate = remember { mutableStateOf(Date()) }
     val endDate = remember { mutableStateOf(Date()) }
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
 
     SetDate(topBarState = topBarState, startDate = startDate, endDate = endDate)
 
@@ -94,59 +126,43 @@ fun MainScreen(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) { isRangeDatePicker ->
         if (!isRangeDatePicker) {
-            Scaffold(
-                topBar = {
-                    MainTopBar(
-                        topBarState = topBarState,
-                        onPeriodItemClickListener = {
-                            isRangeDatePickerScreen.value = true
-                        },
-                        onMenuClickListener = {
-                            // TODO("Меню открыть")
-                        }
-                    )
-                },
-                bottomBar = {
-                    MainBottomBar(mainNavigationState = mainNavigationState)
-                },
-                floatingActionButton = {
-                    MainFAB(
-                        mainNavigationState = mainNavigationState,
-                        isDarkTheme = isDarkTheme,
-                        onIncomeFABClickListener = onIncomeFABClickListener,
-                        onExpenseFABClickListener = onExpenseFABClickListener
-                    )
-                }
-            ) { paddingValues ->
-                MainNavGraph(
-                    navHostController = mainNavigationState.navHostController,
-                    incomesScreenContent = {
-                        IncomesScreen(
-                            paddingValues = paddingValues,
-                            viewModelFactory = viewModelFactory,
-                            startDate = startDate.value,
-                            endDate = endDate.value,
-                            onIncomeClickListener = onIncomeClickListener
-                        )
-                    },
-                    expensesScreenContent = {
-                        ExpensesScreen(
-                            paddingValues = paddingValues,
-                            viewModelFactory = viewModelFactory,
-                            startDate = startDate.value,
-                            endDate = endDate.value,
-                            onExpenseClickListener = onExpenseClickListener
-                        )
-                    },
-                    totalsScreenContent = {
-                        TotalsScreen(
-                            paddingValues = paddingValues,
-                            viewModelFactory = viewModelFactory,
+            ModalNavigationDrawer(
+                drawerContent = {
+                    ModalDrawerSheet(
+                        drawerShape = RoundedCornerShape(10.dp),
+                        drawerContainerColor = MaterialTheme.colorScheme.background,
+                        drawerContentColor = MaterialTheme.colorScheme.onBackground,
+                        drawerTonalElevation = 8.dp
+                    ) {
+                        ModalDrawerSheetContent(
                             isDarkTheme = isDarkTheme,
-                            startDate = startDate.value,
-                            endDate = endDate.value
+                            onCheckedChangeClickListener = onCheckedChangeClickListener,
+                            onCurrencyValueClickListener = onCurrencyValueClickListener,
+                            onExpenseAnalysisClickListener = onExpenseAnalysisClickListener,
+                            onIncomeAnalysisClickListener = onIncomeAnalysisClickListener,
+                            onWebViewActionClickListener = onWebViewActionClickListener
                         )
                     }
+                    BackHandler {
+                        coroutineScope.launch { drawerState.close() }
+                    }
+                },
+                drawerState = drawerState
+            ) {
+                MainScreenContent(
+                    topBarState = topBarState,
+                    isRangeDatePickerScreen = isRangeDatePickerScreen,
+                    mainNavigationState = mainNavigationState,
+                    isDarkTheme = isDarkTheme,
+                    onIncomeFABClickListener = onIncomeFABClickListener,
+                    onExpenseFABClickListener = onExpenseFABClickListener,
+                    onExpenseClickListener = onExpenseClickListener,
+                    onIncomeClickListener = onIncomeClickListener,
+                    startDate = startDate,
+                    endDate = endDate,
+                    viewModelFactory = viewModelFactory,
+                    drawerState = drawerState,
+                    coroutineScope = coroutineScope
                 )
             }
         } else {
@@ -162,6 +178,230 @@ fun MainScreen(
                 isDarkTheme = isDarkTheme
             )
         }
+    }
+}
+
+@Composable
+private fun ModalDrawerSheetContent(
+    isDarkTheme: Boolean,
+    onCheckedChangeClickListener: (Boolean) -> Unit,
+    onIncomeAnalysisClickListener: () -> Unit,
+    onExpenseAnalysisClickListener: () -> Unit,
+    onCurrencyValueClickListener: () -> Unit,
+    onWebViewActionClickListener: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.padding(16.dp))
+        Icon(
+            painter = painterResource(R.drawable.icon),
+            contentDescription = stringResource(R.string.ruble_icon),
+            tint = MaterialTheme.colorScheme.onBackground
+        )
+        Spacer(modifier = Modifier.padding(12.dp))
+        LazyColumn {
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.income_analysis),
+                    onTextButtonClickListener = onIncomeAnalysisClickListener
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.expenses_analysis),
+                    onTextButtonClickListener = onExpenseAnalysisClickListener
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.currency_value),
+                    onTextButtonClickListener = onCurrencyValueClickListener
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.deposits),
+                    onTextButtonClickListener = {
+                        // TODO()
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.credits),
+                    onTextButtonClickListener = {
+                        // TODO()
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.microloans),
+                    onTextButtonClickListener = {
+                        // TODO()
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.mortgage),
+                    onTextButtonClickListener = {
+                        // TODO()
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.news),
+                    onTextButtonClickListener = {
+                        // TODO()
+                    }
+                )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = stringResource(R.string.dark_theme),
+                fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(8.dp)
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            Switch(
+                checked = isDarkTheme,
+                colors = SwitchDefaults.colors(
+                    checkedBorderColor = MaterialTheme.colorScheme.onBackground,
+                    uncheckedBorderColor = MaterialTheme.colorScheme.onBackground,
+                    disabledCheckedBorderColor = MaterialTheme.colorScheme.onBackground,
+                    disabledUncheckedBorderColor = MaterialTheme.colorScheme.onBackground,
+                    checkedThumbColor = MaterialTheme.colorScheme.onBackground,
+                    uncheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                    disabledCheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                    disabledUncheckedThumbColor = MaterialTheme.colorScheme.onBackground,
+                    checkedIconColor = MaterialTheme.colorScheme.background,
+                    uncheckedIconColor = MaterialTheme.colorScheme.onBackground,
+                    disabledCheckedIconColor = MaterialTheme.colorScheme.onBackground,
+                    disabledUncheckedIconColor = MaterialTheme.colorScheme.onBackground,
+                    uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                    disabledUncheckedTrackColor = MaterialTheme.colorScheme.background,
+                    disabledCheckedTrackColor = MaterialTheme.colorScheme.background,
+                    checkedTrackColor = MaterialTheme.colorScheme.background
+                ),
+                thumbContent = {
+                    if (isDarkTheme) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                        )
+                    }
+                },
+                onCheckedChange = { onCheckedChangeClickListener(it) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun MyTextButton(
+    text: String,
+    onTextButtonClickListener: () -> Unit
+) {
+    TextButton(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
+        onClick = onTextButtonClickListener
+    ) {
+        Text(
+            modifier = Modifier.padding(8.dp),
+            textDecoration = TextDecoration.Underline,
+            text = text,
+            textAlign = TextAlign.Start,
+            fontSize = 24.sp,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
+
+@Composable
+private fun MainScreenContent(
+    topBarState: MutableState<MainTopBarItem>,
+    isRangeDatePickerScreen: MutableState<Boolean>,
+    mainNavigationState: MainNavigationState,
+    isDarkTheme: Boolean,
+    onIncomeFABClickListener: () -> Unit,
+    onExpenseFABClickListener: () -> Unit,
+    viewModelFactory: ViewModelFactory,
+    drawerState: DrawerState,
+    coroutineScope: CoroutineScope,
+    startDate: MutableState<Date>,
+    endDate: MutableState<Date>,
+    onIncomeClickListener: (Income) -> Unit,
+    onExpenseClickListener: (Expense) -> Unit
+) {
+    Scaffold(
+        topBar = {
+            MainTopBar(
+                topBarState = topBarState,
+                onPeriodItemClickListener = {
+                    isRangeDatePickerScreen.value = true
+                },
+                onMenuClickListener = {
+                    coroutineScope.launch { drawerState.open() }
+                }
+            )
+        },
+        bottomBar = {
+            MainBottomBar(mainNavigationState = mainNavigationState)
+        },
+        floatingActionButton = {
+            MainFAB(
+                mainNavigationState = mainNavigationState,
+                isDarkTheme = isDarkTheme,
+                onIncomeFABClickListener = onIncomeFABClickListener,
+                onExpenseFABClickListener = onExpenseFABClickListener
+            )
+        }
+    ) { paddingValues ->
+        MainNavGraph(
+            navHostController = mainNavigationState.navHostController,
+            incomesScreenContent = {
+                IncomesScreen(
+                    paddingValues = paddingValues,
+                    viewModelFactory = viewModelFactory,
+                    startDate = startDate.value,
+                    endDate = endDate.value,
+                    onIncomeClickListener = onIncomeClickListener
+                )
+            },
+            expensesScreenContent = {
+                ExpensesScreen(
+                    paddingValues = paddingValues,
+                    viewModelFactory = viewModelFactory,
+                    startDate = startDate.value,
+                    endDate = endDate.value,
+                    onExpenseClickListener = onExpenseClickListener
+                )
+            },
+            totalsScreenContent = {
+                TotalsScreen(
+                    paddingValues = paddingValues,
+                    viewModelFactory = viewModelFactory,
+                    isDarkTheme = isDarkTheme,
+                    startDate = startDate.value,
+                    endDate = endDate.value
+                )
+            }
+        )
     }
 }
 

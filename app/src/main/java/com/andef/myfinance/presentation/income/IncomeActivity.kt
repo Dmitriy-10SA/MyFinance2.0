@@ -34,7 +34,7 @@ class IncomeActivity : ComponentActivity() {
                     onBackClickListener = {
                         finish()
                         @Suppress("DEPRECATION")
-                        overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom)
+                        overridePendingTransition(0, R.anim.slide_out_bottom)
                     },
                     viewModelFactory = viewModelFactory
                 )

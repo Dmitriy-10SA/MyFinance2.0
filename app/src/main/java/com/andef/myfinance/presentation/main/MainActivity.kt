@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.MyFinanceApplication
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
+import com.andef.myfinance.presentation.currency.CurrencyActivity
 import com.andef.myfinance.presentation.expense.ExpenseActivity
 import com.andef.myfinance.presentation.income.IncomeActivity
 import com.andef.myfinance.ui.theme.MyFinanceTheme
@@ -27,9 +27,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val viewModel: MainActivityViewModel = viewModel(factory = viewModelFactory)
             val isDarkTheme = remember { mutableStateOf(viewModel.isDarkTheme()) }
-            MyFinanceTheme(darkTheme = isSystemInDarkTheme(), dynamicColor = false) {
+            MyFinanceTheme(darkTheme = isDarkTheme.value, dynamicColor = false) {
                 MainScreen(
-                    isDarkTheme = isSystemInDarkTheme(),
+                    isDarkTheme = isDarkTheme.value,
                     viewModelFactory = viewModelFactory,
                     onIncomeFABClickListener = {
                         openIncomeActivity(isDarkTheme.value)
@@ -42,9 +42,33 @@ class MainActivity : ComponentActivity() {
                     },
                     onExpenseClickListener = { expense ->
                         openExpenseActivity(isDarkTheme.value, expense.id)
+                    },
+                    onCheckedChangeClickListener = {
+                        viewModel.changeThemeUseCase()
+                        isDarkTheme.value = viewModel.isDarkTheme()
+                    },
+                    onIncomeAnalysisClickListener = {
+
+                    },
+                    onExpenseAnalysisClickListener = {
+
+                    },
+                    onCurrencyValueClickListener = {
+                        openCurrencyActivity(isDarkTheme.value)
+                    },
+                    onWebViewActionClickListener = { link ->
+
                     }
                 )
             }
+        }
+    }
+
+    private fun openCurrencyActivity(isDarkTheme: Boolean) {
+        CurrencyActivity.newIntent(this, isDarkTheme).apply {
+            startActivity(this)
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.slide_in_top, 0)
         }
     }
 
@@ -56,7 +80,7 @@ class MainActivity : ComponentActivity() {
         }
         startActivity(intent)
         @Suppress("DEPRECATION")
-        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top)
+        overridePendingTransition(R.anim.slide_in_bottom, 0)
     }
 
     private fun openExpenseActivity(isDarkTheme: Boolean, id: Int? = null) {
@@ -67,6 +91,6 @@ class MainActivity : ComponentActivity() {
         }
         startActivity(intent)
         @Suppress("DEPRECATION")
-        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top)
+        overridePendingTransition(R.anim.slide_in_bottom, 0)
     }
 }
