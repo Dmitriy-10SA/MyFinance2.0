@@ -1,4 +1,4 @@
-package com.andef.myfinance.utils.formatter
+package com.andef.myfinance.utils.ui
 
 import java.time.LocalDate
 import java.time.ZoneId

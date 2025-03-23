@@ -6,7 +6,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,11 +13,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -58,7 +57,7 @@ import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
 import com.andef.myfinance.utils.formatter.DateFormatter
-import com.andef.myfinance.utils.formatter.toDate
+import com.andef.myfinance.utils.ui.toDate
 import com.andef.myfinance.utils.ui.DoubleInputTextForAmount
 import com.andef.myfinance.utils.ui.ErrorScreen
 import com.andef.myfinance.utils.ui.IfEmptyScreen
@@ -66,7 +65,6 @@ import com.andef.myfinance.utils.ui.IncomeOrExpenseTopBar
 import com.andef.myfinance.utils.ui.TextInputTextForAmount
 import com.andef.myfinance.utils.ui.getExpenseIconResId
 import com.andef.myfinance.utils.ui.getExpenseNameResId
-import com.andef.myfinance.utils.ui.isFullInfoForAddOrChange
 import java.time.LocalDate
 import java.util.Date
 
@@ -103,7 +101,32 @@ fun ExpenseScreen(
             Scaffold(
                 contentWindowInsets = WindowInsets.ime,
                 topBar = {
-                    IncomeOrExpenseTopBar(onBackClickListener = onBackClickListener)
+                    IncomeOrExpenseTopBar(
+                        isDarkTheme = isDarkTheme,
+                        onBackClickListener = onBackClickListener,
+                        amount = amount,
+                        onActionClickListener = {
+                            if (id == null) {
+                                viewModel.addExpense(
+                                    Expense(
+                                        amount = amount.value.toDouble(),
+                                        category = category.value,
+                                        comment = comment.value,
+                                        date = dateState.value.toStartOfDay()
+                                    )
+                                )
+                            } else {
+                                viewModel.changeExpense(
+                                    id = id,
+                                    amount = amount.value.toDouble(),
+                                    category = category.value,
+                                    comment = comment.value,
+                                    date = dateState.value.toStartOfDay()
+                                )
+                            }
+                            onBackClickListener()
+                        }
+                    )
                 }
             ) { paddingValues ->
                 when (val currentState = state.value) {
@@ -199,9 +222,13 @@ private fun ExpenseScreenContent(
     isDatePickerState: MutableState<Boolean>,
     onBackClickListener: () -> Unit
 ) {
-    LazyColumn(modifier = Modifier.padding(paddingValues)) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(paddingValues)
+            .navigationBarsPadding()
+    ) {
         item {
-            Spacer(modifier = Modifier.padding(5.dp))
+            Spacer(modifier = Modifier.padding(4.dp))
             DoubleInputTextForAmount(amount, { number ->
                 number.toDoubleOrNull()?.let {
                     amount.value = number
@@ -292,64 +319,7 @@ private fun ExpenseScreenContent(
                     fontSize = 17.sp
                 )
             }
-        }
-        item {
-            Spacer(modifier = Modifier.padding(16.dp))
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(8.dp),
-                    enabled = isFullInfoForAddOrChange(amount),
-                    onClick = {
-                        if (expense == null) {
-                            viewModel.addExpense(
-                                Expense(
-                                    amount = amount.value.toDouble(),
-                                    category = category.value,
-                                    comment = comment.value,
-                                    date = dateState.value.toStartOfDay()
-                                )
-                            )
-                        } else {
-                            viewModel.changeExpense(
-                                id = expense.id,
-                                amount = amount.value.toDouble(),
-                                category = category.value,
-                                comment = comment.value,
-                                date = dateState.value.toStartOfDay()
-                            )
-                        }
-                        onBackClickListener()
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isDarkTheme) Blue else Orange,
-                        contentColor = White,
-                        disabledContainerColor = if (isDarkTheme) {
-                            Blue.copy(alpha = 0.3f)
-                        } else {
-                            Orange.copy(alpha = 0.3f)
-                        },
-                        disabledContentColor = MaterialTheme.colorScheme.onBackground
-                    )
-                ) {
-                    Text(
-                        text = stringResource(R.string.save),
-                        fontSize = 24.sp,
-                        color = White,
-                        modifier = Modifier.padding(
-                            top = 6.dp,
-                            bottom = 6.dp,
-                            start = 14.dp,
-                            end = 14.dp
-                        )
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(12.dp))
         }
     }
 }

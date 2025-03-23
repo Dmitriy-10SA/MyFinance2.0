@@ -61,7 +61,7 @@ import com.andef.myfinance.presentation.total.TotalsScreen
 import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
-import com.andef.myfinance.utils.formatter.toDate
+import com.andef.myfinance.utils.ui.toDate
 import com.andef.myfinance.utils.ui.getCurrentDestination
 import java.time.LocalDate
 import java.util.Date
