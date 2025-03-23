@@ -7,8 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.andef.myfinance.R
-import com.andef.myfinance.presentation.income.IncomeActivity
-import com.andef.myfinance.presentation.income.IncomeActivity.Companion
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 
 class WebViewActivity : ComponentActivity() {

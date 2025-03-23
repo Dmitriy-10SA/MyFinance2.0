@@ -9,8 +9,6 @@ import androidx.activity.enableEdgeToEdge
 import com.andef.myfinance.MyFinanceApplication
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
-import com.andef.myfinance.presentation.currency.CurrencyActivity
-import com.andef.myfinance.presentation.currency.CurrencyActivity.Companion
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import javax.inject.Inject
 
