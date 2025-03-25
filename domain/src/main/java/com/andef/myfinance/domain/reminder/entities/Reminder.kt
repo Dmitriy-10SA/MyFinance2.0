@@ -5,7 +5,7 @@ import java.util.Date
 
 //напоминание (о расходе)
 data class Reminder(
-    val id: Int,
+    val id: Int = 0,
     val text: String,
     val amount: Double,
     val category: ExpenseCategory,
