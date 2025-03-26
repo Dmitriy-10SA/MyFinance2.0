@@ -5,8 +5,8 @@
 
 ---
 
-### ***My Finances is a convenient personal budget management application that will help you control finances and plan a budget, monitor the exchange rate of popular currencies, as well as stay up to date with all the news, deposits, loans and much more!***
-### ***Мои финансы — это удобное приложение для управления личным бюджетом, которое поможет проконтролировать финансы и спланировать бюджет, проследить за курсом популярных валют, а также оставаться в курсе всех новостей, вкладов, кредитов и многого другого!***
+### ***My Finances is a convenient application for managing your personal budget. It will help you control your expenses, plan your budget, and remind you of your planned expenses. Follow the exchange rate of popular currencies, current news, deposits, loans and much more!***
+### ***Мои финансы — это удобное приложение для управления личным бюджетом. Оно поможет контролировать расходы, планировать бюджет и напомнит о запланированных тратах. Следите за курсом популярных валют, актуальными новостями, вкладами, кредитами и многим другим!***
 
 ---
 
