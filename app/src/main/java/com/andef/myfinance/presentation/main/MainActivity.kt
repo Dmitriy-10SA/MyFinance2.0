@@ -1,5 +1,7 @@
 package com.andef.myfinance.presentation.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,11 +12,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.MyFinanceApplication
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
+import com.andef.myfinance.presentation.aboutdev.AboutDeveloperActivity
 import com.andef.myfinance.presentation.analysis.expense.ExpenseAnalysisActivity
 import com.andef.myfinance.presentation.analysis.income.IncomeAnalysisActivity
 import com.andef.myfinance.presentation.currency.CurrencyActivity
 import com.andef.myfinance.presentation.expense.ExpenseActivity
 import com.andef.myfinance.presentation.income.IncomeActivity
+import com.andef.myfinance.presentation.reminder.ReminderListActivity
 import com.andef.myfinance.presentation.webview.WebViewActivity
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import javax.inject.Inject
@@ -61,9 +65,31 @@ class MainActivity : ComponentActivity() {
                     },
                     onWebViewActionClickListener = { link ->
                         openWebViewActivity(isDarkTheme.value, link)
+                    },
+                    onReminderClickListener = {
+                        openReminderListActivity(isDarkTheme.value)
+                    },
+                    onAboutDeveloperClickListener = {
+                        openAboutDeveloperActivity(isDarkTheme.value)
                     }
                 )
             }
+        }
+    }
+
+    private fun openAboutDeveloperActivity(isDarkTheme: Boolean) {
+        AboutDeveloperActivity.newIntent(this, isDarkTheme).apply {
+            startActivity(this)
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.slide_in_top, 0)
+        }
+    }
+
+    private fun openReminderListActivity(isDarkTheme: Boolean) {
+        ReminderListActivity.newIntent(this, isDarkTheme).apply {
+            startActivity(this)
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.slide_in_top, 0)
         }
     }
 
@@ -119,5 +145,9 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
         @Suppress("DEPRECATION")
         overridePendingTransition(R.anim.slide_in_bottom, 0)
+    }
+
+    companion object {
+        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 }

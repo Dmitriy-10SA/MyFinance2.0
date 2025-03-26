@@ -17,8 +17,8 @@ android {
         applicationId = "com.andef.myfinance"
         minSdk = 26
         targetSdk = 34
-        versionCode = 10
-        versionName = "10.0"
+        versionCode = 11
+        versionName = "11.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -65,6 +65,9 @@ dependencies {
 
     //Jetpack Compose Navigation
     implementation(libs.androidx.navigation.compose)
+
+    //CalendarView
+    implementation(libs.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

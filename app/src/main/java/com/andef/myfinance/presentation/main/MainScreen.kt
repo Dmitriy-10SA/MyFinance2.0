@@ -77,16 +77,16 @@ import com.andef.myfinance.navigation.main.MainNavGraph
 import com.andef.myfinance.navigation.main.MainNavigationState
 import com.andef.myfinance.navigation.main.rememberMainNavigationState
 import com.andef.myfinance.navigation.rangePickerAnim
-import com.andef.myfinance.presentation.datepicker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.expense.ExpensesScreen
 import com.andef.myfinance.presentation.income.IncomesScreen
+import com.andef.myfinance.presentation.picker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.total.TotalsScreen
 import com.andef.myfinance.presentation.webview.WebViewLink
 import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
-import com.andef.myfinance.utils.ui.toDate
 import com.andef.myfinance.utils.ui.getCurrentDestination
+import com.andef.myfinance.utils.ui.toDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -105,7 +105,9 @@ fun MainScreen(
     onIncomeAnalysisClickListener: () -> Unit,
     onExpenseAnalysisClickListener: () -> Unit,
     onCurrencyValueClickListener: () -> Unit,
-    onWebViewActionClickListener: (String) -> Unit
+    onWebViewActionClickListener: (String) -> Unit,
+    onReminderClickListener: () -> Unit,
+    onAboutDeveloperClickListener: () -> Unit
 ) {
     val mainNavigationState = rememberMainNavigationState()
 
@@ -141,7 +143,9 @@ fun MainScreen(
                             onCurrencyValueClickListener = onCurrencyValueClickListener,
                             onExpenseAnalysisClickListener = onExpenseAnalysisClickListener,
                             onIncomeAnalysisClickListener = onIncomeAnalysisClickListener,
-                            onWebViewActionClickListener = onWebViewActionClickListener
+                            onWebViewActionClickListener = onWebViewActionClickListener,
+                            onReminderClickListener = onReminderClickListener,
+                            onAboutDeveloperClickListener = onAboutDeveloperClickListener
                         )
                     }
                     BackHandler {
@@ -189,7 +193,9 @@ private fun ModalDrawerSheetContent(
     onIncomeAnalysisClickListener: () -> Unit,
     onExpenseAnalysisClickListener: () -> Unit,
     onCurrencyValueClickListener: () -> Unit,
-    onWebViewActionClickListener: (String) -> Unit
+    onWebViewActionClickListener: (String) -> Unit,
+    onReminderClickListener: () -> Unit,
+    onAboutDeveloperClickListener: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -203,7 +209,7 @@ private fun ModalDrawerSheetContent(
             tint = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.padding(12.dp))
-        LazyColumn {
+        LazyColumn(modifier = Modifier.weight(1f)) {
             item {
                 MyTextButton(
                     text = stringResource(R.string.income_analysis),
@@ -220,6 +226,12 @@ private fun ModalDrawerSheetContent(
                 MyTextButton(
                     text = stringResource(R.string.currency_value),
                     onTextButtonClickListener = onCurrencyValueClickListener
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.reminder),
+                    onTextButtonClickListener = onReminderClickListener
                 )
             }
             item {
@@ -262,10 +274,18 @@ private fun ModalDrawerSheetContent(
                     }
                 )
             }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.about_developer),
+                    onTextButtonClickListener = {
+                        onAboutDeveloperClickListener()
+                    }
+                )
+            }
         }
         Row(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(16.dp),
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.Center

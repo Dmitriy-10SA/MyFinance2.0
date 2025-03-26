@@ -2,10 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.andef.myfinance"
-    android:versionCode="10"
-    android:versionName="10.0">
+    android:versionCode="11"
+    android:versionName="11.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:name=".MyFinanceApplication"
@@ -19,10 +22,31 @@
         android:theme="@style/Theme.MyFinance"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.aboutdev.AboutDeveloperActivity"
+            android:exported="false"
+            android:label="@string/title_activity_about_developer"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.reminder.ReminderActivity"
+            android:exported="false"
+            android:label="@string/title_activity_reminder"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.reminder.ReminderListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_reminder_list"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
             android:name=".presentation.analysis.expense.ExpenseAnalysisActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_expense_analysis"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.MyFinance"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
@@ -78,6 +102,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".ReminderReceiver" />
     </application>
 
 </manifest>

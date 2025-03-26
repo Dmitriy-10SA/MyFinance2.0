@@ -3,8 +3,11 @@ package com.andef.myfinance.utils.formatter
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.andef.myfinance.R
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 internal object DateFormatter {
     @Composable
@@ -18,6 +21,13 @@ internal object DateFormatter {
             val year = calendar.get(Calendar.YEAR)
             getStringDate(day, month, year)
         }
+    }
+
+    fun format(time: Long): String {
+        val date = Date(time)
+        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
+        format.timeZone = TimeZone.getTimeZone("UTC")
+        return format.format(date)
     }
 
     @Composable
