@@ -1,6 +1,7 @@
 package com.andef.myfinance.presentation.picker
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,11 +24,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andef.myfinance.R
+import com.andef.myfinance.ui.theme.Black
 import com.andef.myfinance.ui.theme.Blue
+import com.andef.myfinance.ui.theme.MyFinanceTheme
 import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
 
@@ -60,7 +65,15 @@ fun MyFinanceTimePicker(
             TimePicker(
                 state = timePickerState,
                 colors = TimePickerDefaults.colors(
-
+                    clockDialColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f),
+                    clockDialUnselectedContentColor = if (isDarkTheme) White else Black,
+                    clockDialSelectedContentColor = White,
+                    selectorColor = if (isDarkTheme) Blue else Orange,
+                    containerColor = MaterialTheme.colorScheme.background,
+                    timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f),
+                    timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f),
+                    timeSelectorUnselectedContentColor = if (isDarkTheme) White else Black,
+                    timeSelectorSelectedContentColor = if (isDarkTheme) White else Black
                 )
             )
         }
@@ -118,4 +131,20 @@ private fun TopNavigationAndActionRow(
             }
         }
     )
+}
+
+@Preview
+@Composable
+private fun MyFinanceTimePickerDark() {
+    MyFinanceTheme(darkTheme = true) {
+        MyFinanceTimePicker({},{},true)
+    }
+}
+
+@Preview
+@Composable
+private fun MyFinanceTimePickerLight() {
+    MyFinanceTheme(darkTheme = false) {
+        MyFinanceTimePicker({},{},false)
+    }
 }

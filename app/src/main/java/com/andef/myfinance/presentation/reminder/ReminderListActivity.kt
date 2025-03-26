@@ -71,9 +71,6 @@ class ReminderListActivity : ComponentActivity() {
                         },
                         onRemove = { id ->
                             cancelNotification(id)
-                        },
-                        onInfoClickListener = {
-
                         }
                     )
                 }

@@ -27,11 +27,11 @@
             android:label="@string/title_activity_reminder"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyFinance"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".presentation.reminder.ReminderListActivity"
             android:exported="false"
-            android:label="@string/title_activity_reminder"
+            android:label="@string/title_activity_reminder_list"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyFinance"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />

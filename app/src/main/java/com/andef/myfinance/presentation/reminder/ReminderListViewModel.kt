@@ -2,6 +2,8 @@ package com.andef.myfinance.presentation.reminder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andef.myfinance.domain.expense.entities.Expense
+import com.andef.myfinance.domain.expense.usecases.AddExpenseUseCase
 import com.andef.myfinance.domain.reminder.entities.Reminder
 import com.andef.myfinance.domain.reminder.usecases.GetAllReminderListUseCase
 import com.andef.myfinance.domain.reminder.usecases.GetReminderListUseCase
@@ -19,6 +21,7 @@ class ReminderListViewModel @Inject constructor(
     private val getAllReminderListUseCase: GetAllReminderListUseCase,
     private val getReminderListUseCase: GetReminderListUseCase,
     private val removeReminderUseCase: RemoveReminderUseCase,
+    private val addExpenseUseCase: AddExpenseUseCase
 ) : ViewModel() {
     private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
@@ -41,6 +44,12 @@ class ReminderListViewModel @Inject constructor(
     fun removeReminder(id: Int) {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             removeReminderUseCase.execute(id)
+        }
+    }
+
+    fun addExpense(expense: Expense) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            addExpenseUseCase.execute(expense)
         }
     }
 }

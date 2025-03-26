@@ -100,6 +100,7 @@
     <string name="title_activity_web_view">WebViewActivity</string>
     <string name="title_activity_income_analysis">IncomeAnalysisActivity</string>
     <string name="title_activity_expense_analysis">ExpenseAnalysisActivity</string>
+    <string name="title_activity_reminder_list">ReminderListActivity</string>
     <string name="title_activity_reminder">ReminderActivity</string>
     <string name="reminder">Напоминания</string>
     <string name="permission_for_notification_not_accept">Разрешение на уведомления не получено</string>
@@ -129,4 +130,8 @@
     <string name="comment_would_be_in_notification">Комментарий будет в уведомлении</string>
     <string name="time_choose">Выбрать время</string>
     <string name="wait_reminders">Ждем появления напоминаний</string>
+    <string name="title_activity_reminder_info">ReminderInfoActivity</string>
+    <string name="add_in_expenses">Добавить в расходы?</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
 </resources>

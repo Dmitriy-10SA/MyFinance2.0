@@ -1,5 +1,7 @@
 package com.andef.myfinance.presentation.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -131,5 +133,9 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
         @Suppress("DEPRECATION")
         overridePendingTransition(R.anim.slide_in_bottom, 0)
+    }
+
+    companion object {
+        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 }

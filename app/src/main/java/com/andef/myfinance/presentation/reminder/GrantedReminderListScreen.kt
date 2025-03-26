@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -27,8 +29,12 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -55,10 +61,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.data.utils.toStartOfDay
+import com.andef.myfinance.domain.expense.entities.Expense
 import com.andef.myfinance.domain.reminder.entities.Reminder
 import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
@@ -87,8 +95,7 @@ fun GrantedReminderListScreen(
     onFABClickListener: () -> Unit,
     onReminderClickListener: (Reminder) -> Unit,
     onCancelClickListener: () -> Unit,
-    onRemove: (Int) -> Unit,
-    onInfoClickListener: () -> Unit
+    onRemove: (Int) -> Unit
 ) {
     val viewModel: ReminderListViewModel = viewModel(factory = viewModelFactory)
     val allReminders = viewModel.allReminders.collectAsState(listOf())
@@ -111,9 +118,7 @@ fun GrantedReminderListScreen(
     Scaffold(
         topBar = {
             ReminderTopBar(
-                onCancelClickListener = onCancelClickListener,
-                isGrantedTopBar = true,
-                onInfoClickListener = onInfoClickListener
+                onCancelClickListener = onCancelClickListener
             )
         },
         floatingActionButton = {
@@ -179,7 +184,8 @@ private fun Content(
             onReminderClickListener = onReminderClickListener,
             reminders = reminders,
             viewModel = viewModel,
-            onRemove = onRemove
+            onRemove = onRemove,
+            isDarkTheme = isDarkTheme
         )
     }
 }
@@ -203,6 +209,7 @@ private fun FAB(isDarkTheme: Boolean, onFABClickListener: () -> Unit) {
 
 @Composable
 private fun RemindersCard(
+    isDarkTheme: Boolean,
     viewModel: ReminderListViewModel,
     modifier: Modifier,
     reminders: State<List<Reminder>>,
@@ -212,12 +219,13 @@ private fun RemindersCard(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
         elevation = CardDefaults.cardElevation(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         )
     ) {
+        val showDialog = remember { mutableStateOf(false) }
+
         if (reminders.value.isEmpty()) {
             IfEmptyScreen(
                 paddingValues = PaddingValues(start = 12.dp, end = 12.dp),
@@ -237,9 +245,33 @@ private fun RemindersCard(
                         if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart ||
                             dismissState.currentValue == SwipeToDismissBoxValue.StartToEnd
                         ) {
-                            viewModel.removeReminder(reminder.id)
-                            onRemove(reminder.id)
+                            showDialog.value = true
                         }
+                    }
+
+                    if (showDialog.value) {
+                        AddInExpenseDialog(
+                            isDarkTheme = isDarkTheme,
+                            onNoClickListener = {
+                                showDialog.value = false
+                                viewModel.removeReminder(reminder.id)
+                                onRemove(reminder.id)
+                            },
+                            onYesClickListener = {
+                                showDialog.value = false
+                                viewModel.removeReminder(reminder.id)
+                                onRemove(reminder.id)
+                                viewModel.addExpense(
+                                    Expense(
+                                        id = reminder.id,
+                                        amount = reminder.amount,
+                                        category = reminder.category,
+                                        comment = reminder.text,
+                                        date = reminder.time.toStartOfDay()
+                                    )
+                                )
+                            }
+                        )
                     }
 
                     SwipeToDismissBox(
@@ -284,6 +316,57 @@ private fun RemindersCard(
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AddInExpenseDialog(
+    isDarkTheme: Boolean,
+    onNoClickListener: () -> Unit,
+    onYesClickListener: () -> Unit
+) {
+    BasicAlertDialog(onDismissRequest = {}) {
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onBackground
+            )
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.padding(20.dp))
+                Text(
+                    text = stringResource(R.string.add_in_expenses),
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.padding(6.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (isDarkTheme) Blue else Orange
+                        ),
+                        onClick = onNoClickListener
+                    ) {
+                        Text(stringResource(R.string.no), fontSize = 20.sp, color = White)
+                    }
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Button(
+                        onClick = onYesClickListener,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (isDarkTheme) Blue else Orange
+                        ),
+                    ) {
+                        Text(stringResource(R.string.yes), fontSize = 20.sp, color = White)
+                    }
+                }
+                Spacer(modifier = Modifier.padding(16.dp))
             }
         }
     }

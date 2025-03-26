@@ -2,7 +2,6 @@ package com.andef.myfinance.presentation.reminder
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,11 +20,7 @@ import com.andef.myfinance.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReminderTopBar(
-    onCancelClickListener: () -> Unit,
-    isGrantedTopBar: Boolean = false,
-    onInfoClickListener: () -> Unit = {}
-) {
+fun ReminderTopBar(onCancelClickListener: () -> Unit) {
     CenterAlignedTopAppBar(
         modifier = Modifier
             .shadow(
@@ -50,22 +45,6 @@ fun ReminderTopBar(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = stringResource(R.string.back)
                 )
-            }
-        },
-        actions = {
-            if (isGrantedTopBar) {
-                IconButton(
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.background
-                    ),
-                    onClick = onInfoClickListener
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        contentDescription = stringResource(R.string.adding_info)
-                    )
-                }
             }
         }
     )
