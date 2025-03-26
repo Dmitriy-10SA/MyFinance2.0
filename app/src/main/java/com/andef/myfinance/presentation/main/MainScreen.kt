@@ -209,7 +209,7 @@ private fun ModalDrawerSheetContent(
             tint = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.padding(12.dp))
-        LazyColumn {
+        LazyColumn(modifier = Modifier.weight(1f)) {
             item {
                 MyTextButton(
                     text = stringResource(R.string.income_analysis),
@@ -285,7 +285,7 @@ private fun ModalDrawerSheetContent(
         }
         Row(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(16.dp),
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.Center
