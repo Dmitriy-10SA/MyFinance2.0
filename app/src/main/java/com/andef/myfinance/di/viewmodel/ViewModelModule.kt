@@ -9,6 +9,8 @@ import com.andef.myfinance.presentation.expense.ExpensesScreenViewModel
 import com.andef.myfinance.presentation.income.IncomeViewModel
 import com.andef.myfinance.presentation.income.IncomesScreenViewModel
 import com.andef.myfinance.presentation.main.MainActivityViewModel
+import com.andef.myfinance.presentation.reminder.ReminderListViewModel
+import com.andef.myfinance.presentation.reminder.ReminderViewModel
 import com.andef.myfinance.presentation.total.TotalsScreenViewModel
 import dagger.Binds
 import dagger.Module
@@ -60,4 +62,14 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(ExpenseAnalysisViewModel::class)
     fun bindExpenseAnalysisViewModel(impl: ExpenseAnalysisViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReminderListViewModel::class)
+    fun bindReminderListViewModel(impl: ReminderListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReminderViewModel::class)
+    fun bindReminderViewModel(impl: ReminderViewModel): ViewModel
 }

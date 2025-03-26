@@ -52,7 +52,7 @@ import com.andef.myfinance.presentation.analysis.AnalysisSetDate
 import com.andef.myfinance.presentation.analysis.AnalysisTopBar
 import com.andef.myfinance.presentation.analysis.AnalysisTopBarItem
 import com.andef.myfinance.presentation.analysis.CardWithText
-import com.andef.myfinance.presentation.datepicker.MyFinanceRangeDatePicker
+import com.andef.myfinance.presentation.picker.MyFinanceRangeDatePicker
 import com.andef.myfinance.utils.formatter.AmountFormatter
 import com.andef.myfinance.utils.formatter.PercentFormatter
 import com.andef.myfinance.utils.ui.ErrorScreen

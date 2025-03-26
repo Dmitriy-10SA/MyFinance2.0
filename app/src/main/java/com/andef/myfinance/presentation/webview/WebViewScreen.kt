@@ -19,7 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.andef.myfinance.R
@@ -31,6 +33,11 @@ fun WebViewScreen(link: String, onBackClickListener: () -> Unit) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                modifier = Modifier
+                    .shadow(
+                        elevation = 8.dp,
+                        ambientColor = MaterialTheme.colorScheme.onBackground
+                    ),
                 title = { Text(text = stringResource(R.string.app_name), fontSize = 24.sp) },
                 navigationIcon = {
                     IconButton(

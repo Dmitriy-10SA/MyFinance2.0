@@ -14,7 +14,7 @@ interface ReminderDao {
 
     @Query(
         """
-        UPDATE reminder SET text = :text AND amount = :amount AND category = :category AND time = :time
+        UPDATE reminder SET text = :text, amount = :amount, category = :category, time = :time
         WHERE id = :id
         """
     )
@@ -29,6 +29,12 @@ interface ReminderDao {
     @Query("DELETE FROM reminder WHERE id = :id")
     suspend fun removeReminder(id: Int)
 
-    @Query("SELECT * FROM reminder WHERE time BETWEEN :startDate AND :endDate")
-    fun getReminderList(startDate: Long, endDate: Long): Flow<List<ReminderModel>>
+    @Query("SELECT * FROM reminder WHERE time BETWEEN :timeStartOfDay AND :timeEndOfDay")
+    fun getReminderList(timeEndOfDay: Long, timeStartOfDay: Long): Flow<List<ReminderModel>>
+
+    @Query("SELECT * FROM reminder WHERE id = :id")
+    suspend fun getReminder(id: Int): ReminderModel
+
+    @Query("SELECT * FROM reminder")
+    fun getAllReminderList(): Flow<List<ReminderModel>>
 }

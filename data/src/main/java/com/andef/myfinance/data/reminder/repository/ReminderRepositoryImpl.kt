@@ -2,7 +2,10 @@ package com.andef.myfinance.data.reminder.repository
 
 import com.andef.myfinance.data.reminder.datasource.ReminderDao
 import com.andef.myfinance.data.reminder.mapper.ReminderModelListToReminderList
+import com.andef.myfinance.data.reminder.mapper.ReminderModelToReminderMapper
 import com.andef.myfinance.data.reminder.mapper.ReminderToReminderModelMapper
+import com.andef.myfinance.data.utils.toEndOfDay
+import com.andef.myfinance.data.utils.toStartOfDay
 import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.reminder.entities.Reminder
 import com.andef.myfinance.domain.reminder.repository.ReminderRepository
@@ -32,8 +35,19 @@ class ReminderRepositoryImpl @Inject constructor(
         dao.removeReminder(id)
     }
 
-    override fun getReminderList(startDate: Date, endDate: Date): Flow<List<Reminder>> {
-        return dao.getReminderList(startDate.time, endDate.time).map {
+    override fun getReminderList(date: Date): Flow<List<Reminder>> {
+        return dao.getReminderList(date.toEndOfDay().time, date.toStartOfDay().time).map {
+            ReminderModelListToReminderList.map(it)
+        }
+    }
+
+
+    override suspend fun getReminder(id: Int): Reminder {
+        return ReminderModelToReminderMapper.map(dao.getReminder(id))
+    }
+
+    override fun getAllReminderList(): Flow<List<Reminder>> {
+        return dao.getAllReminderList().map {
             ReminderModelListToReminderList.map(it)
         }
     }

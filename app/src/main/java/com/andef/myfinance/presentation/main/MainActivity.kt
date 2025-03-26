@@ -15,6 +15,7 @@ import com.andef.myfinance.presentation.analysis.income.IncomeAnalysisActivity
 import com.andef.myfinance.presentation.currency.CurrencyActivity
 import com.andef.myfinance.presentation.expense.ExpenseActivity
 import com.andef.myfinance.presentation.income.IncomeActivity
+import com.andef.myfinance.presentation.reminder.ReminderListActivity
 import com.andef.myfinance.presentation.webview.WebViewActivity
 import com.andef.myfinance.ui.theme.MyFinanceTheme
 import javax.inject.Inject
@@ -61,9 +62,20 @@ class MainActivity : ComponentActivity() {
                     },
                     onWebViewActionClickListener = { link ->
                         openWebViewActivity(isDarkTheme.value, link)
+                    },
+                    onReminderClickListener = {
+                        openReminderListActivity(isDarkTheme.value)
                     }
                 )
             }
+        }
+    }
+
+    private fun openReminderListActivity(isDarkTheme: Boolean) {
+        ReminderListActivity.newIntent(this, isDarkTheme).apply {
+            startActivity(this)
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.slide_in_top, 0)
         }
     }
 

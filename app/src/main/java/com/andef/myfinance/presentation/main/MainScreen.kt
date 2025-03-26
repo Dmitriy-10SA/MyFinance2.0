@@ -77,7 +77,7 @@ import com.andef.myfinance.navigation.main.MainNavGraph
 import com.andef.myfinance.navigation.main.MainNavigationState
 import com.andef.myfinance.navigation.main.rememberMainNavigationState
 import com.andef.myfinance.navigation.rangePickerAnim
-import com.andef.myfinance.presentation.datepicker.MyFinanceRangeDatePicker
+import com.andef.myfinance.presentation.picker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.expense.ExpensesScreen
 import com.andef.myfinance.presentation.income.IncomesScreen
 import com.andef.myfinance.presentation.total.TotalsScreen
@@ -105,7 +105,8 @@ fun MainScreen(
     onIncomeAnalysisClickListener: () -> Unit,
     onExpenseAnalysisClickListener: () -> Unit,
     onCurrencyValueClickListener: () -> Unit,
-    onWebViewActionClickListener: (String) -> Unit
+    onWebViewActionClickListener: (String) -> Unit,
+    onReminderClickListener: () -> Unit
 ) {
     val mainNavigationState = rememberMainNavigationState()
 
@@ -141,7 +142,8 @@ fun MainScreen(
                             onCurrencyValueClickListener = onCurrencyValueClickListener,
                             onExpenseAnalysisClickListener = onExpenseAnalysisClickListener,
                             onIncomeAnalysisClickListener = onIncomeAnalysisClickListener,
-                            onWebViewActionClickListener = onWebViewActionClickListener
+                            onWebViewActionClickListener = onWebViewActionClickListener,
+                            onReminderClickListener = onReminderClickListener
                         )
                     }
                     BackHandler {
@@ -189,7 +191,8 @@ private fun ModalDrawerSheetContent(
     onIncomeAnalysisClickListener: () -> Unit,
     onExpenseAnalysisClickListener: () -> Unit,
     onCurrencyValueClickListener: () -> Unit,
-    onWebViewActionClickListener: (String) -> Unit
+    onWebViewActionClickListener: (String) -> Unit,
+    onReminderClickListener: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -220,6 +223,12 @@ private fun ModalDrawerSheetContent(
                 MyTextButton(
                     text = stringResource(R.string.currency_value),
                     onTextButtonClickListener = onCurrencyValueClickListener
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.reminder),
+                    onTextButtonClickListener = onReminderClickListener
                 )
             }
             item {

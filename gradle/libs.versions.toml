@@ -1,6 +1,7 @@
 [versions]
 agp = "8.8.2"
 charts = "0.2.4-alpha"
+compose = "2.0.0"
 converterGson = "2.9.0"
 dagger = "2.55"
 daggerCompiler = "2.55"
@@ -26,6 +27,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 charts = { module = "com.github.tehras:charts", version.ref = "charts" }
+compose = { module = "com.kizitonwose.calendar:compose", version.ref = "compose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerCompiler" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
