@@ -222,7 +222,31 @@ private fun RemindersCard(
             containerColor = MaterialTheme.colorScheme.background
         )
     ) {
+        val currentReminder = remember { mutableStateOf<Reminder?>(null) }
         val showDialog = remember { mutableStateOf(false) }
+
+        if (showDialog.value) {
+            currentReminder.value?.let {
+                AddInExpenseDialog(
+                    isDarkTheme = isDarkTheme,
+                    onNoClickListener = {
+                        showDialog.value = false
+                    },
+                    onYesClickListener = {
+                        viewModel.addExpense(
+                            Expense(
+                                id = currentReminder.value!!.id,
+                                amount = currentReminder.value!!.amount,
+                                category = currentReminder.value!!.category,
+                                comment = currentReminder.value!!.text,
+                                date = currentReminder.value!!.time.toStartOfDay()
+                            )
+                        )
+                        showDialog.value = false
+                    }
+                )
+            }
+        }
 
         if (reminders.value.isEmpty()) {
             IfEmptyScreen(
@@ -243,31 +267,11 @@ private fun RemindersCard(
                         if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart ||
                             dismissState.currentValue == SwipeToDismissBoxValue.StartToEnd
                         ) {
+                            showDialog.value = true
                             viewModel.removeReminder(reminder.id)
                             onRemove(reminder.id)
-                            showDialog.value = true
+                            currentReminder.value = reminder
                         }
-                    }
-
-                    if (showDialog.value) {
-                        AddInExpenseDialog(
-                            isDarkTheme = isDarkTheme,
-                            onNoClickListener = {
-                                showDialog.value = false
-                            },
-                            onYesClickListener = {
-                                viewModel.addExpense(
-                                    Expense(
-                                        id = reminder.id,
-                                        amount = reminder.amount,
-                                        category = reminder.category,
-                                        comment = reminder.text,
-                                        date = reminder.time.toStartOfDay()
-                                    )
-                                )
-                                showDialog.value = false
-                            }
-                        )
                     }
 
                     SwipeToDismissBox(

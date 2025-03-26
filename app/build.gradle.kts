@@ -17,8 +17,8 @@ android {
         applicationId = "com.andef.myfinance"
         minSdk = 26
         targetSdk = 34
-        versionCode = 11
-        versionName = "11.0"
+        versionCode = 12
+        versionName = "12.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
