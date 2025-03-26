@@ -335,7 +335,7 @@ private fun ReminderScreenContent(
                         )
                         Spacer(modifier = Modifier.padding(6.dp))
                         Text(
-                            text = stringResource(R.string.date_choose_action),
+                            text = stringResource(R.string.time_choose_action),
                             fontSize = 20.sp
                         )
                     }

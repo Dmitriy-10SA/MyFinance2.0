@@ -134,4 +134,5 @@
     <string name="add_in_expenses">Добавить в расходы?</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
+    <string name="time_choose_action">Выбрать время</string>
 </resources>
