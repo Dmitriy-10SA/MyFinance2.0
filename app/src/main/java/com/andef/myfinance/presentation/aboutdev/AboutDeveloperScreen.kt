@@ -76,7 +76,7 @@ fun AboutDeveloperScreen(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.padding(18.dp))
+            Spacer(modifier = Modifier.padding(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,

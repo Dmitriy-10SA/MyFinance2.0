@@ -1,6 +1,5 @@
 package com.andef.myfinance.presentation.reminder
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -30,7 +29,11 @@ fun ReminderCard(reminder: Reminder, onReminderClickListener: (Reminder) -> Unit
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .shadow(8.dp, shape = RoundedCornerShape(10.dp), ambientColor = MaterialTheme.colorScheme.onBackground),
+            .shadow(
+                8.dp,
+                shape = RoundedCornerShape(10.dp),
+                ambientColor = MaterialTheme.colorScheme.onBackground
+            ),
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onBackground,
             containerColor = MaterialTheme.colorScheme.background

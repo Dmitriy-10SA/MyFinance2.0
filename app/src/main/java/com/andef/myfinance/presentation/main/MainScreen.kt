@@ -7,7 +7,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -78,16 +77,16 @@ import com.andef.myfinance.navigation.main.MainNavGraph
 import com.andef.myfinance.navigation.main.MainNavigationState
 import com.andef.myfinance.navigation.main.rememberMainNavigationState
 import com.andef.myfinance.navigation.rangePickerAnim
-import com.andef.myfinance.presentation.picker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.expense.ExpensesScreen
 import com.andef.myfinance.presentation.income.IncomesScreen
+import com.andef.myfinance.presentation.picker.MyFinanceRangeDatePicker
 import com.andef.myfinance.presentation.total.TotalsScreen
 import com.andef.myfinance.presentation.webview.WebViewLink
 import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
-import com.andef.myfinance.utils.ui.toDate
 import com.andef.myfinance.utils.ui.getCurrentDestination
+import com.andef.myfinance.utils.ui.toDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
