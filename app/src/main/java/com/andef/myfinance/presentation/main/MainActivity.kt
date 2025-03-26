@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andef.myfinance.MyFinanceApplication
 import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
+import com.andef.myfinance.presentation.aboutdev.AboutDeveloperActivity
 import com.andef.myfinance.presentation.analysis.expense.ExpenseAnalysisActivity
 import com.andef.myfinance.presentation.analysis.income.IncomeAnalysisActivity
 import com.andef.myfinance.presentation.currency.CurrencyActivity
@@ -67,9 +68,20 @@ class MainActivity : ComponentActivity() {
                     },
                     onReminderClickListener = {
                         openReminderListActivity(isDarkTheme.value)
+                    },
+                    onAboutDeveloperClickListener = {
+                        openAboutDeveloperActivity(isDarkTheme.value)
                     }
                 )
             }
+        }
+    }
+
+    private fun openAboutDeveloperActivity(isDarkTheme: Boolean) {
+        AboutDeveloperActivity.newIntent(this, isDarkTheme).apply {
+            startActivity(this)
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.slide_in_top, 0)
         }
     }
 

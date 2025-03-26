@@ -135,4 +135,12 @@
     <string name="no">Нет</string>
     <string name="yes">Да</string>
     <string name="time_choose_action">Выбрать время</string>
+    <string name="title_activity_about_developer">AboutDeveloperActivity</string>
+    <string name="about_developer">О разработчике</string>
+    <string name="hello_i_am_dmitriy">Привет, меня зовут Дмитрий!</string>
+    <string name="write_me">Если есть вопросы или нашли ошибку, свяжитесь со мной удобным способом:</string>
+    <string name="vk_icon">Значок вк</string>
+    <string name="mail_icon">Иконка почты</string>
+    <string name="telegram_icon">Иконка телеграмм</string>
+    <string name="choose_mail_client">Выберите почтовый клиент</string>
 </resources>

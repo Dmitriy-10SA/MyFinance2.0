@@ -243,6 +243,8 @@ private fun RemindersCard(
                         if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart ||
                             dismissState.currentValue == SwipeToDismissBoxValue.StartToEnd
                         ) {
+                            viewModel.removeReminder(reminder.id)
+                            onRemove(reminder.id)
                             showDialog.value = true
                         }
                     }
@@ -252,13 +254,8 @@ private fun RemindersCard(
                             isDarkTheme = isDarkTheme,
                             onNoClickListener = {
                                 showDialog.value = false
-                                viewModel.removeReminder(reminder.id)
-                                onRemove(reminder.id)
                             },
                             onYesClickListener = {
-                                showDialog.value = false
-                                viewModel.removeReminder(reminder.id)
-                                onRemove(reminder.id)
                                 viewModel.addExpense(
                                     Expense(
                                         id = reminder.id,
@@ -268,6 +265,7 @@ private fun RemindersCard(
                                         date = reminder.time.toStartOfDay()
                                     )
                                 )
+                                showDialog.value = false
                             }
                         )
                     }

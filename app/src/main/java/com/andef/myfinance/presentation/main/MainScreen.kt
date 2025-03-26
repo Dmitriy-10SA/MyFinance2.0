@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -106,7 +107,8 @@ fun MainScreen(
     onExpenseAnalysisClickListener: () -> Unit,
     onCurrencyValueClickListener: () -> Unit,
     onWebViewActionClickListener: (String) -> Unit,
-    onReminderClickListener: () -> Unit
+    onReminderClickListener: () -> Unit,
+    onAboutDeveloperClickListener: () -> Unit
 ) {
     val mainNavigationState = rememberMainNavigationState()
 
@@ -143,7 +145,8 @@ fun MainScreen(
                             onExpenseAnalysisClickListener = onExpenseAnalysisClickListener,
                             onIncomeAnalysisClickListener = onIncomeAnalysisClickListener,
                             onWebViewActionClickListener = onWebViewActionClickListener,
-                            onReminderClickListener = onReminderClickListener
+                            onReminderClickListener = onReminderClickListener,
+                            onAboutDeveloperClickListener = onAboutDeveloperClickListener
                         )
                     }
                     BackHandler {
@@ -192,7 +195,8 @@ private fun ModalDrawerSheetContent(
     onExpenseAnalysisClickListener: () -> Unit,
     onCurrencyValueClickListener: () -> Unit,
     onWebViewActionClickListener: (String) -> Unit,
-    onReminderClickListener: () -> Unit
+    onReminderClickListener: () -> Unit,
+    onAboutDeveloperClickListener: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -268,6 +272,14 @@ private fun ModalDrawerSheetContent(
                     text = stringResource(R.string.news),
                     onTextButtonClickListener = {
                         onWebViewActionClickListener(WebViewLink.BankRuNewsScreen.link)
+                    }
+                )
+            }
+            item {
+                MyTextButton(
+                    text = stringResource(R.string.about_developer),
+                    onTextButtonClickListener = {
+                        onAboutDeveloperClickListener()
                     }
                 )
             }

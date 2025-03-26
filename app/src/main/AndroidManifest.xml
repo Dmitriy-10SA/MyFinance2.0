@@ -22,6 +22,13 @@
         android:theme="@style/Theme.MyFinance"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.aboutdev.AboutDeveloperActivity"
+            android:exported="false"
+            android:label="@string/title_activity_about_developer"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyFinance"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
             android:name=".presentation.reminder.ReminderActivity"
             android:exported="false"
             android:label="@string/title_activity_reminder"
