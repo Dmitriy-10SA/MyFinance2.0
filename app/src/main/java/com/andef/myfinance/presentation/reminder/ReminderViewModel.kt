@@ -20,8 +20,7 @@ import javax.inject.Inject
 class ReminderViewModel @Inject constructor(
     private val addReminderUseCase: AddReminderUseCase,
     private val changeReminderUseCase: ChangeReminderUseCase,
-    private val getReminderUseCase: GetReminderUseCase,
-    private val removeReminderUseCase: RemoveReminderUseCase
+    private val getReminderUseCase: GetReminderUseCase
 ) : ViewModel() {
     private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
         _state.value = ReminderState.Error
@@ -65,12 +64,6 @@ class ReminderViewModel @Inject constructor(
             } else {
                 _state.value = ReminderState.ReminderLoad(null)
             }
-        }
-    }
-
-    fun removeReminder(id: Int) {
-        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            removeReminderUseCase.execute(id)
         }
     }
 }

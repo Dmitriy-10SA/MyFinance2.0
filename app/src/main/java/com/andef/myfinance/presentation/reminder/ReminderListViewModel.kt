@@ -2,10 +2,7 @@ package com.andef.myfinance.presentation.reminder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.reminder.entities.Reminder
-import com.andef.myfinance.domain.reminder.usecases.AddReminderUseCase
-import com.andef.myfinance.domain.reminder.usecases.ChangeReminderUseCase
 import com.andef.myfinance.domain.reminder.usecases.GetAllReminderListUseCase
 import com.andef.myfinance.domain.reminder.usecases.GetReminderListUseCase
 import com.andef.myfinance.domain.reminder.usecases.RemoveReminderUseCase
@@ -21,9 +18,7 @@ import javax.inject.Inject
 class ReminderListViewModel @Inject constructor(
     private val getAllReminderListUseCase: GetAllReminderListUseCase,
     private val getReminderListUseCase: GetReminderListUseCase,
-    private val addReminderUseCase: AddReminderUseCase,
     private val removeReminderUseCase: RemoveReminderUseCase,
-    private val changeReminderUseCase: ChangeReminderUseCase
 ) : ViewModel() {
     private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
@@ -40,24 +35,6 @@ class ReminderListViewModel @Inject constructor(
             getReminderListUseCase.execute(date).collect {
                 _remindersState.value = it
             }
-        }
-    }
-
-    fun addReminder(reminder: Reminder) {
-        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            addReminderUseCase.execute(reminder)
-        }
-    }
-
-    fun changeReminder(
-        id: Int,
-        text: String,
-        amount: Double,
-        category: ExpenseCategory,
-        time: Date
-    ) {
-        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            changeReminderUseCase.execute(id, text, amount, category, time)
         }
     }
 

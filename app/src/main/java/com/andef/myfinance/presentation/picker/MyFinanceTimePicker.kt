@@ -30,7 +30,6 @@ import com.andef.myfinance.R
 import com.andef.myfinance.ui.theme.Blue
 import com.andef.myfinance.ui.theme.Orange
 import com.andef.myfinance.ui.theme.White
-import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
