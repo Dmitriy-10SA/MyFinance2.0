@@ -7,7 +7,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.andef.myfinance.navigation.Screen
 import com.andef.myfinance.navigation.slideInLeft
 import com.andef.myfinance.navigation.slideInRight
 import com.andef.myfinance.navigation.slideOutLeft
@@ -18,7 +17,7 @@ fun MainNavGraph(
     navHostController: NavHostController,
     incomesScreenContent: @Composable () -> Unit,
     expensesScreenContent: @Composable () -> Unit,
-    totalsScreenContent: @Composable () -> Unit,
+    totalsScreenContent: @Composable () -> Unit
 ) {
     val lastDestination = remember {
         mutableStateOf(Screen.MainScreen.Incomes as Screen)

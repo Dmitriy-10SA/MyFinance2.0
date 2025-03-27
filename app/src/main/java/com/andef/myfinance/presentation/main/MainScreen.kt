@@ -71,7 +71,7 @@ import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.domain.expense.entities.Expense
 import com.andef.myfinance.domain.income.entities.Income
-import com.andef.myfinance.navigation.Screen
+import com.andef.myfinance.navigation.main.Screen
 import com.andef.myfinance.navigation.defaultScreenAnim
 import com.andef.myfinance.navigation.main.MainNavGraph
 import com.andef.myfinance.navigation.main.MainNavigationState
