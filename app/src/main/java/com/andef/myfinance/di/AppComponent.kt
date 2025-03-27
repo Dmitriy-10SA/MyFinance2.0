@@ -8,6 +8,10 @@ import com.andef.myfinance.di.expense.ExpenseDaoModule
 import com.andef.myfinance.di.expense.ExpenseRepositoryModule
 import com.andef.myfinance.di.income.IncomeDaoModule
 import com.andef.myfinance.di.income.IncomeRepositoryModule
+import com.andef.myfinance.di.purpose.active.ActivePurposeDaoModule
+import com.andef.myfinance.di.purpose.active.ActivePurposeRepositoryModule
+import com.andef.myfinance.di.purpose.completed.CompletedPurposeDaoModule
+import com.andef.myfinance.di.purpose.completed.CompletedPurposeRepositoryModule
 import com.andef.myfinance.di.reminder.ReminderDaoModule
 import com.andef.myfinance.di.reminder.ReminderRepositoryModule
 import com.andef.myfinance.di.theme.ThemePreferencesRepositoryModule
@@ -36,7 +40,11 @@ import dagger.Component
         ThemeSharedPreferencesModule::class,
         ViewModelModule::class,
         ReminderRepositoryModule::class,
-        ReminderDaoModule::class
+        ReminderDaoModule::class,
+        ActivePurposeDaoModule::class,
+        ActivePurposeRepositoryModule::class,
+        CompletedPurposeDaoModule::class,
+        CompletedPurposeRepositoryModule::class
     ]
 )
 interface AppComponent {

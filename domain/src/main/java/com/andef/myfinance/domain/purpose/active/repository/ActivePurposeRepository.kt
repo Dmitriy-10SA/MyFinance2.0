@@ -15,7 +15,7 @@ interface ActivePurposeRepository {
 
     suspend fun addActivePurposeToCompletedPurpose(activePurpose: ActivePurpose)
     suspend fun removeActivePurpose(id: Int)
-    suspend fun addToSum(amount: Double)
-    suspend fun removeFromSum(amount: Double)
+    suspend fun addToSum(id: Int, amount: Double)
+    suspend fun removeFromSum(id: Int, amount: Double)
     fun getActivePurposeList(): Flow<List<ActivePurpose>>
 }

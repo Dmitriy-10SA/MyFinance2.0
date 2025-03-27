@@ -6,7 +6,7 @@ import javax.inject.Inject
 class RemoveFromSumUseCase @Inject constructor(
     private val repository: ActivePurposeRepository
 ) {
-    suspend fun execute(amount: Double) {
-        repository.removeFromSum(amount)
+    suspend fun execute(id: Int, amount: Double) {
+        repository.removeFromSum(id, amount)
     }
 }

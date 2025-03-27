@@ -6,7 +6,7 @@ import javax.inject.Inject
 class AddToSumUseCase @Inject constructor(
     private val repository: ActivePurposeRepository
 ) {
-    suspend fun execute(amount: Double) {
-        repository.addToSum(amount)
+    suspend fun execute(id: Int, amount: Double) {
+        repository.addToSum(id, amount)
     }
 }
