@@ -68,9 +68,7 @@ import com.andef.myfinance.utils.ui.TextInputTextForAmount
 import com.andef.myfinance.utils.ui.getExpenseIconResId
 import com.andef.myfinance.utils.ui.getExpenseNameResId
 import com.andef.myfinance.utils.ui.toDate
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.Date
 
