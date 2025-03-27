@@ -38,6 +38,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -67,6 +68,9 @@ import com.andef.myfinance.utils.ui.TextInputTextForAmount
 import com.andef.myfinance.utils.ui.getExpenseIconResId
 import com.andef.myfinance.utils.ui.getExpenseNameResId
 import com.andef.myfinance.utils.ui.toDate
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.Date
 
@@ -94,6 +98,8 @@ fun ReminderScreen(
     val isDatePickerScreen = remember { mutableStateOf(false) }
     val isTimePickerScreen = remember { mutableStateOf(false) }
 
+    val scope = rememberCoroutineScope()
+
     LaunchedEffect(id) { viewModel.loadReminder(id) }
 
     AnimatedContent(
@@ -113,14 +119,17 @@ fun ReminderScreen(
                         amount = amount,
                         onActionClickListener = {
                             if (id == null) {
-                                val reminder = Reminder(
-                                    amount = amount.value.toDouble(),
-                                    category = category.value,
-                                    text = comment.value,
-                                    time = Date(dateState.value.time + timeState.longValue)
-                                )
-                                viewModel.addReminder(reminder)
-                                onAddAction(reminder.id, reminder.text, reminder.time.time)
+                                scope.launch {
+                                    val reminder = Reminder(
+                                        id = viewModel.generateReminderId(),
+                                        amount = amount.value.toDouble(),
+                                        category = category.value,
+                                        text = comment.value,
+                                        time = Date(dateState.value.time + timeState.longValue)
+                                    )
+                                    viewModel.addReminder(reminder)
+                                    onAddAction(reminder.id, reminder.text, reminder.time.time)
+                                }
                             } else {
                                 viewModel.changeReminder(
                                     id = id,

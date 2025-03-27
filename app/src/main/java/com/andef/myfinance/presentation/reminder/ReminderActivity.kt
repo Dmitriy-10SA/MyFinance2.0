@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -54,13 +55,14 @@ class ReminderActivity : ComponentActivity() {
     }
 
     private fun cancelNotification(id: Int) {
+        Log.d("NOTIF", "Cancel in ReminderActivity: $id")
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = ReminderReceiver.newIntent(this, id, "")
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             id,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         alarmManager.cancel(pendingIntent)
         pendingIntent.cancel()
@@ -77,13 +79,14 @@ class ReminderActivity : ComponentActivity() {
     }
 
     private fun addNotification(id: Int, text: String, time: Long) {
+        Log.d("NOTIF", "Add in ReminderActivity: $id")
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = ReminderReceiver.newIntent(this, id, text)
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             id,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,

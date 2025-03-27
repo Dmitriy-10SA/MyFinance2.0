@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -79,13 +80,14 @@ class ReminderListActivity : ComponentActivity() {
     }
 
     private fun cancelNotification(id: Int) {
+        Log.d("NOTIF", "Cancel in ReminderListActivity: $id")
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = ReminderReceiver.newIntent(this, id, "")
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             id,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         alarmManager.cancel(pendingIntent)
         pendingIntent.cancel()

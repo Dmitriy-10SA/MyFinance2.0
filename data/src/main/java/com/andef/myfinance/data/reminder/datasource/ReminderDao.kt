@@ -37,4 +37,7 @@ interface ReminderDao {
 
     @Query("SELECT * FROM reminder")
     fun getAllReminderList(): Flow<List<ReminderModel>>
+
+    @Query("SELECT COALESCE(MAX(id) + 1, 1) FROM reminder")
+    suspend fun generateId(): Int
 }

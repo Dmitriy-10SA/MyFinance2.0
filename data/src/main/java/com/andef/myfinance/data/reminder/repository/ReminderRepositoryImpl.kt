@@ -51,4 +51,8 @@ class ReminderRepositoryImpl @Inject constructor(
             ReminderModelListToReminderList.map(it)
         }
     }
+
+    override suspend fun generateReminderId(): Int {
+        return dao.generateId()
+    }
 }

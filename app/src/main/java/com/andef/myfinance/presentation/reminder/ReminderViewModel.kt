@@ -6,6 +6,7 @@ import com.andef.myfinance.domain.expense.entities.ExpenseCategory
 import com.andef.myfinance.domain.reminder.entities.Reminder
 import com.andef.myfinance.domain.reminder.usecases.AddReminderUseCase
 import com.andef.myfinance.domain.reminder.usecases.ChangeReminderUseCase
+import com.andef.myfinance.domain.reminder.usecases.GenerateReminderIdUseCase
 import com.andef.myfinance.domain.reminder.usecases.GetReminderUseCase
 import com.andef.myfinance.domain.reminder.usecases.RemoveReminderUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class ReminderViewModel @Inject constructor(
     private val addReminderUseCase: AddReminderUseCase,
     private val changeReminderUseCase: ChangeReminderUseCase,
-    private val getReminderUseCase: GetReminderUseCase
+    private val getReminderUseCase: GetReminderUseCase,
+    private val generateReminderIdUseCase: GenerateReminderIdUseCase
 ) : ViewModel() {
     private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
         _state.value = ReminderState.Error
@@ -34,6 +36,8 @@ class ReminderViewModel @Inject constructor(
             addReminderUseCase.execute(reminder)
         }
     }
+
+    suspend fun generateReminderId() = generateReminderIdUseCase.execute()
 
     fun changeReminder(
         id: Int,
