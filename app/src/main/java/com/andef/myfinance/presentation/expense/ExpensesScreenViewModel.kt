@@ -16,7 +16,7 @@ class ExpensesScreenViewModel @Inject constructor(
     private val getFullExpenseAmountUseCase: GetFullExpenseAmountUseCase,
     private val removeExpenseUseCase: RemoveExpenseUseCase
 ) : ViewModel() {
-    private val exceptionHandler = CoroutineExceptionHandler { _, _ ->  }
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
     fun getExpenseList(
         startDate: Date,

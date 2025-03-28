@@ -29,7 +29,8 @@ fun IncomeOrExpenseTopBar(
     amount: MutableState<String>,
     isDarkTheme: Boolean,
     onBackClickListener: () -> Unit,
-    onActionClickListener: () -> Unit
+    onActionClickListener: () -> Unit,
+    condition: () -> Boolean = { true }
 ) {
     CenterAlignedTopAppBar(
         modifier = Modifier
@@ -67,7 +68,7 @@ fun IncomeOrExpenseTopBar(
                     },
                     disabledContentColor = White
                 ),
-                enabled = isFullInfoForAddOrChange(amount),
+                enabled = isFullInfoForAddOrChange(amount) && condition(),
                 onClick = onActionClickListener
             ) {
                 Icon(

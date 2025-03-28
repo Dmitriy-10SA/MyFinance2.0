@@ -4,7 +4,7 @@ import com.andef.myfinance.R
 import com.andef.myfinance.domain.income.entities.IncomeCategory
 
 fun getIncomeIconResId(incomeCategory: IncomeCategory): Int {
-    return when(incomeCategory) {
+    return when (incomeCategory) {
         IncomeCategory.SALARY -> R.drawable.salary
         IncomeCategory.BANK -> R.drawable.bank
         IncomeCategory.LUCK -> R.drawable.luck

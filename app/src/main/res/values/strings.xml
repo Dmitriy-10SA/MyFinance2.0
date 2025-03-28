@@ -143,4 +143,21 @@
     <string name="mail_icon">Иконка почты</string>
     <string name="telegram_icon">Иконка телеграмм</string>
     <string name="choose_mail_client">Выберите почтовый клиент</string>
+    <string name="title_activity_purpose">PurposeActivity</string>
+    <string name="purposes">Цели</string>
+    <string name="done">Выполнено</string>
+    <string name="active">Активно</string>
+    <string name="active_purpose">Активные</string>
+    <string name="done_purpose">Выполненные</string>
+    <string name="photo_for_purpose">Фото для цели</string>
+    <string name="title_activity_active_purpose">ActivePurposeActivity</string>
+    <string name="wait_purposes">Ждем появления целей</string>
+    <string name="your_purpose">Цель:</string>
+    <string name="input_purpose">Введите цель</string>
+    <string name="photo_choose">Выбор фото</string>
+    <string name="selected_photo">Выбранное фото</string>
+    <string name="your_photo">Ваше фото:</string>
+    <string name="purpose_view">Вид цели:</string>
+    <string name="choose_color">Выберите цвет:</string>
+    <string name="goal">Цель</string>
 </resources>

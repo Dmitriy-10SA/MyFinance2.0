@@ -69,7 +69,7 @@ fun TotalsScreen(
             text = stringResource(R.string.wait_incomes_and_expenses)
         )
     } else {
-        LazyColumn (
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

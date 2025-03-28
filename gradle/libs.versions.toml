@@ -1,6 +1,8 @@
 [versions]
 agp = "8.8.2"
 charts = "0.2.4-alpha"
+coilCompose = "2.7.0"
+colorpicker = "0.0.13"
 compose = "2.0.0"
 converterGson = "2.9.0"
 dagger = "2.55"
@@ -27,6 +29,8 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 charts = { module = "com.github.tehras:charts", version.ref = "charts" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+colorpicker = { module = "com.github.QuadFlask:colorpicker", version.ref = "colorpicker" }
 compose = { module = "com.kizitonwose.calendar:compose", version.ref = "compose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerCompiler" }

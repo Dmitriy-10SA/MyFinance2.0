@@ -40,7 +40,8 @@ class IncomeAnalysisViewModel @Inject constructor(
         _detailIncomePieChartState.value = IncomeAnalysisPieChartState.Error
     }
 
-    fun getIncomes(startDate: Date, endDate: Date) = getIncomeListUseCase.execute(startDate, endDate)
+    fun getIncomes(startDate: Date, endDate: Date) =
+        getIncomeListUseCase.execute(startDate, endDate)
 
     fun getFullAmountIncome(
         startDate: Date,

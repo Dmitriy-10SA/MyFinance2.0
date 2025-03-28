@@ -71,10 +71,10 @@ import com.andef.myfinance.R
 import com.andef.myfinance.ViewModelFactory
 import com.andef.myfinance.domain.expense.entities.Expense
 import com.andef.myfinance.domain.income.entities.Income
-import com.andef.myfinance.navigation.main.Screen
 import com.andef.myfinance.navigation.defaultScreenAnim
 import com.andef.myfinance.navigation.main.MainNavGraph
 import com.andef.myfinance.navigation.main.MainNavigationState
+import com.andef.myfinance.navigation.main.Screen
 import com.andef.myfinance.navigation.main.rememberMainNavigationState
 import com.andef.myfinance.navigation.rangePickerAnim
 import com.andef.myfinance.presentation.expense.ExpensesScreen
@@ -145,7 +145,7 @@ fun MainScreen(
                             onIncomeAnalysisClickListener = onIncomeAnalysisClickListener,
                             onWebViewActionClickListener = onWebViewActionClickListener,
                             onReminderClickListener = onReminderClickListener,
-                            onAboutDeveloperClickListener = onAboutDeveloperClickListener
+                            onAboutDeveloperClickListener = onAboutDeveloperClickListener,
                         )
                     }
                     BackHandler {
