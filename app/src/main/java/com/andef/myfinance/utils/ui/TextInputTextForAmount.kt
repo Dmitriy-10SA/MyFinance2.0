@@ -22,6 +22,7 @@ import com.andef.myfinance.R
 
 @Composable
 fun TextInputTextForAmount(
+    label: String = stringResource(R.string.input_comment),
     comment: MutableState<String>,
     onValueChanged: (String) -> Unit
 ) {
@@ -41,7 +42,7 @@ fun TextInputTextForAmount(
             textStyle = androidx.compose.ui.text.TextStyle(fontSize = 20.sp),
             label = {
                 Text(
-                    text = stringResource(R.string.input_comment),
+                    text = label,
                     fontSize = 20.sp
                 )
             },

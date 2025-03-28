@@ -1,7 +1,7 @@
 package com.andef.myfinance.presentation.main
 
 import com.andef.myfinance.R
-import com.andef.myfinance.navigation.Screen
+import com.andef.myfinance.navigation.main.Screen
 
 sealed class MainBottomBarItem(
     val titleResId: Int,

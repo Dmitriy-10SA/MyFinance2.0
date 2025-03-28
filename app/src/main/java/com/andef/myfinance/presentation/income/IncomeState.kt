@@ -6,5 +6,5 @@ sealed class IncomeState {
     data object Initial : IncomeState()
     data object Loading : IncomeState()
     data object Error : IncomeState()
-    data class IncomeLoad(val income: Income?): IncomeState()
+    data class IncomeLoad(val income: Income?) : IncomeState()
 }

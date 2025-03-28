@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.andef.myfinance.presentation.main.MainActivity
@@ -22,6 +23,7 @@ class ReminderReceiver : BroadcastReceiver() {
             createNotificationChannel(it, notificationManager)
 
             val id = intent?.extras?.getInt(ID_EXTRA) ?: 0
+            Log.d("NOTIF", "Receiver: $id")
 
             val pendingIntent = PendingIntent.getActivity(
                 it,

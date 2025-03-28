@@ -36,7 +36,7 @@ class AboutDeveloperActivity : ComponentActivity() {
             }
         }
     }
-    
+
     private fun showTelegram() {
         val telegramIntent = Intent(
             Intent.ACTION_VIEW,
