@@ -1,29 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="dark_gray">#FF121212</color>
+    <color name="gray">#3E3E3E</color>
+    <color name="blue">#00ACFF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="black_white">#6FFFFFFF</color>
-    <color name="my_blue">#FF1565C0</color>
-    <color name="my_blue_with_low_alpha">#451565C0</color>
-    <color name="my_orange">#FFE65100</color>
-    <color name="my_green_black">#309435</color>
-    <color name="my_green">#64DD17</color>
-    <color name="my_brown">#A0522D </color>
-    <color name="my_yellow">#D9A427 </color>
-    <color name="my_yellow_black">#D4A029 </color>
-    <color name="my_brown_black">#8F5A2A </color>
-    <color name="my_red_black">#AF0909</color>
-    <color name="my_red">#D50000</color>
-    <color name="my_orange_with_low_alpha">#45E65100</color>
-    <color name="gray">#4D4949</color>
-    <color name="my_violet">#673AB7</color>
-    <color name="my_gray">#9E9E9E</color>
-    <color name="my_teal">#0E9B8E</color>
-    <color name="my_cyan">#4DB7F0</color>
-    <color name="my_coral_red">#D9534F</color>
 </resources>
