@@ -49,12 +49,6 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
-    //domain
-    implementation(project(":domain"))
-
-    //data
-    implementation(project(":data"))
-
     //Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
